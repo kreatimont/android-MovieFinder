@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/movies"
+            android:icon="@drawable/ic_movie_black_24dp"
+            android:title="Movies" />
+
+        <item
+            android:id="@+id/series"
+            android:icon="@drawable/ic_series"
+            android:title="TV series"/>
+
+        <item
+            android:id="@+id/persons"
+            android:icon="@drawable/ic_person"
+            android:title="Persons"/>
+
+        <item
+            android:id="@+id/search"
+            android:icon="@drawable/ic_search"
+            android:title="Search"/>
+
+    </group>
+
+</menu>

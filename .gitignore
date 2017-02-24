@@ -1,0 +1,9 @@
+**/*/res/values/secrets.xml
+libs/
+app.iml
+.gradle/
+.idea/libraries/
+.idea/workspace.xml
+Cinematograph.iml
+build/
+local.properties
