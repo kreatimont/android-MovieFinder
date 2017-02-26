@@ -1,10 +1,13 @@
 package com.example.nadto.cinematograph.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,40 +16,57 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nadto.cinematograph.adapter.ProfileAdapter;
+import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.fragment.Client;
 import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.HttpHelper.LoadImageTask;
 import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
 import com.example.nadto.cinematograph.R;
+import com.example.nadto.cinematograph.model.Person;
 
 import org.json.JSONObject;
 
-public class DetailedActivity extends AppCompatActivity implements Client {
+import java.util.ArrayList;
+
+import static com.example.nadto.cinematograph.activity.ProfileDetailedActivity.EXTRA_PROFILE_ID;
+
+public class FilmDetailedActivity extends AppCompatActivity implements Client {
 
     public static final String EXTRA_ID = "id";
     public static final String EXTRA_TYPE = "type";
 
     JsonHelper jsonHelper;
     private ImageView backdrop, poster;
-    private TextView overview, year, createdBy, budget, genres, popularity, vote;
-    private int filmId;
-    private int filmType;
+    private TextView overview, year, createdBy, budget, genres, popularity, vote, tagline;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private ProfileAdapter profileAdapter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed);
 
-        filmId = getIntent().getExtras().getInt(EXTRA_ID);
-        filmType = getIntent().getExtras().getInt(EXTRA_TYPE);
+        if(getIntent() != null ) {
+            if(getIntent().getExtras() != null) {
+                int filmId = getIntent().getExtras().getInt(EXTRA_ID);
+                int filmType = getIntent().getExtras().getInt(EXTRA_TYPE);
 
-        Log.e("onCreateDetailsActivity","ID: " + filmId + "; TYPE:" + filmType);
+                Log.e("onCreateDetailsActivity","ID: " + filmId + "; TYPE:" + filmType);
 
-        initUI();
+                initUI();
 
-        jsonHelper = new JsonHelper(this);
-        jsonHelper.loadJson(jsonHelper.createURL(filmId,filmType));
+                jsonHelper = new JsonHelper(this);
+                jsonHelper.loadJson(jsonHelper.createURL(filmId, filmType));
+            }
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+        }
+
+
+
+
     }
 
     @Override
@@ -86,11 +106,14 @@ public class DetailedActivity extends AppCompatActivity implements Client {
         createdBy = (TextView) findViewById(R.id.detailedCreatedBy);
         vote = (TextView) findViewById(R.id.detailedVote);
         genres = (TextView) findViewById(R.id.detailedGenres);
+        tagline = (TextView) findViewById(R.id.detailedTagline);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.castRecycler);
 
     }
 
-    private void updateInfo(Film film) {
+    private void updateInfo(Film film, final ArrayList<Person> cast) {
 
         if(film != null) {
 
@@ -105,6 +128,36 @@ public class DetailedActivity extends AppCompatActivity implements Client {
             vote.setText(film.getVoteAverage() + "");
             popularity.setText(film.getPopularity() + "");
             budget.setText(film.getBudget() + "");
+            tagline.setText(getString(R.string.tagline_template, film.getTagline()));
+
+            if(cast != null) {
+                profileAdapter = new ProfileAdapter(this, cast);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
+                mRecyclerView.setAdapter(profileAdapter);
+                mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
+                        this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(FilmDetailedActivity.this, ProfileDetailedActivity.class);
+                        if(position >= 0) {
+                            intent.putExtra(EXTRA_PROFILE_ID, cast.get(position).getId());
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(
+                                    FilmDetailedActivity.this,
+                                    "Unable to load information at {" + position + "} pos",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onItemLongClick(View view, int position) {
+
+                    }
+
+                }));
+            }
 
 
         } else {
@@ -116,7 +169,8 @@ public class DetailedActivity extends AppCompatActivity implements Client {
     @Override
     public void setData(JSONObject jsonObject) {
         Film film = jsonHelper.convertJsonToFilm(jsonObject);
-        this.updateInfo(film);
+        ArrayList<Person> cast = jsonHelper.getCreditsFromJsonObject(jsonObject);
+        this.updateInfo(film, cast);
     }
 
 }

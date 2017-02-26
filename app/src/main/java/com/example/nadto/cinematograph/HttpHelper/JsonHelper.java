@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.nadto.cinematograph.fragment.Client;
 import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.R;
+import com.example.nadto.cinematograph.model.Person;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +63,88 @@ public class JsonHelper {
         }
 
         return films;
+    }
+
+    public Person convertJsonToPerson(JSONObject jsonObject) {
+
+        if(jsonObject == null) {
+            return null;
+        }
+
+        try {
+
+            int id = jsonObject.getInt("id");
+
+            String name  = jsonObject.has("name") ? jsonObject.getString("name") : "none";
+            String charName = jsonObject.has("character") ? jsonObject.getString("character") : "none";
+
+            String profilePath = context.getString(R.string.image_base);
+            profilePath += jsonObject.has("profile_path") ? jsonObject.getString("profile_path") : "none";
+
+            String biography = jsonObject.has("biography") ? jsonObject.getString("biography") : "none";
+            String birthday = jsonObject.has("birthday") ? jsonObject.getString("birthday") : "none";
+            String deathday = jsonObject.has("deathday") ? jsonObject.getString("deathday") : "none";
+            String placeOfBirth = jsonObject.has("place_of_birth") ? jsonObject.getString("place_of_birth") : "none";
+
+            Double popularity = jsonObject.has("popularity") ? jsonObject.getDouble("popularity") : 0.0;
+
+            int gender = jsonObject.has("gender") ? jsonObject.getInt("gender") : 0;
+            String genderString = gender == 2 ? "Male" : "Female";
+
+            String link = jsonObject.has("homepage") ? jsonObject.getString("homepage") : "none";
+
+            return new Person(id,name,charName,profilePath,biography,birthday,deathday,placeOfBirth,genderString,link,popularity);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<Person> getCreditsFromJsonObject(JSONObject jsonObject) {
+
+        ArrayList<Person> castArray = new ArrayList<>();
+
+        if(jsonObject != null) {
+
+            if(jsonObject.has("credits")) {
+
+                try {
+
+                    JSONObject credits = jsonObject.getJSONObject("credits");
+
+                    JSONArray cast = credits.has("cast") ? credits.getJSONArray("cast") : null;
+
+                    if(cast != null) {
+
+                        for(int i = 0; i < cast.length(); i++) {
+
+                            JSONObject character = cast.getJSONObject(i);
+
+                            int id = character.getInt("id");
+                            String name  = character.has("name") ? character.getString("name") : "none";
+                            String charName = character.has("character") ? character.getString("character") : "none";
+
+                            String profilePath = context.getString(R.string.image_base);
+
+                           profilePath += character.has("profile_path") ? character.getString("profile_path") : "none";
+
+                            castArray.add(new Person(id,name,charName,profilePath));
+
+                        }
+
+                    }
+
+                } catch (JSONException ex) {
+                    Log.e("TAG",ex.toString());
+                }
+
+            }
+
+        }
+
+        return castArray;
+
     }
 
     public Film convertJsonToFilm(JSONObject jsonObject) {
@@ -196,8 +279,12 @@ public class JsonHelper {
     public URL createURL(int id, int type) {
 
         String apiKey = context.getString(R.string.api_key);
+        String apiKeyPrefix = context.getString(R.string.api_key_prefix);
         String baseUrl = context.getString(R.string.base_url_movie);
         String baseUrlTv = context.getString(R.string.base_url_tv);
+        String baseUrlPerson= context.getString(R.string.base_url_person);
+        String creditsMode = context.getString(R.string.credits_mode);
+
 
         try {
 
@@ -205,11 +292,14 @@ public class JsonHelper {
 
             if(type == Film.MOVIE) {
                 res = baseUrl;
-            } else {
+            } else if(type == Film.TV) {
                 res = baseUrlTv;
+            } else {
+                Log.e("Film.PERSON:", baseUrlPerson + id + apiKeyPrefix + apiKey);
+                return new URL(baseUrlPerson + id + apiKeyPrefix + apiKey);
             }
 
-            String urlResult = res + id + "?api_key=" + apiKey;
+            String urlResult = res + id + apiKeyPrefix + apiKey + creditsMode;
 
             Log.e("TAG",urlResult);
 
@@ -232,6 +322,7 @@ public class JsonHelper {
             HttpURLConnection httpUrlCon = null;
 
             try {
+                Log.e("GetJsonTask url",urls[0].toString());
                 httpUrlCon = (HttpURLConnection) urls[0].openConnection();
                 int response = httpUrlCon.getResponseCode();
                 if (response == HttpURLConnection.HTTP_OK) {

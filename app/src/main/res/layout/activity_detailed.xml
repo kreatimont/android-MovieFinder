@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.nadto.cinematograph.activity.DetailedActivity">
+    tools:context="com.example.nadto.cinematograph.activity.FilmDetailedActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="230dp"
+        android:layout_height="240dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -25,7 +25,7 @@
             <ImageView
                 android:id="@+id/detailedBackdrop"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/inception"
+                tools:src="@drawable/vikings"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 

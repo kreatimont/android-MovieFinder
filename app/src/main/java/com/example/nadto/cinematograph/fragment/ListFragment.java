@@ -16,7 +16,7 @@ import com.example.nadto.cinematograph.adapter.FilmAdapter;
 import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
-import com.example.nadto.cinematograph.activity.DetailedActivity;
+import com.example.nadto.cinematograph.activity.FilmDetailedActivity;
 import com.example.nadto.cinematograph.model.Film;
 
 import org.json.JSONObject;
@@ -46,10 +46,10 @@ public abstract class ListFragment extends Fragment implements Client {
                 mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent  intent = new Intent(getActivity(), DetailedActivity.class);
+                Intent  intent = new Intent(getActivity(), FilmDetailedActivity.class);
                 if(position >= 0) {
-                    intent.putExtra(DetailedActivity.EXTRA_ID, movies.get(position).getId());
-                    intent.putExtra(DetailedActivity.EXTRA_TYPE, movies.get(position).getType());
+                    intent.putExtra(FilmDetailedActivity.EXTRA_ID, movies.get(position).getId());
+                    intent.putExtra(FilmDetailedActivity.EXTRA_TYPE, movies.get(position).getType());
                     startActivity(intent);
                 } else {
                     Snackbar.make(rootView, "Unable to load information at {" + position + "} pos",Snackbar.LENGTH_SHORT).show();

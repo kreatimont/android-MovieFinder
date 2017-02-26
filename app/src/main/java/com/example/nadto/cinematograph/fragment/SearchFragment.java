@@ -18,7 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
-import com.example.nadto.cinematograph.activity.DetailedActivity;
+import com.example.nadto.cinematograph.activity.FilmDetailedActivity;
 import com.example.nadto.cinematograph.adapter.FilmAdapter;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
@@ -45,10 +45,10 @@ public class SearchFragment extends ListFragment {
 
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity(), DetailedActivity.class);
+                Intent intent = new Intent(getActivity(), FilmDetailedActivity.class);
                 if(position >= 0) {
-                    intent.putExtra(DetailedActivity.EXTRA_ID, movies.get(position).getId());
-                    intent.putExtra(DetailedActivity.EXTRA_TYPE, movies.get(position).getType());
+                    intent.putExtra(FilmDetailedActivity.EXTRA_ID, movies.get(position).getId());
+                    intent.putExtra(FilmDetailedActivity.EXTRA_TYPE, movies.get(position).getType());
                     startActivity(intent);
                 } else {
                     Snackbar.make(rootView, "Unable to load information at (" + position + ")",Snackbar.LENGTH_SHORT).show();
@@ -76,7 +76,7 @@ public class SearchFragment extends ListFragment {
 
                 String queryMode = checkedRadioButton != null ? checkedRadioButton.getText().toString() : "none";
 
-                String query = mEditText.getText().toString();
+                String query = mEditText.getText().toString().replace(' ', '_');
 
                 jsonHelper.loadJson(createSearchURL(query, queryMode));
 

@@ -5,6 +5,7 @@ public class Film {
 
     public static final int MOVIE = 1882;
     public static final int TV = 1952;
+    public static final int PERSON = 1812;
     public static final String STATUS_RELEASED = "Released";
     public static final String STATUS_RETURNING = "Returning Series";
 
