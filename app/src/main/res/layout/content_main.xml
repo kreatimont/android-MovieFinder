@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.nadto.cinematograph.MainActivity"
+    tools:context="com.example.nadto.cinematograph.activity.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <LinearLayout

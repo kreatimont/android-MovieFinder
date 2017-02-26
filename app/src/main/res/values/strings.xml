@@ -13,6 +13,7 @@
     <string name="year_template">( %1$s )</string>
     <string name="read_error">Unable to read data</string>
     <string name="load_error">Unable to connect to TMDb services</string>
+    <string name="parse_error">Unable to parse data</string>
     <string name="top_series">Top Series</string>
     <string name="top_movies">Top Movies</string>
 

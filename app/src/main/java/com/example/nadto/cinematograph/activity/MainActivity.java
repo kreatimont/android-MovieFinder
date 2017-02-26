@@ -1,9 +1,10 @@
-package com.example.nadto.cinematograph;
+package com.example.nadto.cinematograph.activity;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,7 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.fragment.ListFragment;
 import com.example.nadto.cinematograph.fragment.MovieFragment;
 import com.example.nadto.cinematograph.fragment.SearchFragment;
@@ -22,8 +25,6 @@ import com.example.nadto.cinematograph.fragment.SeriesFragment;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String ARRAY = "array";
 
     private ListFragment currentFragment;
 
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(id == R.id.loadMovies) {
-            currentFragment.addItem(new Random().nextInt(44444));
             return true;
         }
 
@@ -102,11 +102,12 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-                currentFragment = fragment;
 
                 if(fragment != null) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                } else {
+                    Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 }
 
                 drawer.closeDrawer(GravityCompat.START);
@@ -119,9 +120,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentFragment != null) {
-                    currentFragment.addItem(new Random().nextInt(44444));
-                }
+                Toast.makeText(MainActivity.this, "Replace with your own action", Toast.LENGTH_SHORT).show();
             }
         });
 

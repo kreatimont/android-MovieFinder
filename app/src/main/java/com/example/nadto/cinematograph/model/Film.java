@@ -1,22 +1,35 @@
-package com.example.nadto.cinematograph;
+package com.example.nadto.cinematograph.model;
 
 
 public class Film {
 
     public static final int MOVIE = 1882;
     public static final int TV = 1952;
+    public static final String STATUS_RELEASED = "Released";
+    public static final String STATUS_RETURNING = "Returning Series";
 
-    private int id;
-    private int type;
-    private  String title, date, createdBy;
-    private float voteAverage;
-    private String genres;
-    private String countries;
-    private String pathToPoster, pathToBackdrop;
+    private int id ,type, budget;
+    private  String title, date, createdBy, genres, countries, pathToPoster, pathToBackdrop, overview, tagline, status;
+    private float voteAverage, popularity;
 
-    public Film(int id, int type, String title, String date, String createdBy , float voteAverage, String genres, String pathToPoster, String pathToBackdrop, String countries) {
+    public Film(int id,
+                int type,
+                String status,
+                String title,
+                String date,
+                String createdBy,
+                float voteAverage,
+                String genres,
+                String pathToPoster,
+                String pathToBackdrop,
+                String countries,
+                String overview,
+                String tagline,
+                float popularity,
+                int budget) {
         this.type = type;
         this.id = id;
+        this.status = status;
         this.title = title;
         this.date = date;
         this.voteAverage = voteAverage;
@@ -25,6 +38,50 @@ public class Film {
         this.pathToBackdrop = pathToBackdrop;
         this.genres = genres;
         this.countries = countries;
+        this.overview = overview;
+        this.tagline = tagline;
+        this.popularity = popularity;
+        this.budget = budget;
+    }
+
+    public int getBudget() {
+        return budget;
+    }
+
+    public void setBudget(int budget) {
+        this.budget = budget;
+    }
+
+    public float getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(float popularity) {
+        this.popularity = popularity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
     public int getType() {

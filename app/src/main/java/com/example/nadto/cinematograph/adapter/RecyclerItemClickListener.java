@@ -1,4 +1,4 @@
-package com.example.nadto.cinematograph;
+package com.example.nadto.cinematograph.adapter;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;

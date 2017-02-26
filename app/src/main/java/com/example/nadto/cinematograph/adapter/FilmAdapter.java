@@ -1,22 +1,19 @@
-package com.example.nadto.cinematograph;
+package com.example.nadto.cinematograph.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.example.nadto.cinematograph.HttpHelper.LoadImageTask;
+import com.example.nadto.cinematograph.R;
+import com.example.nadto.cinematograph.model.Film;
+
 import java.util.ArrayList;
 
 
@@ -50,8 +47,9 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private CardView cardView;
-        private TextView title, year, genres, createdBy, voteAverage;
+        private TextView title, year;
         private ImageView backdrop;
+        private RatingBar voteAverage;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -59,10 +57,8 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
             cardView = (CardView)itemView.findViewById(R.id.cardView);
             title = (TextView)itemView.findViewById(R.id.title);
             year = (TextView)itemView.findViewById(R.id.year);
-            createdBy = (TextView)itemView.findViewById(R.id.createdBy);
-            voteAverage = (TextView)itemView.findViewById(R.id.voteAverage);
+            voteAverage = (RatingBar)itemView.findViewById(R.id.voteAverage);
             backdrop = (ImageView)itemView.findViewById(R.id.backdrop);
-            genres = (TextView)itemView.findViewById(R.id.genres);
 
         }
 
@@ -71,56 +67,11 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
             title.setText(film.getTitle());
             String date = film.getDate().length() >= 4 ? film.getDate().substring(0,4) : "none";
             year.setText(mContext.getString(R.string.year_template, date));
-            createdBy.setText(film.getCreatedBy());
-            voteAverage.setText(String.valueOf(film.getVoteAverage()));
-            genres.setText(film.getGenres());
+            voteAverage.setRating((film.getVoteAverage() * 5.0f) / 10.0f);
+
             LoadImageTask loadImageTask = new LoadImageTask(backdrop);
             loadImageTask.execute(film.getPathToBackdrop().equals("none") ? film.getPathToPoster() : film.getPathToBackdrop());
 
-        }
-    }
-
-    private class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
-
-        private ImageView image;
-
-        public LoadImageTask(ImageView image) {
-            this.image = image;
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        @Override
-        protected Bitmap doInBackground(String... strings) {
-
-            Bitmap bitmap = null;
-            HttpURLConnection connection = null;
-
-            try {
-
-                URL url = new URL(strings[0]);
-                connection = (HttpURLConnection)url.openConnection();
-
-                try(InputStream inputStream = connection.getInputStream()) {
-                    bitmap = BitmapFactory.decodeStream(inputStream);
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            } finally {
-                if(connection != null) {
-                    connection.disconnect();
-                }
-            }
-            return bitmap;
-
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            image.setImageBitmap(bitmap);
         }
     }
 
