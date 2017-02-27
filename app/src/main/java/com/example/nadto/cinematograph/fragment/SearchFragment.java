@@ -76,7 +76,7 @@ public class SearchFragment extends ListFragment {
 
                 String queryMode = checkedRadioButton != null ? checkedRadioButton.getText().toString() : "none";
 
-                String query = mEditText.getText().toString().replace(' ', '_');
+                String query = mEditText.getText().toString().replace(' ', '+');
 
                 jsonHelper.loadJson(createSearchURL(query, queryMode));
 

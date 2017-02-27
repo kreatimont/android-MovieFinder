@@ -6,6 +6,7 @@
     android:id="@+id/cardView"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="6dp"
+    app:cardBackgroundColor="@color/colorCardBackground"
     app:cardCornerRadius="2dp">
 
     <LinearLayout
@@ -39,7 +40,7 @@
                 android:textSize="16sp"
                 android:lines="2"
                 tools:text="In Bruges"
-                android:textColor="#333"
+                android:textColor="@color/colorPrimaryText"
                 android:maxWidth="200dp"
                 android:gravity="center_vertical|start"
                 android:layout_width="wrap_content"
@@ -50,7 +51,7 @@
                 android:paddingLeft="2dp"
                 android:textSize="14sp"
                 android:gravity="center"
-                android:textColor="#777"
+                android:textColor="@color/colorSecondaryText"
                 tools:text="( 2007 )"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent" />

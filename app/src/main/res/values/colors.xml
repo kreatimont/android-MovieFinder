@@ -4,13 +4,32 @@
     <!--<color name="colorPrimaryDark">#303F9F</color>-->
     <!--<color name="colorAccent">#FF4081</color>-->
 
+    <!--<color name="colorPrimary">#929BA8</color>-->
+    <!--<color name="colorPrimaryDark">#354958</color>-->
+    <!--<color name="colorAccent">#DB7907</color>-->
+
+    <!--Green-Pink-Dark theme-->
     <!--<color name="colorPrimary">#77cea2</color>-->
     <!--<color name="colorPrimaryDark">#77a5a2</color>-->
     <!--<color name="colorAccent">#e589b0</color>-->
 
-    <color name="colorPrimary">#929BA8</color>
-    <color name="colorPrimaryDark">#354958</color>
-    <color name="colorAccent">#DB7907</color>
+    <!--<color name="colorBackground">#607d8b</color>-->
+    <!--<color name="colorCardBackground">#c5cae9</color>-->
+    <!--<color name="colorPrimaryText">#efebe9</color>-->
+    <!--<color name="colorSecondaryText">#bdbdbd</color>-->
+    <!--<color name="colorLabel">#ffffff</color>-->
+
+
+    <!--Blue-Gray-Light theme-->
+    <color name="colorPrimary">#007069</color>
+    <color name="colorPrimaryDark">#014E5A</color>
+    <color name="colorAccent">#6A9FC2</color>
+
+    <color name="colorBackground">#f5f5f5</color>
+    <color name="colorCardBackground">#fff</color>
+    <color name="colorPrimaryText">#222</color>
+    <color name="colorSecondaryText">#555</color>
+    <color name="colorLabel">#fff</color>
 
     <!--Rate colors-->
     <color name="colorGood">#64dd17</color>

@@ -6,10 +6,12 @@
     android:id="@+id/activity_profile_detailed"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp"
+    android:padding="0dp"
+    android:background="@color/colorBackground"
     tools:context="com.example.nadto.cinematograph.activity.ProfileDetailedActivity">
 
     <ScrollView
+        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -38,7 +40,7 @@
 
                     <TextView
                         android:id="@+id/detProfileName"
-                        android:textColor="#222"
+                        android:textColor="@color/colorPrimaryText"
                         android:textSize="28sp"
                         android:textStyle="bold"
                         tools:text="Travis Fimmel"
@@ -58,20 +60,21 @@
                     android:layout_marginTop="8dp"
                     android:text="Personal info"
                     android:textStyle="bold"
-                    android:textColor="#222"
+                    android:textColor="@color/colorPrimaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:layout_marginTop="4dp"
                     android:text="Gender:"
-                    android:textColor="#222"
+                    android:textColor="@color/colorPrimaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/detProfileGender"
                     tools:text="Male"
+                    android:textColor="@color/colorSecondaryText"
                     android:textStyle="italic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -79,13 +82,14 @@
                 <TextView
                     android:layout_marginTop="4dp"
                     android:text="Birthday:"
-                    android:textColor="#222"
+                    android:textColor="@color/colorPrimaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/detProfileBirthday"
                     tools:text="2013-03-21"
+                    android:textColor="@color/colorSecondaryText"
                     android:textStyle="italic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -93,7 +97,7 @@
                 <TextView
                     android:layout_marginTop="4dp"
                     android:text="Place of Birth:"
-                    android:textColor="#222"
+                    android:textColor="@color/colorPrimaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -101,13 +105,14 @@
                     android:id="@+id/detProfilePlaceOfBirth"
                     tools:text="nr. Echuca, Victoria, Australia"
                     android:textStyle="italic"
+                    android:textColor="@color/colorSecondaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:layout_marginTop="4dp"
                     android:text="Official site:"
-                    android:textColor="#222"
+                    android:textColor="@color/colorPrimaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -124,11 +129,12 @@
                     android:layout_marginTop="8dp"
                     android:text="Biography"
                     android:textStyle="bold"
-                    android:textColor="#222"
+                    android:textColor="@color/colorPrimaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:textColor="@color/colorSecondaryText"
                     android:id="@+id/detProfileBiography"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

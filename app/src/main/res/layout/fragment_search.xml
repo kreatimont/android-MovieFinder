@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@color/colorBackground"
     android:layout_height="match_parent">
 
     <RadioGroup
+        android:gravity="center"
         android:id="@+id/radio"
         android:layout_margin="4dp"
         android:orientation="horizontal"

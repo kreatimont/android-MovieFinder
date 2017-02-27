@@ -1,6 +1,8 @@
 package com.example.nadto.cinematograph.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +32,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import static com.example.nadto.cinematograph.activity.MainActivity.APP_PREFERENCE;
 import static com.example.nadto.cinematograph.activity.ProfileDetailedActivity.EXTRA_PROFILE_ID;
 
 public class FilmDetailedActivity extends AppCompatActivity implements Client {
@@ -42,6 +46,9 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ProfileAdapter profileAdapter;
     private RecyclerView mRecyclerView;
+    private FloatingActionButton fabFavorite;
+    private Film film;
+    private boolean isFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +93,24 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabFavorite);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabFavorite = (FloatingActionButton) findViewById(R.id.fabFavorite);
+        fabFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+
+                SharedPreferences sharedPreferences = FilmDetailedActivity.this.getSharedPreferences(APP_PREFERENCE,Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                if(isFavorite) {
+                    editor.remove(getString(R.string.saved_id));
+                    editor.remove(getString(R.string.saved_type));
+                    fabFavorite.setImageResource(R.drawable.ic_heart);
+                } else {
+                    editor.putInt(getString(R.string.saved_id), film.getId());
+                    editor.putInt(getString(R.string.saved_type), film.getType());
+                    fabFavorite.setImageResource(R.drawable.ic_hear_fill);
+                }
+                editor.apply();
             }
         });
 
@@ -115,7 +134,18 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
 
     private void updateInfo(Film film, final ArrayList<Person> cast) {
 
+        SharedPreferences sharedPreferences = getSharedPreferences(
+                APP_PREFERENCE,Context.MODE_PRIVATE);
+
+        int id = sharedPreferences.getInt(getString(R.string.saved_id), 44217);
+        int type = sharedPreferences.getInt(getString(R.string.saved_type), Film.TV);
+
         if(film != null) {
+
+            if(film.getId() == id && film.getType() == type) {
+                fabFavorite.setImageResource(R.drawable.ic_hear_fill);
+                isFavorite = true;
+            }
 
             new LoadImageTask(backdrop).execute(film.getPathToBackdrop());
             new LoadImageTask(poster).execute(film.getPathToPoster());
@@ -168,7 +198,7 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
 
     @Override
     public void setData(JSONObject jsonObject) {
-        Film film = jsonHelper.convertJsonToFilm(jsonObject);
+        film = jsonHelper.convertJsonToFilm(jsonObject);
         ArrayList<Person> cast = jsonHelper.getCreditsFromJsonObject(jsonObject);
         this.updateInfo(film, cast);
     }

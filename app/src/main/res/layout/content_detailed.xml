@@ -6,15 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.nadto.cinematograph.activity.FilmDetailedActivity"
     tools:showIn="@layout/activity_detailed">
 
     <LinearLayout
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:paddingTop="8dp"
+        android:layout_margin="8dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -45,7 +44,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:textColor="#333"
+                        android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
                         android:text="Release date:"
                         android:textStyle="bold"
@@ -56,6 +55,7 @@
                         android:id="@+id/detailedYear"
                         android:gravity="end"
                         tools:text="2013"
+                        android:textColor="@color/colorSecondaryText"
                         android:textStyle="italic"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:textColor="#333"
+                        android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
                         android:text="Created by:"
                         android:textStyle="bold"
@@ -80,6 +80,7 @@
                     <TextView
                         android:id="@+id/detailedCreatedBy"
                         android:gravity="end"
+                        android:textColor="@color/colorSecondaryText"
                         tools:text="Michael Hirst"
                         android:textStyle="italic"
                         android:layout_width="fill_parent"
@@ -94,7 +95,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:textColor="#333"
+                        android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
                         android:text="Genres:"
                         android:textStyle="bold"
@@ -102,6 +103,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:textColor="@color/colorSecondaryText"
                         android:id="@+id/detailedGenres"
                         android:gravity="end"
                         tools:text="Drama"
@@ -119,7 +121,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:textColor="#333"
+                        android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
                         android:text="Budget:"
                         android:textStyle="bold"
@@ -127,6 +129,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:textColor="@color/colorSecondaryText"
                         android:id="@+id/detailedBudget"
                         android:gravity="end"
                         tools:text="160 millions"
@@ -143,7 +146,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:textColor="#333"
+                        android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
                         android:text="Popularity:"
                         android:textStyle="bold"
@@ -154,6 +157,7 @@
                         android:id="@+id/detailedPopularity"
                         android:gravity="end"
                         tools:text="19%"
+                        android:textColor="@color/colorSecondaryText"
                         android:textStyle="italic"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
@@ -167,7 +171,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:textColor="#333"
+                        android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
                         android:text="User score:"
                         android:textStyle="bold"
@@ -175,6 +179,7 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
+                        android:textColor="@color/colorSecondaryText"
                         android:id="@+id/detailedVote"
                         android:gravity="end"
                         tools:text="7.0"
@@ -192,8 +197,9 @@
             android:id="@+id/detailedTagline"
             android:layout_margin="6dp"
             android:padding="4dp"
+            android:textColor="@color/colorPrimaryText"
             android:textAlignment="center"
-            tools:text="Storm is coming"
+            tools:text="&#171; Storm is coming &#187;"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -208,16 +214,16 @@
 
                 <View
                     android:background="@color/colorPrimary"
-
                     android:layout_marginBottom="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp" />
 
                 <TextView
-                tools:text="@string/large_text"
-                android:id="@+id/detailedOverview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                    android:textColor="@color/colorSecondaryText"
+                    tools:text="@string/large_text"
+                    android:id="@+id/detailedOverview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <View
                     android:background="@color/colorPrimary"
@@ -227,7 +233,7 @@
                     android:layout_height="1dp" />
 
                 <TextView
-                    android:textColor="#333"
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="16sp"
                     android:text="Cast:"
                     android:textStyle="bold"
@@ -237,18 +243,6 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/castRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <View
-                    android:background="@color/colorPrimary"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp" />
-
-                <TextView
-                    android:text="@string/large_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

@@ -2,15 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.nadto.cinematograph.activity.MainActivity">
-
-    <item
-        android:id="@+id/loadMovies"
-        android:orderInCategory="1"
-        android:title="@string/load_movies"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_load"
-        />
-
+    
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
