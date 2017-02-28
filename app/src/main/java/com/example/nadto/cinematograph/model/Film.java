@@ -13,6 +13,11 @@ public class Film {
     private  String title, date, createdBy, genres, countries, pathToPoster, pathToBackdrop, overview, tagline, status;
     private float voteAverage, popularity;
 
+    public Film (int id, int type) {
+        this.id = id;
+        this.type = type;
+    }
+
     public Film(int id,
                 int type,
                 String status,

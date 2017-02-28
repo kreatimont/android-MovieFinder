@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.nadto.cinematograph.adapter.ProfileAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
+import com.example.nadto.cinematograph.db.DataBaseHelper;
 import com.example.nadto.cinematograph.fragment.Client;
 import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.HttpHelper.LoadImageTask;
@@ -49,6 +50,7 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
     private FloatingActionButton fabFavorite;
     private Film film;
     private boolean isFavorite;
+    private DataBaseHelper dataBaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
             if(getIntent().getExtras() != null) {
                 int filmId = getIntent().getExtras().getInt(EXTRA_ID);
                 int filmType = getIntent().getExtras().getInt(EXTRA_TYPE);
-
+                film = new Film(filmId, filmType);
                 Log.e("onCreateDetailsActivity","ID: " + filmId + "; TYPE:" + filmType);
 
                 initUI();
@@ -70,9 +72,6 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
         } else {
             startActivity(new Intent(this, MainActivity.class));
         }
-
-
-
 
     }
 
@@ -90,6 +89,8 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
 
     private void initUI() {
 
+        dataBaseHelper = new DataBaseHelper(FilmDetailedActivity.this);
+
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
@@ -97,22 +98,19 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
         fabFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                SharedPreferences sharedPreferences = FilmDetailedActivity.this.getSharedPreferences(APP_PREFERENCE,Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                if(isFavorite) {
-                    editor.remove(getString(R.string.saved_id));
-                    editor.remove(getString(R.string.saved_type));
+                if(dataBaseHelper.isExistFilm(film.getId(),film.getType())) {
+                    dataBaseHelper.deleteFilm(film.getId(), film.getType());
                     fabFavorite.setImageResource(R.drawable.ic_heart);
                 } else {
-                    editor.putInt(getString(R.string.saved_id), film.getId());
-                    editor.putInt(getString(R.string.saved_type), film.getType());
+                    dataBaseHelper.addFilm(new Film(film.getId(),film.getType()));
                     fabFavorite.setImageResource(R.drawable.ic_hear_fill);
                 }
-                editor.apply();
             }
         });
+
+        if(dataBaseHelper.isExistFilm(film.getId(), film.getType())) {
+            fabFavorite.setImageResource(R.drawable.ic_hear_fill);
+        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -180,20 +178,15 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
-
                     @Override
                     public void onItemLongClick(View view, int position) {
-
                     }
-
                 }));
+
             }
-
-
         } else {
             Toast.makeText(this, R.string.parse_error, Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override
