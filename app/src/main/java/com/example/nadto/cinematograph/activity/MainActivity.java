@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Replace with your own action", Toast.LENGTH_SHORT).show();
             }
         });
+        fab.setVisibility(View.GONE);
 
     }
 
