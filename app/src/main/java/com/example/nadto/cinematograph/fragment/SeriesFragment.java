@@ -16,7 +16,7 @@ public class SeriesFragment extends ListFragment {
         String TOP_SERIES =
                 "https://api.themoviedb.org/3/discover/tv?api_key=" +
                         getActivity().getString(R.string.api_key) + "&sort_by=popularity.desc&include_adult=true";
-        setFilmType(TOP_SERIES);
+        setQuery(TOP_SERIES);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 

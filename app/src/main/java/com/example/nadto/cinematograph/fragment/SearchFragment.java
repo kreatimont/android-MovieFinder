@@ -26,6 +26,7 @@ import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 public class SearchFragment extends ListFragment {
 
@@ -85,7 +86,9 @@ public class SearchFragment extends ListFragment {
             }
         });
 
-        addFakeItems();
+        movies = new ArrayList<>();
+
+//        addFakeItems();
 
         jsonHelper = new JsonHelper(getActivity(), this);
 
@@ -115,7 +118,7 @@ public class SearchFragment extends ListFragment {
 
 
     @Override
-    void setUpData() {
+    public void setUpData() {
         movies.clear();
 
         if(mFilmAdapter == null) {

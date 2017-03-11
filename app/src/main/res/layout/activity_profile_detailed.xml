@@ -6,7 +6,6 @@
     android:id="@+id/activity_profile_detailed"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="0dp"
     android:background="@color/colorBackground"
     tools:context="com.example.nadto.cinematograph.activity.ProfileDetailedActivity">
 
@@ -28,7 +27,6 @@
                 <ImageView
                     android:id="@+id/detProfilePhoto"
                     android:scaleType="centerCrop"
-                    tools:src="@drawable/vikings_poster"
                     android:layout_width="140dp"
                     android:layout_height="180dp"
                     android:layout_marginRight="16dp"/>
@@ -144,7 +142,5 @@
         </LinearLayout>
 
     </ScrollView>
-
-
 
 </LinearLayout>

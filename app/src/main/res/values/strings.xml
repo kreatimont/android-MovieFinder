@@ -23,8 +23,13 @@
     <!--API resources-->
     <string name="api_key">@string/your_api_key</string>
     <string name="api_key_prefix">"?api_key="</string>
+    <string name="mode_page">&amp;page=%1$d</string>
 
     <string name="base_url">https://api.themoviedb.org/3/</string>
+
+    <string name="mode_movie">movie</string>
+    <string name="mode_tv">tv</string>
+    <string name="mode_person">person</string>
 
     <string name="base_url_movie">https://api.themoviedb.org/3/movie/</string>
     <string name="base_url_tv">https://api.themoviedb.org/3/tv/</string>
@@ -34,6 +39,8 @@
 
     <string name="mode_search_movie">search/movie?query=</string>
     <string name="mode_search_tv">search/tv?query=</string>
+
+    <string name="mode_popular">popular</string>
 
     <string name="credits_mode">"&amp;append_to_response=credits</string>
 
@@ -129,5 +136,6 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="favorite">Favorite</string>
+    <string name="network_failed">You are offline. Connect to network and restart app.</string>
 
 </resources>

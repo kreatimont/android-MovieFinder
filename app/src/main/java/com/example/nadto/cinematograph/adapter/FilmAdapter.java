@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.nadto.cinematograph.HttpHelper.LoadImageTask;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.model.Film;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
 
     private ArrayList<Film> films;
     private Context mContext;
+    private boolean isGridLayout = false;
 
 
     public FilmAdapter(Context context, ArrayList<Film> films) {
@@ -30,7 +32,12 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.card_layout, parent, false);
+        View view;
+        if(isGridLayout) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.card_layout_grid, parent, false);
+        } else {
+            view = LayoutInflater.from(mContext).inflate(R.layout.card_layout, parent, false);
+        }
         return new ViewHolder(view);
     }
 
@@ -69,10 +76,28 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
             year.setText(mContext.getString(R.string.year_template, date));
             voteAverage.setRating((film.getVoteAverage() * 5.0f) / 10.0f);
 
-            LoadImageTask loadImageTask = new LoadImageTask(backdrop);
-            loadImageTask.execute(film.getPathToBackdrop().equals("none") ? film.getPathToPoster() : film.getPathToBackdrop());
+            Picasso.with(mContext).load(film.getPathToBackdrop().equals("none") ? film.getPathToPoster() : film.getPathToBackdrop()).into(backdrop);
+//            LoadImageTask loadImageTask = new LoadImageTask(backdrop);
+//            loadImageTask.execute(film.getPathToBackdrop().equals("none") ? film.getPathToPoster() : film.getPathToBackdrop());
 
         }
     }
 
+    public void setGridLayout(boolean status) {
+        this.isGridLayout = status;
+    }
+
+    public void setFilms(ArrayList<Film> films){
+        this.films =  films;
+    }
+
+    public void swap(ArrayList<Film> list){
+        if (films != null) {
+            films.clear();
+            films.addAll(list);
+        }
+        else {
+            films = list;
+        }
+    }
 }

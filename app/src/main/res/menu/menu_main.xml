@@ -9,4 +9,28 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:title="Grid {4 columns}"
+            android:id="@+id/grid4"
+            app:showAsAction="never" />
+        <item
+            android:title="Grid {3 columns}"
+            android:id="@+id/grid3"
+            app:showAsAction="never" />
+        <item
+            android:title="Grid {2 columns}"
+            android:id="@+id/grid2"
+            app:showAsAction="never" />
+        <item
+            android:title="Linear"
+            android:id="@+id/linear"
+            app:showAsAction="never" />
+
+    </group>
+
+
+
 </menu>

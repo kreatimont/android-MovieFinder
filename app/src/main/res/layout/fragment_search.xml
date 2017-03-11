@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@color/colorBackground"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp">
 
     <RadioGroup
         android:gravity="center"
@@ -34,15 +35,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabSearch"
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_done"
         android:layout_gravity="top|end"
-        android:layout_marginTop="-36dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="-32dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -50,5 +48,6 @@
         android:id="@+id/searchRecycler"
         android:layout_width="match_parent"
         android:layout_height="fill_parent" />
+
 
 </LinearLayout>

@@ -15,12 +15,11 @@ import java.util.ArrayList;
 public class FavoriteFragment extends ListFragment {
 
     @Override
-    void setUpData() {
+    public void setUpData() {
 
         DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
         ArrayList<Film> films = dataBaseHelper.getAllFilm();
 
-        movies.clear();
         movies = new ArrayList<>();
 
         jsonHelper = new JsonHelper(getActivity(),this);
