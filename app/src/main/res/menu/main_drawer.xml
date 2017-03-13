@@ -18,11 +18,6 @@
             android:title="Persons"/>
 
         <item
-            android:id="@+id/search"
-            android:icon="@drawable/ic_search"
-            android:title="Search"/>
-
-        <item
             android:id="@+id/favorite"
             android:icon="@drawable/ic_action_name"
             android:title="Favorite"/>

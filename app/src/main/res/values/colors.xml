@@ -21,9 +21,20 @@
 
 
     <!--Blue-Gray-Light theme-->
-    <color name="colorPrimary">#007069</color>
-    <color name="colorPrimaryDark">#014E5A</color>
-    <color name="colorAccent">#6A9FC2</color>
+    <!--<color name="colorPrimary">#007069</color>-->
+    <!--<color name="colorPrimaryDark">#014E5A</color>-->
+    <!--<color name="colorAccent">#6A9FC2</color>-->
+
+    <!--<color name="colorBackground">#f5f5f5</color>-->
+    <!--<color name="colorCardBackground">#fff</color>-->
+    <!--<color name="colorPrimaryText">#222</color>-->
+    <!--<color name="colorSecondaryText">#555</color>-->
+    <!--<color name="colorLabel">#fff</color>-->
+
+    <!--Blue-Gray-Light theme-->
+    <color name="colorPrimary">#9C68B2</color>
+    <color name="colorPrimaryDark">#9D30CC</color>
+    <color name="colorAccent">#029E68</color>
 
     <color name="colorBackground">#f5f5f5</color>
     <color name="colorCardBackground">#fff</color>
