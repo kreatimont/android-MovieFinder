@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -21,19 +19,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.fragment.FavoriteFragment;
 import com.example.nadto.cinematograph.fragment.ListFragment;
-import com.example.nadto.cinematograph.fragment.MovieFragment;
-import com.example.nadto.cinematograph.fragment.SearchFragment;
-import com.example.nadto.cinematograph.fragment.SeriesFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,13 +37,21 @@ public class MainActivity extends AppCompatActivity {
     public static final int WIRELESS_RESULT_CODE = 1337;
     public static final String SS_TITLE = "ss_title";
 
+
+    public static final String FAVORITES = "fav";
+    public static final String MOVIES = "mov";
+    public static final String SERIES = "ser";
+
     private View rootView;
+    private FloatingActionButton fabNext;
+    private FloatingActionButton fabPrev;
 
     private ListFragment currentFragment;
+    private String currentCategory;
     private int currentMoviePage = 1;
     private int currentTvPage = 1;
-
     private boolean mReturningWithResult = false;
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -74,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        loadUserFavorites();
+    }
+
+    @Override
     protected void onPostResume() {
         super.onPostResume();
         if(mReturningWithResult) {
@@ -93,6 +103,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                currentFragment.loadItemListFromUrl(createSearchURL(query),true);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         return true;
     }
 
@@ -117,12 +143,36 @@ public class MainActivity extends AppCompatActivity {
             currentFragment.setLayoutManager(new LinearLayoutManager(this));
         }
 
+        if(id == R.id.search) {
+            Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private String createSearchURL(String query) {
+
+        String apiKey = getString(R.string.api_key);
+        String baseUrl = getString(R.string.base_url);
+        String modeMovie = getString(R.string.mode_search_movie);
+        String modeTv = getString(R.string.mode_search_tv);
+
+        String strMode;
+
+        if(currentCategory.equals(MOVIES)) {
+            strMode = modeMovie;
+        } else {
+            strMode = modeTv;
+        }
+
+        return baseUrl + strMode + query + "&api_key=" + apiKey;
     }
 
     public void initUI() {
 
         Log.e("TAG","init UI");
+
+        currentCategory = FAVORITES;
 
         final NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
         final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -138,41 +188,38 @@ public class MainActivity extends AppCompatActivity {
 
                 int itemId = item.getItemId();
 
-                ListFragment fragment = null;
-                Class fragmentClass = null;
-
                 if(itemId == R.id.movies) {
-                    fragmentClass = MovieFragment.class;
+                    String queryMovie = getString(R.string.base_url_movie)
+                            + getString(R.string.mode_popular)
+                            + getString(R.string.api_key_prefix)
+                            + getString(R.string.api_key)
+                            + getString(R.string.mode_page, currentMoviePage);
+                    currentCategory = MOVIES;
+                    currentFragment.loadItemListFromUrl(queryMovie, true);
                 }
                 if(itemId == R.id.series) {
-                    fragmentClass = SeriesFragment.class;
+                    String queryTv = getString(R.string.base_url_tv)
+                            + getString(R.string.mode_popular)
+                            + getString(R.string.api_key_prefix)
+                            + getString(R.string.api_key)
+                            + getString(R.string.mode_page, currentTvPage);
+                    currentCategory = SERIES;
+                    currentFragment.loadItemListFromUrl(queryTv, true);
                 }
                 if(itemId == R.id.persons) {
+                    Toast.makeText(MainActivity.this, "Open category is failed.", Toast.LENGTH_SHORT).show();
+                }
 
-                }
-                if(itemId == R.id.search) {
-                    fragmentClass = SearchFragment.class;
-                }
                 if(itemId == R.id.favorite) {
-                    fragmentClass = FavoriteFragment.class;
+                    fabNext.setVisibility(View.GONE);
+                    currentCategory = FAVORITES;
+                    currentFragment.loadItemsFromDb(true);
+                } else {
+                    fabNext.setVisibility(View.VISIBLE);
                 }
 
                 item.setChecked(true);
                 setTitle(item.getTitle());
-
-                try {
-                    fragment = (ListFragment)fragmentClass.newInstance();
-                    currentFragment = fragment;
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                if(currentFragment != null) {
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.container, currentFragment).commit();
-                } else {
-                    Toast.makeText(MainActivity.this, "Open category is failed.", Toast.LENGTH_SHORT).show();
-                }
 
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
@@ -180,59 +227,78 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        if(currentFragment == null) {
-            try {
-                currentFragment = FavoriteFragment.class.newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            nav.setCheckedItem(R.id.favorite);
-            setTitle(R.string.favorite);
+        try {
+            currentFragment = ListFragment.class.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, currentFragment).commit();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        nav.setCheckedItem(R.id.favorite);
+
+        fabNext = (FloatingActionButton) findViewById(R.id.fabNext);
+        fabNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(currentFragment instanceof MovieFragment) {
+
+                String baseUrl;
+                int currentPage;
+
+                if(currentCategory.equals(MOVIES)) {
+                    baseUrl = getString(R.string.base_url_movie);
                     currentMoviePage++;
-                    currentFragment.setQuery(
-                            getString(R.string.base_url_movie)
-                                    + getString(R.string.mode_popular)
-                                    + getString(R.string.api_key_prefix)
-                                    + getString(R.string.api_key)
-                                    + getString(R.string.mode_page, currentMoviePage));
-                    currentFragment.setUpData();
-                    Toast.makeText(MainActivity.this, "Page : " + currentMoviePage, Toast.LENGTH_SHORT).show();
-                } else if (currentFragment instanceof SeriesFragment) {
+                    currentPage = currentMoviePage;
+                } else {
+                    baseUrl = getString(R.string.base_url_tv);
                     currentTvPage++;
-                    String query =
-                            getString(R.string.base_url_tv)
-                                    + getString(R.string.mode_popular)
-                                    + getString(R.string.api_key_prefix)
-                                    + getString(R.string.api_key)
-                                    + getString(R.string.mode_page, currentTvPage);
-                    currentFragment.setQuery(
-                            getString(R.string.base_url_tv)
-                                    + getString(R.string.mode_popular)
-                                    + getString(R.string.api_key_prefix)
-                                    + getString(R.string.api_key)
-                                    + getString(R.string.mode_page, currentTvPage));
-                    currentFragment.setUpData();
-                    Toast.makeText(MainActivity.this, "Page : " + currentTvPage, Toast.LENGTH_SHORT).show();
+                    currentPage = currentTvPage;
                 }
-                else {
-                    Toast.makeText(MainActivity.this, "Not available for this category", Toast.LENGTH_SHORT).show();
+
+                String query =  baseUrl
+                        + getString(R.string.mode_popular)
+                        + getString(R.string.api_key_prefix)
+                        + getString(R.string.api_key)
+                        + getString(R.string.mode_page, currentPage);
+
+                currentFragment.loadItemListFromUrl(query, true);
+
+                fabPrev.setVisibility(View.VISIBLE);
+            }
+        });
+
+        fabPrev = (FloatingActionButton)findViewById(R.id.fabPrev);
+        fabPrev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String baseUrl;
+                int currentPage;
+
+                if(currentCategory.equals(MOVIES)) {
+                    baseUrl = getString(R.string.base_url_movie);
+                    currentMoviePage--;
+                    currentPage = currentMoviePage;
+                } else {
+                    baseUrl = getString(R.string.base_url_tv);
+                    currentTvPage--;
+                    currentPage = currentTvPage;
+                }
+
+                String query =  baseUrl
+                        + getString(R.string.mode_popular)
+                        + getString(R.string.api_key_prefix)
+                        + getString(R.string.api_key)
+                        + getString(R.string.mode_page, currentPage);
+
+                currentFragment.loadItemListFromUrl(query, true);
+
+                if(currentPage == 1) {
+                    fabPrev.setVisibility(View.INVISIBLE);
                 }
 
             }
         });
-
     }
 
     public boolean isOnline(Context context) {
@@ -242,21 +308,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkNetwork() {
-        Log.e("TAG","Now is check network");
         if(isOnline(this)) {
-            Log.e("TAG","now is online");
             if(!mReturningWithResult) {
                 initUI();
             }
         } else {
-            Log.e("TAG","now is not online");
-            Log.e("TAG","befor snackbar make");
             Snackbar.make(rootView, R.string.network_failed, Snackbar.LENGTH_LONG)
                     .setAction("Turn on", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Log.e("TAG","set action");
-                            Log.e("TAG","Start activity for result");
                             IntentFilter intentFilter = new IntentFilter();
                             intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
                             startActivityForResult(new Intent(Settings.ACTION_SETTINGS), WIRELESS_RESULT_CODE);
@@ -266,4 +326,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void loadUserFavorites() {
+
+        setTitle(R.string.favorite);
+        fabNext.setVisibility(View.GONE);
+        fabPrev.setVisibility(View.INVISIBLE);
+        currentFragment.loadItemsFromDb(true);
+
+    }
+
+    public String getCurrentCategory() {
+        return currentCategory;
+    }
 }

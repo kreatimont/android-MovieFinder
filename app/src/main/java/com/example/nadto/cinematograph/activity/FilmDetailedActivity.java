@@ -18,23 +18,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
-import com.example.nadto.cinematograph.HttpHelper.LoadImageTask;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.adapter.ProfileAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.db.DataBaseHelper;
-import com.example.nadto.cinematograph.fragment.Client;
 import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.model.Person;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.example.nadto.cinematograph.activity.MainActivity.APP_PREFERENCE;
 import static com.example.nadto.cinematograph.activity.ProfileDetailedActivity.EXTRA_PROFILE_ID;
 
-public class FilmDetailedActivity extends AppCompatActivity implements Client {
+public class FilmDetailedActivity extends AppCompatActivity {
 
     public static final String EXTRA_ID = "id";
     public static final String EXTRA_TYPE = "type";
@@ -50,6 +57,8 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
     private boolean isFavorite;
     private DataBaseHelper dataBaseHelper;
 
+    private OkHttpClient httpClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,8 +73,10 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
 
                 initUI();
 
+                httpClient = new OkHttpClient();
                 jsonHelper = new JsonHelper(this);
-                jsonHelper.loadJson(jsonHelper.createURL(filmId, filmType));
+                loadItemFromUrl(jsonHelper.createURL(filmId, filmType).toString());
+
             }
         } else {
             startActivity(new Intent(this, MainActivity.class));
@@ -143,8 +154,8 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
                 isFavorite = true;
             }
 
-            new LoadImageTask(backdrop).execute(film.getPathToBackdrop());
-            new LoadImageTask(poster).execute(film.getPathToPoster());
+            Picasso.with(this).load(film.getPathToBackdrop()).into(backdrop);
+            Picasso.with(this).load(film.getPathToPoster()).into(poster);
 
             overview.setText(film.getOverview());
             collapsingToolbarLayout.setTitle(film.getTitle());
@@ -187,11 +198,34 @@ public class FilmDetailedActivity extends AppCompatActivity implements Client {
         }
     }
 
-    @Override
-    public void setData(JSONObject jsonObject) {
-        film = jsonHelper.convertJsonToFilm(jsonObject);
-        ArrayList<Person> cast = jsonHelper.getCreditsFromJsonObject(jsonObject);
-        this.updateInfo(film, cast);
+    public void loadItemFromUrl(String url) {
+        Request request = new Request.Builder().url(url).build();
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    final String responseData = response.body().string();
+                    FilmDetailedActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                updateInfo(jsonHelper.convertJsonToFilm(
+                                        new JSONObject(responseData)),jsonHelper.getCreditsFromJsonObject(new JSONObject(responseData)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
 }

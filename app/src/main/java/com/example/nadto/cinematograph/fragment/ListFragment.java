@@ -1,25 +1,25 @@
 package com.example.nadto.cinematograph.fragment;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.nadto.cinematograph.adapter.FilmAdapter;
 import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.activity.FilmDetailedActivity;
+import com.example.nadto.cinematograph.activity.MainActivity;
+import com.example.nadto.cinematograph.adapter.FilmAdapter;
+import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
+import com.example.nadto.cinematograph.db.DataBaseHelper;
 import com.example.nadto.cinematograph.model.Film;
 
 import org.json.JSONException;
@@ -29,30 +29,27 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public abstract class ListFragment extends Fragment implements Client {
-
-    public static final int LAYOUT_GRID2 = 666;
-    public static final int LAYOUT_GRID3 = 777;
-    public static final int LAYOUT_GRID4 = 888;
-    public static final int LAYOUT_LINEAR = 999;
+public class ListFragment extends Fragment {
 
     RecyclerView mRecyclerView;
+
     FilmAdapter mFilmAdapter;
+
     ArrayList<Film> movies;
+
     View rootView;
+
     JsonHelper jsonHelper;
-    String query;
-    private RecyclerView.LayoutManager currentLayoutManager;
+
+    private OkHttpClient httpClient;
+
 
     @Nullable
     @Override
@@ -82,9 +79,59 @@ public abstract class ListFragment extends Fragment implements Client {
 
         }));
 
-        setUpData();
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if(dy > 0) {
+                    ((FloatingActionButton)getActivity().findViewById(R.id.fabPrev)).hide();
+                    ((FloatingActionButton)getActivity().findViewById(R.id.fabNext)).hide();
+                } else if(dy < 0) {
+                    if(getActivity().findViewById(R.id.fabPrev).getVisibility() != View.INVISIBLE
+                            && !((MainActivity)getActivity()).getCurrentCategory().equals(MainActivity.FAVORITES)) {
+                        ((FloatingActionButton)getActivity().findViewById(R.id.fabPrev)).show();
+                    }
+                    if(!((MainActivity)getActivity()).getCurrentCategory().equals(MainActivity.FAVORITES)) {
+                        ((FloatingActionButton)getActivity().findViewById(R.id.fabNext)).show();
+                    }
+                }
+            }
+        });
+        movies = new ArrayList<>();
+
+        mFilmAdapter = new FilmAdapter(getContext(), movies);
+        mRecyclerView.setAdapter(mFilmAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        httpClient = new OkHttpClient();
+
+        jsonHelper = new JsonHelper(getContext());
+
+//        addTestItems();
+
+//        setUpData();
 
         return rootView;
+    }
+
+    public void loadItemsFromDb(boolean clearBeforeAdd) {
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(getActivity());
+        ArrayList<Film> films = dataBaseHelper.getAllFilm();
+
+        if(movies == null) {
+            movies = new ArrayList<>();
+        }
+
+        if(clearBeforeAdd) {
+            movies.clear();
+        }
+
+        jsonHelper = new JsonHelper(getActivity());
+
+        for(Film film : films) {
+            loadItemFromUrl(jsonHelper.createURL(film.getId(), film.getType()).toString(), false);
+        }
+        mFilmAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -103,8 +150,70 @@ public abstract class ListFragment extends Fragment implements Client {
         //Save the fragment's state here
     }
 
-    public void loadItemsListFromUrl(URL url) {
+    public void loadItemListFromUrl(String url, final boolean clearBeforeAdd) {
+        Request request = new Request.Builder().url(url).build();
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
 
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    final String responseData = response.body().string();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if(clearBeforeAdd) {
+                                    movies.clear();
+                                }
+                                movies.addAll(jsonHelper.convertJsonToFilmList(new JSONObject(responseData)));
+                                mFilmAdapter.notifyDataSetChanged();
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void loadItemFromUrl(String url, final boolean clearBeforeAdd) {
+        Request request = new Request.Builder().url(url).build();
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    final String responseData = response.body().string();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if(clearBeforeAdd) {
+                                    movies.clear();
+                                }
+                                movies.add(jsonHelper.convertJsonToFilm(new JSONObject(responseData)));
+                                mFilmAdapter.notifyItemInserted(movies.size() - 1);
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
@@ -113,43 +222,12 @@ public abstract class ListFragment extends Fragment implements Client {
         } else {
             mFilmAdapter.setGridLayout(false);
         }
-        currentLayoutManager = layoutManager;
+
         mRecyclerView.setLayoutManager(layoutManager);
         mFilmAdapter.setFilms(movies);
+
         mRecyclerView.setAdapter(mFilmAdapter);
         mFilmAdapter.notifyDataSetChanged();
     }
 
-    public void setQuery(String type) {
-        this.query = type;
-    }
-
-    public void setUpData() {
-
-        movies = new ArrayList<>();
-
-        jsonHelper = new JsonHelper(getActivity(),this);
-
-        try {
-            jsonHelper.loadJson(new URL(query));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Override
-    public void setData(JSONObject jsonObject) {
-        ArrayList<Film> newFilms = jsonHelper.convertJsonToFilmList(jsonObject);
-        movies = new ArrayList<>();
-        movies.addAll(newFilms);
-
-        if(mFilmAdapter == null) {
-            mFilmAdapter = new FilmAdapter(getContext(), movies);
-        }
-
-        setLayoutManager(currentLayoutManager != null ? currentLayoutManager : new LinearLayoutManager(getContext()));
-        mRecyclerView.setAdapter(mFilmAdapter);
-        mFilmAdapter.notifyDataSetChanged();
-    }
 }

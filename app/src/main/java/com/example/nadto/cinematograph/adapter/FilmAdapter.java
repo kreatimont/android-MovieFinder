@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.nadto.cinematograph.HttpHelper.LoadImageTask;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.model.Film;
 import com.squareup.picasso.Picasso;

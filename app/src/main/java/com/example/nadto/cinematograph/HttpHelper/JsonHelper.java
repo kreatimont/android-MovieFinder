@@ -1,22 +1,16 @@
 package com.example.nadto.cinematograph.HttpHelper;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.nadto.cinematograph.fragment.Client;
-import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.R;
+import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.model.Person;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -25,16 +19,9 @@ public class JsonHelper {
     public static final String JSON_ARRAY = "array";
 
     private Context context;
-    private Client client;
 
     public JsonHelper(Context context) {
         this.context = context;
-        this.client = (Client) context;
-    }
-
-    public JsonHelper(Context context, Client client) {
-        this.context = context;
-        this.client = client;
     }
 
     public ArrayList<Film> convertJsonToFilmList(JSONObject jsonObject) {
@@ -309,56 +296,6 @@ public class JsonHelper {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    public void loadJson(URL url) {
-        new GetJsonTask().execute(url);
-    }
-
-    private class GetJsonTask extends AsyncTask<URL, Void, JSONObject> {
-
-        @Override
-        protected JSONObject doInBackground(URL... urls) {
-            HttpURLConnection httpUrlCon = null;
-
-            try {
-                Log.e("GetJsonTask url",urls[0].toString());
-                httpUrlCon = (HttpURLConnection) urls[0].openConnection();
-                int response = httpUrlCon.getResponseCode();
-                if (response == HttpURLConnection.HTTP_OK) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    try {
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(httpUrlCon.getInputStream(), "UTF-8"));
-                        String line;
-                        Log.v("URL", urls[0].toString());
-                        while ((line = reader.readLine()) != null) {
-                            stringBuilder.append(line);
-                        }
-                        reader.close();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                    return new JSONObject(stringBuilder.toString());
-
-                } else {
-                    Log.v("TAG", response + "");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                Log.v("TAG", ex.toString());
-            } finally {
-                if (httpUrlCon != null) {
-                    httpUrlCon.disconnect();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject jsonObject) {
-            client.setData(jsonObject);
-        }
-
     }
 
 }

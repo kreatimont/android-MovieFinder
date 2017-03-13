@@ -1,33 +1,38 @@
 package com.example.nadto.cinematograph.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
-import com.example.nadto.cinematograph.HttpHelper.LoadImageTask;
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.fragment.Client;
 import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.model.Person;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ProfileDetailedActivity extends AppCompatActivity implements Client {
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class ProfileDetailedActivity extends AppCompatActivity {
 
     public static final String EXTRA_PROFILE_ID = "id";
 
     private JsonHelper jsonHelper;
+    private OkHttpClient httpClient;
 
     private TextView name, biography, gender, birthday, placeOfBirth, link;
     private ImageView profilePhoto;
@@ -43,8 +48,10 @@ public class ProfileDetailedActivity extends AppCompatActivity implements Client
 
         initUI();
 
+        httpClient = new OkHttpClient();
+
         jsonHelper = new JsonHelper(this);
-        jsonHelper.loadJson(jsonHelper.createURL(id, Film.PERSON));
+        loadItemFromUrl(jsonHelper.createURL(id, Film.PERSON).toString());
     }
 
     @Override
@@ -70,9 +77,7 @@ public class ProfileDetailedActivity extends AppCompatActivity implements Client
 
     }
 
-    @Override
-    public void setData(JSONObject jsonObject) {
-        Person person = jsonHelper.convertJsonToPerson(jsonObject);
+    public void setData(Person person) {
         if(person != null) {
             name.setText(person.getName());
             biography.setText(person.getBiography());
@@ -80,7 +85,7 @@ public class ProfileDetailedActivity extends AppCompatActivity implements Client
             birthday.setText(person.getBirthday());
             placeOfBirth.setText(person.getPlaceOfBirth());
             link.setText(person.getLink());
-            new LoadImageTask(profilePhoto).execute(person.getProfilePath());
+            Picasso.with(this).load(person.getProfilePath()).into(profilePhoto);
             getSupportActionBar().setTitle(person.getName());
         }
     }
@@ -94,5 +99,35 @@ public class ProfileDetailedActivity extends AppCompatActivity implements Client
         startActivity(browserIntent);
     }
 
+
+    public void loadItemFromUrl(String url) {
+        Request request = new Request.Builder().url(url).build();
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    final String responseData = response.body().string();
+                    ProfileDetailedActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Person person = jsonHelper.convertJsonToPerson(new JSONObject(responseData));
+                                setData(person);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
 
 }

@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.nadto.cinematograph.HttpHelper.LoadImageTask;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.model.Person;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -60,8 +60,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             name.setText(person.getName());
             character.setText(person.getCurrentChar());
 
-            LoadImageTask loadImageTask = new LoadImageTask(profilePhoto);
-            loadImageTask.execute(person.getProfilePath());
+            Picasso.with(mContext).load(person.getProfilePath()).into(profilePhoto);
+
         }
     }
 
