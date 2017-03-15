@@ -138,5 +138,6 @@
     <string name="favorite">Favorite</string>
     <string name="network_failed">You are offline. Connect to network and restart app.</string>
     <string name="search_title">Search</string>
+    <string name="text_empty">List is empty</string>
 
 </resources>

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
 import com.example.nadto.cinematograph.R;
@@ -38,18 +39,15 @@ import okhttp3.Response;
 
 public class ListFragment extends Fragment {
 
-    RecyclerView mRecyclerView;
+    private View rootView;
+    private TextView emptyStub;
+    private RecyclerView mRecyclerView;
 
-    FilmAdapter mFilmAdapter;
+    private FilmAdapter mFilmAdapter;
+    private ArrayList<Film> movies;
 
-    ArrayList<Film> movies;
-
-    View rootView;
-
-    JsonHelper jsonHelper;
-
+    private JsonHelper jsonHelper;
     private OkHttpClient httpClient;
-
 
     @Nullable
     @Override
@@ -96,6 +94,9 @@ public class ListFragment extends Fragment {
                 }
             }
         });
+
+        emptyStub = (TextView) rootView.findViewById(R.id.emptyStub);
+
         movies = new ArrayList<>();
 
         mFilmAdapter = new FilmAdapter(getContext(), movies);
@@ -105,10 +106,6 @@ public class ListFragment extends Fragment {
         httpClient = new OkHttpClient();
 
         jsonHelper = new JsonHelper(getContext());
-
-//        addTestItems();
-
-//        setUpData();
 
         return rootView;
     }
@@ -155,6 +152,7 @@ public class ListFragment extends Fragment {
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                checkEmptyState();
                 e.printStackTrace();
             }
 
@@ -175,6 +173,8 @@ public class ListFragment extends Fragment {
                                 mFilmAdapter.notifyDataSetChanged();
                             } catch (Exception ex) {
                                 ex.printStackTrace();
+                            } finally {
+                                checkEmptyState();
                             }
                         }
                     });
@@ -188,6 +188,7 @@ public class ListFragment extends Fragment {
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                checkEmptyState();
                 e.printStackTrace();
             }
 
@@ -208,6 +209,8 @@ public class ListFragment extends Fragment {
                                 mFilmAdapter.notifyItemInserted(movies.size() - 1);
                             } catch (Exception ex) {
                                 ex.printStackTrace();
+                            } finally {
+                                checkEmptyState();
                             }
                         }
                     });
@@ -228,6 +231,17 @@ public class ListFragment extends Fragment {
 
         mRecyclerView.setAdapter(mFilmAdapter);
         mFilmAdapter.notifyDataSetChanged();
+    }
+
+
+    public void checkEmptyState() {
+        if(mFilmAdapter.getItemCount() > 0) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            emptyStub.setVisibility(View.GONE);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            emptyStub.setVisibility(View.VISIBLE);
+        }
     }
 
 }

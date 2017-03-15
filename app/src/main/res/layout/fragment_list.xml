@@ -11,4 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/emptyStub"
+        android:text="@string/text_empty"
+        android:textSize="20sp"
+        android:background="@color/colorBackground"
+        android:textColor="@color/colorPrimaryText"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>
