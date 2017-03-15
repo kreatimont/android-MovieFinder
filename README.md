@@ -6,10 +6,10 @@ Android app for discover and rate movies. Data provided by TMDb api.
 
  Movies           		              | Navigation			          | Search
 :------------------------------------:|:-----------------------------:|:-------------------------------:
-![scr_movies][preview/scr_movies.png] |![scr_nav][preview/scr_nav.png]|![scr_find][preview/scr_find.png]
+![movies](https://github.com/kreatimont/android-tmdb/blob/master/preview/scr_movies.png)     |![nav](https://github.com/kreatimont/android-tmdb/blob/master/preview/scr_nav.png)    |![find](https://github.com/kreatimont/android-tmdb/blob/master/preview/scr_find.png)
 
 **Grid view**
-![scr_grid][scr_grid]       
+![scr_grid](https://github.com/kreatimont/android-tmdb/blob/master/preview/scr_grid.png)
 
 ***
 
