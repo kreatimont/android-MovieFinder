@@ -2,7 +2,7 @@
 Android app for discover and rate movies. Data provided by TMDb api.
 
 ***
-#####Screenshots:	
+###Screenshots:	
 
  Movies           		              | Navigation			          | Search
 :------------------------------------:|:-----------------------------:|:-------------------------------:

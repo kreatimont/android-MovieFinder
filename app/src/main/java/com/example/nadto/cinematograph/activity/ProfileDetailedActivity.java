@@ -10,7 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
+import com.example.nadto.cinematograph.api.ApiListener;
+import com.example.nadto.cinematograph.api.JsonHelper;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.model.Person;
@@ -20,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -27,7 +29,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class ProfileDetailedActivity extends AppCompatActivity {
+public class ProfileDetailedActivity extends AppCompatActivity implements ApiListener {
 
     public static final String EXTRA_PROFILE_ID = "id";
 
@@ -65,6 +67,8 @@ public class ProfileDetailedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*Configure UI*/
+
     private void initUI() {
 
         name = (TextView) findViewById(R.id.detProfileName);
@@ -90,15 +94,7 @@ public class ProfileDetailedActivity extends AppCompatActivity {
         }
     }
 
-    public void onSiteLinkClick(View view) {
-        String url = ((TextView)view).getText().toString();
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "http://" + url;
-        }
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
-    }
-
+    /*Content providers*/
 
     public void loadItemFromUrl(String url) {
         Request request = new Request.Builder().url(url).build();
@@ -130,4 +126,36 @@ public class ProfileDetailedActivity extends AppCompatActivity {
         });
     }
 
+    /*Api listener implementation*/
+
+    @Override
+    public void successfullyLoadFilm(Film film) {
+
+    }
+
+    @Override
+    public void successfullyLoadFilmList(ArrayList<Film> films) {
+
+    }
+
+    @Override
+    public void connectionError() {
+
+    }
+
+    @Override
+    public void parseError() {
+
+    }
+
+    /*Additional methods*/
+
+    public void onSiteLinkClick(View view) {
+        String url = ((TextView)view).getText().toString();
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://" + url;
+        }
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(browserIntent);
+    }
 }

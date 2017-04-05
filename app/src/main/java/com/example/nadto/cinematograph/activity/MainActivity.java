@@ -43,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String SERIES = "ser";
 
     private View rootView;
-    private FloatingActionButton fabNext;
-    private FloatingActionButton fabPrev;
 
     private ListFragment currentFragment;
     private String currentCategory;
@@ -69,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
         rootView = findViewById(R.id.content_main);
 
         if (savedInstanceState != null) {
-            //Restore the fragment's instance
-            currentFragment = (ListFragment) getSupportFragmentManager().getFragment(savedInstanceState, "current-fragment");
             setTitle(savedInstanceState.getString(SS_TITLE));
         }
 
@@ -211,11 +207,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if(itemId == R.id.favorite) {
-                    fabNext.setVisibility(View.GONE);
                     currentCategory = FAVORITES;
                     currentFragment.loadItemsFromDb(true);
-                } else {
-                    fabNext.setVisibility(View.VISIBLE);
                 }
 
                 item.setChecked(true);
@@ -237,68 +230,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().replace(R.id.container, currentFragment).commit();
 
         nav.setCheckedItem(R.id.favorite);
-
-        fabNext = (FloatingActionButton) findViewById(R.id.fabNext);
-        fabNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String baseUrl;
-                int currentPage;
-
-                if(currentCategory.equals(MOVIES)) {
-                    baseUrl = getString(R.string.base_url_movie);
-                    currentMoviePage++;
-                    currentPage = currentMoviePage;
-                } else {
-                    baseUrl = getString(R.string.base_url_tv);
-                    currentTvPage++;
-                    currentPage = currentTvPage;
-                }
-
-                String query =  baseUrl
-                        + getString(R.string.mode_popular)
-                        + getString(R.string.api_key_prefix)
-                        + getString(R.string.api_key)
-                        + getString(R.string.mode_page, currentPage);
-
-                currentFragment.loadItemListFromUrl(query, true);
-
-                fabPrev.setVisibility(View.VISIBLE);
-            }
-        });
-
-        fabPrev = (FloatingActionButton)findViewById(R.id.fabPrev);
-        fabPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String baseUrl;
-                int currentPage;
-
-                if(currentCategory.equals(MOVIES)) {
-                    baseUrl = getString(R.string.base_url_movie);
-                    currentMoviePage--;
-                    currentPage = currentMoviePage;
-                } else {
-                    baseUrl = getString(R.string.base_url_tv);
-                    currentTvPage--;
-                    currentPage = currentTvPage;
-                }
-
-                String query =  baseUrl
-                        + getString(R.string.mode_popular)
-                        + getString(R.string.api_key_prefix)
-                        + getString(R.string.api_key)
-                        + getString(R.string.mode_page, currentPage);
-
-                currentFragment.loadItemListFromUrl(query, true);
-
-                if(currentPage == 1) {
-                    fabPrev.setVisibility(View.INVISIBLE);
-                }
-
-            }
-        });
     }
 
     public boolean isOnline(Context context) {
@@ -329,8 +260,6 @@ public class MainActivity extends AppCompatActivity {
     private void loadUserFavorites() {
 
         setTitle(R.string.favorite);
-        fabNext.setVisibility(View.GONE);
-        fabPrev.setVisibility(View.INVISIBLE);
         currentFragment.loadItemsFromDb(true);
 
     }

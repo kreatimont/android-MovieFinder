@@ -9,35 +9,27 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.activity.FilmDetailedActivity;
 import com.example.nadto.cinematograph.activity.MainActivity;
+import com.example.nadto.cinematograph.adapter.EndlessRecyclerViewScrollListener;
 import com.example.nadto.cinematograph.adapter.FilmAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
+import com.example.nadto.cinematograph.api.ApiListener;
+import com.example.nadto.cinematograph.api.ApiManager;
+import com.example.nadto.cinematograph.api.JsonHelper;
 import com.example.nadto.cinematograph.db.DataBaseHelper;
 import com.example.nadto.cinematograph.model.Film;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements ApiListener {
 
     private View rootView;
     private TextView emptyStub;
@@ -47,7 +39,16 @@ public class ListFragment extends Fragment {
     private ArrayList<Film> movies;
 
     private JsonHelper jsonHelper;
-    private OkHttpClient httpClient;
+
+    private boolean clearBeforeAdd = false;
+
+    /*Fragment lifecycle*/
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Nullable
     @Override
@@ -55,7 +56,7 @@ public class ListFragment extends Fragment {
 
         rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
-        mRecyclerView = (RecyclerView)rootView.findViewById(R.id.movieRecycler);
+        mRecyclerView = (RecyclerView)rootView.findViewById(R   .id.movieRecycler);
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 
             @Override
@@ -77,38 +78,57 @@ public class ListFragment extends Fragment {
 
         }));
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if(dy > 0) {
-                    ((FloatingActionButton)getActivity().findViewById(R.id.fabPrev)).hide();
-                    ((FloatingActionButton)getActivity().findViewById(R.id.fabNext)).hide();
-                } else if(dy < 0) {
-                    if(getActivity().findViewById(R.id.fabPrev).getVisibility() != View.INVISIBLE
-                            && !((MainActivity)getActivity()).getCurrentCategory().equals(MainActivity.FAVORITES)) {
-                        ((FloatingActionButton)getActivity().findViewById(R.id.fabPrev)).show();
-                    }
-                    if(!((MainActivity)getActivity()).getCurrentCategory().equals(MainActivity.FAVORITES)) {
-                        ((FloatingActionButton)getActivity().findViewById(R.id.fabNext)).show();
-                    }
-                }
-            }
-        });
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                if(dy > 0) {
+//                    ((FloatingActionButton)getActivity().findViewById(R.id.fabPrev)).hide();
+//                    ((FloatingActionButton)getActivity().findViewById(R.id.fabNext)).hide();
+//                } else if(dy < 0) {
+//                    if(getActivity().findViewById(R.id.fabPrev).getVisibility() != View.INVISIBLE
+//                            && !((MainActivity)getActivity()).getCurrentCategory().equals(MainActivity.FAVORITES)) {
+//                        ((FloatingActionButton)getActivity().findViewById(R.id.fabPrev)).show();
+//                    }
+//                    if(!((MainActivity)getActivity()).getCurrentCategory().equals(MainActivity.FAVORITES)) {
+//                        ((FloatingActionButton)getActivity().findViewById(R.id.fabNext)).show();
+//                    }
+//                }
+//            }
+//        });
 
         emptyStub = (TextView) rootView.findViewById(R.id.emptyStub);
 
         movies = new ArrayList<>();
 
         mFilmAdapter = new FilmAdapter(getContext(), movies);
-        mRecyclerView.setAdapter(mFilmAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        httpClient = new OkHttpClient();
+        mRecyclerView.setAdapter(mFilmAdapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                clearBeforeAdd = false;
+                String query =  getString(R.string.base_url_movie)
+                        + getString(R.string.mode_popular)
+                        + getString(R.string.api_key_prefix)
+                        + getString(R.string.api_key)
+                        + getString(R.string.mode_page, page);
+                ApiManager.getInstance().loadFilmList(query, ListFragment.this, getActivity());
+            }
+        });
+
+
 
         jsonHelper = new JsonHelper(getContext());
 
         return rootView;
     }
+
+    /*Content providers*/
 
     public void loadItemsFromDb(boolean clearBeforeAdd) {
 
@@ -131,92 +151,70 @@ public class ListFragment extends Fragment {
         mFilmAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            //Restore the fragment's state here
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        //Save the fragment's state here
-    }
-
     public void loadItemListFromUrl(String url, final boolean clearBeforeAdd) {
-        Request request = new Request.Builder().url(url).build();
-        httpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                checkEmptyState();
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if(!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    final String responseData = response.body().string();
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                if(clearBeforeAdd) {
-                                    movies.clear();
-                                }
-                                movies.addAll(jsonHelper.convertJsonToFilmList(new JSONObject(responseData)));
-                                mFilmAdapter.notifyDataSetChanged();
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            } finally {
-                                checkEmptyState();
-                            }
-                        }
-                    });
-                }
-            }
-        });
+        this.clearBeforeAdd = clearBeforeAdd;
+        ApiManager.getInstance().loadFilmList(url, this, getActivity());
     }
 
     public void loadItemFromUrl(String url, final boolean clearBeforeAdd) {
-        Request request = new Request.Builder().url(url).build();
-        httpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                checkEmptyState();
-                e.printStackTrace();
-            }
+        this.clearBeforeAdd = clearBeforeAdd;
+        ApiManager.getInstance().loadFilm(url, this, getActivity());
+    }
 
+    /*Api listener implementation*/
+
+    @Override
+    public void successfullyLoadFilm(Film film) {
+        Log.e("Impl methods","success item");
+        if(clearBeforeAdd) {
+            movies.clear();
+        }
+        movies.add(film);
+        getActivity().runOnUiThread(new Runnable() {
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if(!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    final String responseData = response.body().string();
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                if(clearBeforeAdd) {
-                                    movies.clear();
-                                }
-                                movies.add(jsonHelper.convertJsonToFilm(new JSONObject(responseData)));
-                                mFilmAdapter.notifyItemInserted(movies.size() - 1);
-                            } catch (Exception ex) {
-                                ex.printStackTrace();
-                            } finally {
-                                checkEmptyState();
-                            }
-                        }
-                    });
-                }
+            public void run() {
+                mFilmAdapter.notifyDataSetChanged();
             }
         });
+        checkEmptyState();
+    }
+
+    @Override
+    public void successfullyLoadFilmList(ArrayList<Film> films) {
+        Log.e("Impl methods","success list");
+        if(clearBeforeAdd) {
+            movies.clear();
+        }
+        movies.addAll(films);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mFilmAdapter.notifyDataSetChanged();
+            }
+        });
+        checkEmptyState();
+    }
+
+    @Override
+    public void connectionError() {
+        checkEmptyState();
+    }
+
+    @Override
+    public void parseError() {
+        checkEmptyState();
+    }
+
+    /*Additional methods*/
+
+    public void checkEmptyState() {
+        if(mFilmAdapter.getItemCount() > 0) {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            emptyStub.setVisibility(View.GONE);
+        } else {
+            mRecyclerView.setVisibility(View.GONE);
+            emptyStub.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
@@ -232,16 +230,4 @@ public class ListFragment extends Fragment {
         mRecyclerView.setAdapter(mFilmAdapter);
         mFilmAdapter.notifyDataSetChanged();
     }
-
-
-    public void checkEmptyState() {
-        if(mFilmAdapter.getItemCount() > 0) {
-            mRecyclerView.setVisibility(View.VISIBLE);
-            emptyStub.setVisibility(View.GONE);
-        } else {
-            mRecyclerView.setVisibility(View.GONE);
-            emptyStub.setVisibility(View.VISIBLE);
-        }
-    }
-
 }

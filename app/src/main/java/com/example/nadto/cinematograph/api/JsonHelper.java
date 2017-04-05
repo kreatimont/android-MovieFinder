@@ -1,4 +1,4 @@
-package com.example.nadto.cinematograph.HttpHelper;
+package com.example.nadto.cinematograph.api;
 
 import android.content.Context;
 import android.util.Log;

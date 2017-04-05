@@ -99,4 +99,5 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
             films = list;
         }
     }
+
 }

@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.nadto.cinematograph.HttpHelper.JsonHelper;
+import com.example.nadto.cinematograph.api.JsonHelper;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.adapter.ProfileAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
@@ -59,6 +59,8 @@ public class FilmDetailedActivity extends AppCompatActivity {
 
     private OkHttpClient httpClient;
 
+    /*Activity lifecycle*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +97,40 @@ public class FilmDetailedActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /*Content providers*/
+
+    public void loadItemFromUrl(String url) {
+        Request request = new Request.Builder().url(url).build();
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(!response.isSuccessful()) {
+                    throw new IOException("Unexpected code " + response);
+                } else {
+                    final String responseData = response.body().string();
+                    FilmDetailedActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                updateInfo(jsonHelper.convertJsonToFilm(
+                                        new JSONObject(responseData)),jsonHelper.getCreditsFromJsonObject(new JSONObject(responseData)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    /*Configure UI*/
 
     private void initUI() {
 
@@ -196,36 +232,6 @@ public class FilmDetailedActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, R.string.parse_error, Toast.LENGTH_LONG).show();
         }
-    }
-
-    public void loadItemFromUrl(String url) {
-        Request request = new Request.Builder().url(url).build();
-        httpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if(!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    final String responseData = response.body().string();
-                    FilmDetailedActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                updateInfo(jsonHelper.convertJsonToFilm(
-                                        new JSONObject(responseData)),jsonHelper.getCreditsFromJsonObject(new JSONObject(responseData)));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-            }
-        });
     }
 
 }
