@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -29,7 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.fragment.ListFragment;
+import com.example.nadto.cinematograph.fragment.MovieFragment;
+import com.example.nadto.cinematograph.fragment.TvFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,21 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
     private View rootView;
 
-    private ListFragment currentFragment;
-    private String currentCategory;
-    private int currentMoviePage = 1;
-    private int currentTvPage = 1;
     private boolean mReturningWithResult = false;
 
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        //Save the fragment's instance
-        getSupportFragmentManager().putFragment(outState, "current-fragment", currentFragment);
-        outState.putString(SS_TITLE,getTitle().toString());
-    }
+    /*Activity lifecyle*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +61,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         checkNetwork();
-    }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        loadUserFavorites();
     }
 
     @Override
@@ -105,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                currentFragment.loadItemListFromUrl(createSearchURL(query),true);
+                //currentFragment.loadItemListFromUrl(createSearchURL(query),true);
                 return false;
             }
 
@@ -124,19 +108,19 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.grid2) {
-            currentFragment.setLayoutManager( new GridLayoutManager(this, 2));
+            //currentFragment.setLayoutManager( new GridLayoutManager(this, 2));
         }
 
         if(id == R.id.grid3) {
-            currentFragment.setLayoutManager( new GridLayoutManager(this, 3));
+            //currentFragment.setLayoutManager( new GridLayoutManager(this, 3));
         }
 
         if(id == R.id.grid4) {
-            currentFragment.setLayoutManager( new GridLayoutManager(this, 4));
+            //currentFragment.setLayoutManager( new GridLayoutManager(this, 4));
         }
 
         if(id == R.id.linear) {
-            currentFragment.setLayoutManager(new LinearLayoutManager(this));
+            //currentFragment.setLayoutManager(new LinearLayoutManager(this));
         }
 
         if(id == R.id.search) {
@@ -146,29 +130,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private String createSearchURL(String query) {
-
-        String apiKey = getString(R.string.api_key);
-        String baseUrl = getString(R.string.base_url);
-        String modeMovie = getString(R.string.mode_search_movie);
-        String modeTv = getString(R.string.mode_search_tv);
-
-        String strMode;
-
-        if(currentCategory.equals(MOVIES)) {
-            strMode = modeMovie;
-        } else {
-            strMode = modeTv;
-        }
-
-        return baseUrl + strMode + query + "&api_key=" + apiKey;
-    }
+    /*Additional methods*/
 
     public void initUI() {
 
         Log.e("TAG","init UI");
-
-        currentCategory = FAVORITES;
 
         final NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
         final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -184,50 +150,35 @@ public class MainActivity extends AppCompatActivity {
 
                 int itemId = item.getItemId();
 
+                Fragment fragment = null;
+
                 if(itemId == R.id.movies) {
-                    String queryMovie = getString(R.string.base_url_movie)
-                            + getString(R.string.mode_popular)
-                            + getString(R.string.api_key_prefix)
-                            + getString(R.string.api_key)
-                            + getString(R.string.mode_page, currentMoviePage);
-                    currentCategory = MOVIES;
-                    currentFragment.loadItemListFromUrl(queryMovie, true);
+                    fragment = new MovieFragment();
                 }
                 if(itemId == R.id.series) {
-                    String queryTv = getString(R.string.base_url_tv)
-                            + getString(R.string.mode_popular)
-                            + getString(R.string.api_key_prefix)
-                            + getString(R.string.api_key)
-                            + getString(R.string.mode_page, currentTvPage);
-                    currentCategory = SERIES;
-                    currentFragment.loadItemListFromUrl(queryTv, true);
+                    fragment = new TvFragment();
                 }
                 if(itemId == R.id.persons) {
                     Toast.makeText(MainActivity.this, "Open category is failed.", Toast.LENGTH_SHORT).show();
+                    return true;
                 }
 
                 if(itemId == R.id.favorite) {
-                    currentCategory = FAVORITES;
-                    currentFragment.loadItemsFromDb(true);
+                    return true;
                 }
 
                 item.setChecked(true);
                 setTitle(item.getTitle());
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, fragment).commit();
+
 
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
 
             }
         });
-
-        try {
-            currentFragment = ListFragment.class.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, currentFragment).commit();
 
         nav.setCheckedItem(R.id.favorite);
     }
@@ -257,14 +208,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadUserFavorites() {
-
-        setTitle(R.string.favorite);
-        currentFragment.loadItemsFromDb(true);
-
-    }
-
-    public String getCurrentCategory() {
-        return currentCategory;
-    }
 }

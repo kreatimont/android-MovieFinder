@@ -10,4 +10,5 @@ public interface ApiListener {
     void successfullyLoadFilmList(ArrayList<Film> films);
     void connectionError();
     void parseError();
+
 }

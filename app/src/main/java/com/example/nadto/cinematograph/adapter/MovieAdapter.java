@@ -11,21 +11,21 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.model.Film;
+import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 
-public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-    private ArrayList<Film> films;
+    private ArrayList<Movie> movies;
     private Context mContext;
     private boolean isGridLayout = false;
 
 
-    public FilmAdapter(Context context, ArrayList<Film> films) {
-        this.films = films;
+    public MovieAdapter(Context context, ArrayList<Movie> movies) {
+        this.movies = movies;
         this.mContext = context;
     }
 
@@ -42,12 +42,12 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(films.get(position));
+        holder.bind(movies.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return films.size();
+        return movies.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -68,17 +68,15 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
 
         }
 
-        void bind(final Film film) {
+        void bind(final Movie movie) {
 
-            title.setText(film.getTitle());
-            String date = film.getDate().length() >= 4 ? film.getDate().substring(0,4) : "none";
+            title.setText(movie.getTitle());
+            String date = movie.getReleaseDate();
             year.setText(mContext.getString(R.string.year_template, date));
-            voteAverage.setRating((film.getVoteAverage() * 5.0f) / 10.0f);
+            voteAverage.setRating((float) ((movie.getVoteAverage() * 5.0f) / 10.0f));
 
-            Picasso.with(mContext).load(film.getPathToBackdrop().equals("none") ? film.getPathToPoster() : film.getPathToBackdrop()).into(backdrop);
-//            LoadImageTask loadImageTask = new LoadImageTask(backdrop);
-//            loadImageTask.execute(film.getPathToBackdrop().equals("none") ? film.getPathToPoster() : film.getPathToBackdrop());
-
+            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + movie.getPosterPath()).into(backdrop);
+            //Picasso.with(mContext).load(movie.getPathToBackdrop().equals("none") ? movie.getPathToPoster() : movie.getPathToBackdrop()).into(backdrop);
         }
     }
 
@@ -86,18 +84,8 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.ViewHolder> {
         this.isGridLayout = status;
     }
 
-    public void setFilms(ArrayList<Film> films){
-        this.films =  films;
-    }
-
-    public void swap(ArrayList<Film> list){
-        if (films != null) {
-            films.clear();
-            films.addAll(list);
-        }
-        else {
-            films = list;
-        }
+    public void setFilms(ArrayList<Movie> movies){
+        this.movies =  movies;
     }
 
 }

@@ -9,19 +9,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.model.Person;
+import com.example.nadto.cinematograph.model.tmdb_model.People.Person;
+import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
 
-    private ArrayList<Person> cast;
+    private List<Cast> cast;
     private Context mContext;
 
 
-    public ProfileAdapter (Context context, ArrayList<Person> persons) {
+    public ProfileAdapter (Context context, List<Cast> persons) {
         this.cast = persons;
         this.mContext = context;
     }
@@ -56,11 +58,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         }
 
-        void bind(final Person person) {
+        void bind(final Cast person) {
             name.setText(person.getName());
-            character.setText(person.getCurrentChar());
+            character.setText(person.getCharacter());
 
-            Picasso.with(mContext).load(person.getProfilePath()).into(profilePhoto);
+            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + person.getProfilePath()).into(profilePhoto);
 
         }
     }

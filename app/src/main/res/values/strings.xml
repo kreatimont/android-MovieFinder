@@ -7,7 +7,7 @@
 
     <string name="year_template">( %1$s )</string>
     <string name="tagline_template">&#171; %1$s &#187;</string>
-    <string name="load_movies">Load movies</string>
+    <string name="load_movies">Load tvArrayList</string>
     <string name="read_error">Unable to read data</string>
     <string name="load_error">Unable to connect to TMDb services</string>
     <string name="parse_error">Unable to parse data</string>

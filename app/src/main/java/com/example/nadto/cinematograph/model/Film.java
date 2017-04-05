@@ -1,6 +1,8 @@
 package com.example.nadto.cinematograph.model;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class Film {
 
     public static final int MOVIE = 1882;
@@ -9,8 +11,39 @@ public class Film {
     public static final String STATUS_RELEASED = "Released";
     public static final String STATUS_RETURNING = "Returning Series";
 
-    private int id ,type, budget;
-    private  String title, date, createdBy, genres, countries, pathToPoster, pathToBackdrop, overview, tagline, status;
+    @SerializedName("id")
+    private int id;
+
+    private int type;
+
+    @SerializedName("budget")
+    private int budget;
+
+
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("release_date")
+    private String date;
+
+    private String createdBy;
+
+    private String genres;
+
+    private String countries;
+
+    @SerializedName("poster_path")
+    private String pathToPoster;
+
+    @SerializedName("backdrop_path")
+    private String pathToBackdrop;
+
+    @SerializedName("overview")
+    private String overview;
+
+    private String tagline;
+    private String status;
+
     private float voteAverage, popularity;
 
     public Film (int id, int type) {

@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.nadto.cinematograph.api.ApiClient;
+import com.example.nadto.cinematograph.api.ApiInterface;
 import com.example.nadto.cinematograph.api.JsonHelper;
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.adapter.ProfileAdapter;
@@ -24,6 +26,9 @@ import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.db.DataBaseHelper;
 import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.model.Person;
+import com.example.nadto.cinematograph.model.response.MoviesResponse;
+import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
+import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -31,6 +36,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -41,21 +47,16 @@ import okhttp3.Response;
 import static com.example.nadto.cinematograph.activity.MainActivity.APP_PREFERENCE;
 import static com.example.nadto.cinematograph.activity.ProfileDetailedActivity.EXTRA_PROFILE_ID;
 
-public class FilmDetailedActivity extends AppCompatActivity {
+public class MovieDetailedActivity extends AppCompatActivity {
 
     public static final String EXTRA_ID = "id";
-    public static final String EXTRA_TYPE = "type";
 
-    JsonHelper jsonHelper;
     private ImageView backdrop, poster;
     private TextView overview, year, createdBy, budget, genres, popularity, vote, tagline;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ProfileAdapter profileAdapter;
     private RecyclerView mRecyclerView;
     private FloatingActionButton fabFavorite;
-    private Film film;
-    private boolean isFavorite;
-    private DataBaseHelper dataBaseHelper;
 
     private OkHttpClient httpClient;
 
@@ -69,16 +70,8 @@ public class FilmDetailedActivity extends AppCompatActivity {
         if(getIntent() != null ) {
             if(getIntent().getExtras() != null) {
                 int filmId = getIntent().getExtras().getInt(EXTRA_ID);
-                int filmType = getIntent().getExtras().getInt(EXTRA_TYPE);
-                film = new Film(filmId, filmType);
-                Log.e("onCreateDetailsActivity","ID: " + filmId + "; TYPE:" + filmType);
-
                 initUI();
-
-                httpClient = new OkHttpClient();
-                jsonHelper = new JsonHelper(this);
-                loadItemFromUrl(jsonHelper.createURL(filmId, filmType).toString());
-
+                loadData(filmId);
             }
         } else {
             startActivity(new Intent(this, MainActivity.class));
@@ -98,64 +91,12 @@ public class FilmDetailedActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /*Content providers*/
-
-    public void loadItemFromUrl(String url) {
-        Request request = new Request.Builder().url(url).build();
-        httpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if(!response.isSuccessful()) {
-                    throw new IOException("Unexpected code " + response);
-                } else {
-                    final String responseData = response.body().string();
-                    FilmDetailedActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                updateInfo(jsonHelper.convertJsonToFilm(
-                                        new JSONObject(responseData)),jsonHelper.getCreditsFromJsonObject(new JSONObject(responseData)));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
-
     /*Configure UI*/
 
     private void initUI() {
 
-        dataBaseHelper = new DataBaseHelper(FilmDetailedActivity.this);
-
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
-        fabFavorite = (FloatingActionButton) findViewById(R.id.fabFavorite);
-        fabFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(dataBaseHelper.isExistFilm(film.getId(),film.getType())) {
-                    dataBaseHelper.deleteFilm(film.getId(), film.getType());
-                    fabFavorite.setImageResource(R.drawable.ic_heart);
-                } else {
-                    dataBaseHelper.addFilm(new Film(film.getId(),film.getType()));
-                    fabFavorite.setImageResource(R.drawable.ic_hear_fill);
-                }
-            }
-        });
-
-        if(dataBaseHelper.isExistFilm(film.getId(), film.getType())) {
-            fabFavorite.setImageResource(R.drawable.ic_hear_fill);
-        }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -175,29 +116,18 @@ public class FilmDetailedActivity extends AppCompatActivity {
 
     }
 
-    private void updateInfo(Film film, final ArrayList<Person> cast) {
-
-        SharedPreferences sharedPreferences = getSharedPreferences(
-                APP_PREFERENCE,Context.MODE_PRIVATE);
-
-        int id = sharedPreferences.getInt(getString(R.string.saved_id), 44217);
-        int type = sharedPreferences.getInt(getString(R.string.saved_type), Film.TV);
+    private void updateInfo(Movie film, final List<Cast> cast) {
 
         if(film != null) {
 
-            if(film.getId() == id && film.getType() == type) {
-                fabFavorite.setImageResource(R.drawable.ic_hear_fill);
-                isFavorite = true;
-            }
-
-            Picasso.with(this).load(film.getPathToBackdrop()).into(backdrop);
-            Picasso.with(this).load(film.getPathToPoster()).into(poster);
+            Picasso.with(this).load(getString(R.string.image_base) + film.getBackdropPath()).into(backdrop);
+            Picasso.with(this).load(getString(R.string.image_base) + film.getPosterPath()).into(poster);
 
             overview.setText(film.getOverview());
             collapsingToolbarLayout.setTitle(film.getTitle());
-            year.setText(film.getDate());
-            genres.setText(film.getGenres());
-            createdBy.setText(film.getCreatedBy());
+            year.setText(film.getReleaseDate());
+            genres.setText(film.getGenres().get(0).getName());
+            createdBy.setText(film.getProductionCompanies().get(0).getName());
             vote.setText(film.getVoteAverage() + "");
             popularity.setText(film.getPopularity() + "");
             budget.setText(film.getBudget() + "");
@@ -212,13 +142,13 @@ public class FilmDetailedActivity extends AppCompatActivity {
 
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(FilmDetailedActivity.this, ProfileDetailedActivity.class);
+                        Intent intent = new Intent(MovieDetailedActivity.this, ProfileDetailedActivity.class);
                         if(position >= 0) {
                             intent.putExtra(EXTRA_PROFILE_ID, cast.get(position).getId());
                             startActivity(intent);
                         } else {
                             Toast.makeText(
-                                    FilmDetailedActivity.this,
+                                    MovieDetailedActivity.this,
                                     "Unable to load information at {" + position + "} pos",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -232,6 +162,30 @@ public class FilmDetailedActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, R.string.parse_error, Toast.LENGTH_LONG).show();
         }
+    }
+
+    /*Load data*/
+
+    private void loadData(int filmId) {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        retrofit2.Call<Movie> call = apiService.getMovieDetails(filmId, getString(R.string.api_key), "ru", "credits");
+
+        call.enqueue(new retrofit2.Callback<Movie>() {
+
+            @Override
+            public void onResponse(retrofit2.Call<Movie> call, retrofit2.Response<Movie> response) {
+                Movie responseMovie = response.body();
+                updateInfo(responseMovie, responseMovie.getCredits().getCast());
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Movie> call, Throwable t) {
+                Log.e("Retrofit(failure)", t.getMessage());
+
+            }
+
+        });
     }
 
 }

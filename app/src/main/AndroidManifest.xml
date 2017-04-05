@@ -29,7 +29,7 @@
         </activity>
 
         <activity
-            android:name=".activity.FilmDetailedActivity"
+            android:name=".activity.MovieDetailedActivity"
             android:label="@string/title_activity_detailed"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -39,10 +39,10 @@
         </activity>
         <activity
             android:name=".activity.ProfileDetailedActivity"
-            android:parentActivityName=".activity.FilmDetailedActivity">
+            android:parentActivityName=".activity.MovieDetailedActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.nadto.cinematograph.activity.FilmDetailedActivity" />
+                android:value="com.example.nadto.cinematograph.activity.MovieDetailedActivity" />
         </activity>
 
     </application>
