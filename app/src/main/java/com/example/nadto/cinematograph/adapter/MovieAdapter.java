@@ -23,7 +23,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     private Context mContext;
     private boolean isGridLayout = false;
 
-
     public MovieAdapter(Context context, ArrayList<Movie> movies) {
         this.movies = movies;
         this.mContext = context;
@@ -76,16 +75,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             voteAverage.setRating((float) ((movie.getVoteAverage() * 5.0f) / 10.0f));
 
             Picasso.with(mContext).load(mContext.getString(R.string.image_base) + movie.getPosterPath()).into(backdrop);
-            //Picasso.with(mContext).load(movie.getPathToBackdrop().equals("none") ? movie.getPathToPoster() : movie.getPathToBackdrop()).into(backdrop);
         }
     }
 
     public void setGridLayout(boolean status) {
         this.isGridLayout = status;
-    }
-
-    public void setFilms(ArrayList<Movie> movies){
-        this.movies =  movies;
     }
 
 }

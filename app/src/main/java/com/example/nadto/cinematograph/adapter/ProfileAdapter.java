@@ -9,11 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.model.tmdb_model.People.Person;
 import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

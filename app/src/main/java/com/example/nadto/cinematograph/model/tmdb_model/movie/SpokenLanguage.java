@@ -3,12 +3,16 @@ package com.example.nadto.cinematograph.model.tmdb_model.movie;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SpokenLanguage {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class SpokenLanguage extends RealmObject {
 
     @SerializedName("iso_639_1")
     @Expose
     private String iso6391;
 
+    @PrimaryKey
     @SerializedName("name")
     @Expose
     private String name;

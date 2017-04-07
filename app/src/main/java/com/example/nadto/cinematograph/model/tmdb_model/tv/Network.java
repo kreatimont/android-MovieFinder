@@ -3,12 +3,16 @@ package com.example.nadto.cinematograph.model.tmdb_model.tv;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Network {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class Network extends RealmObject{
+
+    @PrimaryKey
     @SerializedName("id")
     @Expose
-
     private Integer id;
+
     @SerializedName("name")
     @Expose
     private String name;

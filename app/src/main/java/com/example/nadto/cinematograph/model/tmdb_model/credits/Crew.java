@@ -4,7 +4,10 @@ package com.example.nadto.cinematograph.model.tmdb_model.credits;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Crew {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Crew extends RealmObject {
 
     @SerializedName("credit_id")
     @Expose
@@ -14,6 +17,7 @@ public class Crew {
     @Expose
     private String department;
 
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     private Integer id;

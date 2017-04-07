@@ -40,7 +40,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <include
-        layout="@layout/content_detailed" />
+        layout="@layout/content_movie_detailed" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabFavorite"

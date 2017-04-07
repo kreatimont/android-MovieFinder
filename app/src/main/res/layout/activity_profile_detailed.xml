@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context="com.example.nadto.cinematograph.activity.ProfileDetailedActivity">
+    tools:context="com.example.nadto.cinematograph.activity.PersonDetailedActivity">
 
     <ScrollView
         android:padding="8dp"
@@ -118,7 +118,7 @@
                     android:id="@+id/detProfileLink"
                     tools:text="http://officialtravisfimmel.com/"
                     android:textStyle="italic"
-                    android:onClick="onSiteLinkClick"
+                    android:onClick="onLinkClick"
                     android:textColor="@color/colorAccent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

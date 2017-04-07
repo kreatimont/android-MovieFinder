@@ -4,12 +4,16 @@ package com.example.nadto.cinematograph.model.tmdb_model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProductionCountry {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class ProductionCountry extends RealmObject{
 
     @SerializedName("iso_3166_1")
     @Expose
     private String iso31661;
 
+    @PrimaryKey
     @SerializedName("name")
     @Expose
     private String name;

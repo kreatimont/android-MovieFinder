@@ -3,9 +3,13 @@ package com.example.nadto.cinematograph.model.tmdb_model.credits;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Cast {
 
+public class Cast extends RealmObject {
+
+    @PrimaryKey
     @SerializedName("cast_id")
     @Expose
     private Integer castId;

@@ -37,8 +37,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.nadto.cinematograph.activity.MainActivity" />
         </activity>
+
         <activity
-            android:name=".activity.ProfileDetailedActivity"
+            android:name=".activity.TvDetailedActivity"
+            android:label="@string/title_activity_detailed"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.nadto.cinematograph.activity.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".activity.PersonDetailedActivity"
             android:parentActivityName=".activity.MovieDetailedActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

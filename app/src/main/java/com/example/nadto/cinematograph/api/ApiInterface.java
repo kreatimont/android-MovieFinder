@@ -1,10 +1,10 @@
 package com.example.nadto.cinematograph.api;
 
-import com.example.nadto.cinematograph.model.Film;
 import com.example.nadto.cinematograph.model.response.MoviesResponse;
 import com.example.nadto.cinematograph.model.response.TvResponse;
-import com.example.nadto.cinematograph.model.tmdb_model.People.Person;
+import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
 import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
+import com.example.nadto.cinematograph.model.tmdb_model.tv.Tv;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -27,7 +27,7 @@ public interface ApiInterface {
     /*TV*/
 
     @GET("tv/{id}")
-    Call<Film> getTvDetails(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang);
+    Call<Tv> getTvDetails(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang);
 
     @GET("tv/top_rated")
     Call<TvResponse> getTopRatedTv(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") int page);
@@ -39,5 +39,13 @@ public interface ApiInterface {
 
     @GET("person/{id}")
     Call<Person> getPersonDetails(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang);
+
+    /*Search*/
+
+    @GET("search/movie")
+    Call<MoviesResponse> getMoviesByQuery(@Query("api_key") String apiKey, @Query("language") String lang, @Query("query") String query);
+
+    @GET("search/tv")
+    Call<TvResponse> getTvByQuery(@Query("api_key") String apiKey, @Query("language") String lang, @Query("query") String query);
 
 }

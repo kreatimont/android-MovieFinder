@@ -22,10 +22,9 @@ import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.adapter.TvAdapter;
 import com.example.nadto.cinematograph.api.ApiClient;
 import com.example.nadto.cinematograph.api.ApiInterface;
-import com.example.nadto.cinematograph.model.Film;
+import com.example.nadto.cinematograph.model.response.MoviesResponse;
 import com.example.nadto.cinematograph.model.response.TvResponse;
 import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
-import com.example.nadto.cinematograph.model.response.MoviesResponse;
 import com.example.nadto.cinematograph.model.tmdb_model.tv.Tv;
 
 import java.util.ArrayList;

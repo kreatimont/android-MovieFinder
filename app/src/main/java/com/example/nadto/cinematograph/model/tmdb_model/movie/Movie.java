@@ -10,7 +10,11 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Movie {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Movie extends RealmObject {
 
     @SerializedName("adult")
     @Expose
@@ -22,7 +26,7 @@ public class Movie {
 
     @SerializedName("belongs_to_collection")
     @Expose
-    private Object belongsToCollection;
+    private RealmList<Collection> belongsToCollection;
 
     @SerializedName("budget")
     @Expose
@@ -30,12 +34,13 @@ public class Movie {
 
     @SerializedName("genres")
     @Expose
-    private List<Genre> genres = null;
+    private RealmList<Genre> genres = null;
 
     @SerializedName("homepage")
     @Expose
     private String homepage;
 
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -66,11 +71,11 @@ public class Movie {
 
     @SerializedName("production_companies")
     @Expose
-    private List<ProductionCompany> productionCompanies = null;
+    private RealmList<ProductionCompany> productionCompanies = null;
 
     @SerializedName("production_countries")
     @Expose
-    private List<ProductionCountry> productionCountries = null;
+    private RealmList<ProductionCountry> productionCountries = null;
 
     @SerializedName("release_date")
     @Expose
@@ -86,7 +91,7 @@ public class Movie {
 
     @SerializedName("spoken_languages")
     @Expose
-    private List<SpokenLanguage> spokenLanguages = null;
+    private RealmList<SpokenLanguage> spokenLanguages = null;
 
     @SerializedName("status")
     @Expose
@@ -153,7 +158,7 @@ public class Movie {
      * @param tagline
      * @param credits
      */
-    public Movie(Boolean adult, String backdropPath, Object belongsToCollection, Integer budget, List<Genre> genres, String homepage, Integer id, String imdbId, String originalLanguage, String originalTitle, String overview, Double popularity, String posterPath, List<ProductionCompany> productionCompanies, List<ProductionCountry> productionCountries, String releaseDate, Integer revenue, Integer runtime, List<SpokenLanguage> spokenLanguages, String status, String tagline, String title, Boolean video, Double voteAverage, Integer voteCount, Credits credits) {
+    public Movie(Boolean adult, String backdropPath, RealmList<Collection> belongsToCollection, Integer budget, RealmList<Genre> genres, String homepage, Integer id, String imdbId, String originalLanguage, String originalTitle, String overview, Double popularity, String posterPath, RealmList<ProductionCompany> productionCompanies, RealmList<ProductionCountry> productionCountries, String releaseDate, Integer revenue, Integer runtime, RealmList<SpokenLanguage> spokenLanguages, String status, String tagline, String title, Boolean video, Double voteAverage, Integer voteCount, Credits credits) {
         super();
         this.adult = adult;
         this.backdropPath = backdropPath;
@@ -209,15 +214,15 @@ public class Movie {
         return this;
     }
 
-    public Object getBelongsToCollection() {
+    public RealmList<Collection> getBelongsToCollection() {
         return belongsToCollection;
     }
 
-    public void setBelongsToCollection(Object belongsToCollection) {
+    public void setBelongsToCollection(RealmList<Collection> belongsToCollection) {
         this.belongsToCollection = belongsToCollection;
     }
 
-    public Movie withBelongsToCollection(Object belongsToCollection) {
+    public Movie withBelongsToCollection(RealmList<Collection> belongsToCollection) {
         this.belongsToCollection = belongsToCollection;
         return this;
     }
@@ -239,11 +244,11 @@ public class Movie {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(RealmList<Genre> genres) {
         this.genres = genres;
     }
 
-    public Movie withGenres(List<Genre> genres) {
+    public Movie withGenres(RealmList<Genre> genres) {
         this.genres = genres;
         return this;
     }
@@ -352,28 +357,28 @@ public class Movie {
         return this;
     }
 
-    public List<ProductionCompany> getProductionCompanies() {
+    public RealmList<ProductionCompany> getProductionCompanies() {
         return productionCompanies;
     }
 
-    public void setProductionCompanies(List<ProductionCompany> productionCompanies) {
+    public void setProductionCompanies(RealmList<ProductionCompany> productionCompanies) {
         this.productionCompanies = productionCompanies;
     }
 
-    public Movie withProductionCompanies(List<ProductionCompany> productionCompanies) {
+    public Movie withProductionCompanies(RealmList<ProductionCompany> productionCompanies) {
         this.productionCompanies = productionCompanies;
         return this;
     }
 
-    public List<ProductionCountry> getProductionCountries() {
+    public RealmList<ProductionCountry> getProductionCountries() {
         return productionCountries;
     }
 
-    public void setProductionCountries(List<ProductionCountry> productionCountries) {
+    public void setProductionCountries(RealmList<ProductionCountry> productionCountries) {
         this.productionCountries = productionCountries;
     }
 
-    public Movie withProductionCountries(List<ProductionCountry> productionCountries) {
+    public Movie withProductionCountries(RealmList<ProductionCountry> productionCountries) {
         this.productionCountries = productionCountries;
         return this;
     }
@@ -417,15 +422,15 @@ public class Movie {
         return this;
     }
 
-    public List<SpokenLanguage> getSpokenLanguages() {
+    public RealmList<SpokenLanguage> getSpokenLanguages() {
         return spokenLanguages;
     }
 
-    public void setSpokenLanguages(List<SpokenLanguage> spokenLanguages) {
+    public void setSpokenLanguages(RealmList<SpokenLanguage> spokenLanguages) {
         this.spokenLanguages = spokenLanguages;
     }
 
-    public Movie withSpokenLanguages(List<SpokenLanguage> spokenLanguages) {
+    public Movie withSpokenLanguages(RealmList<SpokenLanguage> spokenLanguages) {
         this.spokenLanguages = spokenLanguages;
         return this;
     }

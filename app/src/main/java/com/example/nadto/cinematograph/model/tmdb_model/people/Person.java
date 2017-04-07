@@ -1,9 +1,12 @@
-package com.example.nadto.cinematograph.model.tmdb_model.People;
+package com.example.nadto.cinematograph.model.tmdb_model.people;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Person {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Person extends RealmObject {
 
     @SerializedName("adult")
     @Expose
@@ -24,6 +27,7 @@ public class Person {
     @SerializedName("homepage")
     @Expose
     private String homepage;
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -94,7 +98,7 @@ public class Person {
         return this;
     }
 
-    public Object getBiography() {
+    public String getBiography() {
         return biography;
     }
 

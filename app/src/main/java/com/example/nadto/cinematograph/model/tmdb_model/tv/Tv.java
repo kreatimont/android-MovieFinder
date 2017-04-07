@@ -1,30 +1,41 @@
 package com.example.nadto.cinematograph.model.tmdb_model.tv;
 
 import com.example.nadto.cinematograph.model.tmdb_model.Genre;
-import com.example.nadto.cinematograph.model.tmdb_model.People.Person;
+import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
 import com.example.nadto.cinematograph.model.tmdb_model.ProductionCompany;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Tv {
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+
+public class Tv extends RealmObject {
 
     @SerializedName("backdrop_path")
     @Expose
     private String backdropPath;
     @SerializedName("created_by")
     @Expose
-    private List<Person> createdBy = null;
+    private RealmList<Person> createdBy = null;
+
+
+    @Ignore
     @SerializedName("episode_run_time")
     @Expose
     private List<Integer> episodeRunTime = null;
+
+
     @SerializedName("first_air_date")
     @Expose
     private String firstAirDate;
     @SerializedName("genres")
     @Expose
-    private List<Genre> genres = null;
+    private RealmList<Genre> genres = null;
+    @PrimaryKey
     @SerializedName("homepage")
     @Expose
     private String homepage;
@@ -34,9 +45,14 @@ public class Tv {
     @SerializedName("in_production")
     @Expose
     private Boolean inProduction;
+
+
+    @Ignore
     @SerializedName("languages")
     @Expose
     private List<String> languages = null;
+
+
     @SerializedName("last_air_date")
     @Expose
     private String lastAirDate;
@@ -45,16 +61,21 @@ public class Tv {
     private String name;
     @SerializedName("networks")
     @Expose
-    private List<Network> networks = null;
+    private RealmList<Network> networks = null;
     @SerializedName("number_of_episodes")
     @Expose
     private Integer numberOfEpisodes;
     @SerializedName("number_of_seasons")
     @Expose
     private Integer numberOfSeasons;
+
+
+    @Ignore
     @SerializedName("origin_country")
     @Expose
     private List<String> originCountry = null;
+
+
     @SerializedName("original_language")
     @Expose
     private String originalLanguage;
@@ -72,10 +93,10 @@ public class Tv {
     private String posterPath;
     @SerializedName("production_companies")
     @Expose
-    private List<ProductionCompany> productionCompanies = null;
+    private RealmList<ProductionCompany> productionCompanies = null;
     @SerializedName("seasons")
     @Expose
-    private List<Season> seasons = null;
+    private RealmList<Season> seasons = null;
     @SerializedName("status")
     @Expose
     private String status;
@@ -125,7 +146,7 @@ public class Tv {
      * @param episodeRunTime
      * @param popularity
      */
-    public Tv(String backdropPath, List<Person> createdBy, List<Integer> episodeRunTime, String firstAirDate, List<Genre> genres, String homepage, Integer id, Boolean inProduction, List<String> languages, String lastAirDate, String name, List<Network> networks, Integer numberOfEpisodes, Integer numberOfSeasons, List<String> originCountry, String originalLanguage, String originalName, String overview, Double popularity, String posterPath, List<ProductionCompany> productionCompanies, List<Season> seasons, String status, String type, Double voteAverage, Integer voteCount) {
+    public Tv(String backdropPath, RealmList<Person> createdBy, List<Integer> episodeRunTime, String firstAirDate, RealmList<Genre> genres, String homepage, Integer id, Boolean inProduction, List<String> languages, String lastAirDate, String name, RealmList<Network> networks, Integer numberOfEpisodes, Integer numberOfSeasons, List<String> originCountry, String originalLanguage, String originalName, String overview, Double popularity, String posterPath, RealmList<ProductionCompany> productionCompanies, RealmList<Season> seasons, String status, String type, Double voteAverage, Integer voteCount) {
         super();
         this.backdropPath = backdropPath;
         this.createdBy = createdBy;
@@ -172,11 +193,11 @@ public class Tv {
         return createdBy;
     }
 
-    public void setCreatedBy(List<Person> createdBy) {
+    public void setCreatedBy(RealmList<Person> createdBy) {
         this.createdBy = createdBy;
     }
 
-    public Tv withCreatedBy(List<Person> createdBy) {
+    public Tv withCreatedBy(RealmList<Person> createdBy) {
         this.createdBy = createdBy;
         return this;
     }
@@ -211,11 +232,11 @@ public class Tv {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(RealmList<Genre> genres) {
         this.genres = genres;
     }
 
-    public Tv withGenres(List<Genre> genres) {
+    public Tv withGenres(RealmList<Genre> genres) {
         this.genres = genres;
         return this;
     }
@@ -302,11 +323,11 @@ public class Tv {
         return networks;
     }
 
-    public void setNetworks(List<Network> networks) {
+    public void setNetworks(RealmList<Network> networks) {
         this.networks = networks;
     }
 
-    public Tv withNetworks(List<Network> networks) {
+    public Tv withNetworks(RealmList<Network> networks) {
         this.networks = networks;
         return this;
     }
@@ -419,24 +440,24 @@ public class Tv {
         return productionCompanies;
     }
 
-    public void setProductionCompanies(List<ProductionCompany> productionCompanies) {
+    public void setProductionCompanies(RealmList<ProductionCompany> productionCompanies) {
         this.productionCompanies = productionCompanies;
     }
 
-    public Tv withProductionCompanies(List<ProductionCompany> productionCompanies) {
+    public Tv withProductionCompanies(RealmList<ProductionCompany> productionCompanies) {
         this.productionCompanies = productionCompanies;
         return this;
     }
 
-    public List<Season> getSeasons() {
+    public RealmList<Season> getSeasons() {
         return seasons;
     }
 
-    public void setSeasons(List<Season> seasons) {
+    public void setSeasons(RealmList<Season> seasons) {
         this.seasons = seasons;
     }
 
-    public Tv withSeasons(List<Season> seasons) {
+    public Tv withSeasons(RealmList<Season> seasons) {
         this.seasons = seasons;
         return this;
     }

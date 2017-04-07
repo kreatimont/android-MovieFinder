@@ -1,5 +1,6 @@
 package com.example.nadto.cinematograph.activity;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -21,14 +22,15 @@ import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.api.ApiClient;
 import com.example.nadto.cinematograph.api.ApiInterface;
 import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
-import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
+import com.example.nadto.cinematograph.model.tmdb_model.tv.Tv;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.nadto.cinematograph.activity.PersonDetailedActivity.EXTRA_PERSON_ID;
 
-public class MovieDetailedActivity extends AppCompatActivity {
+public class TvDetailedActivity extends AppCompatActivity {
 
     public static final String EXTRA_ID = "id";
 
@@ -39,18 +41,19 @@ public class MovieDetailedActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private FloatingActionButton fabFavorite;
 
+
     /*Activity lifecycle*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detailed);
+        setContentView(R.layout.activity_tv_detailed);
 
         if(getIntent() != null ) {
             if(getIntent().getExtras() != null) {
-                int movieId = getIntent().getExtras().getInt(EXTRA_ID);
+                int tvId = getIntent().getExtras().getInt(EXTRA_ID);
                 initUI();
-                loadData(movieId);
+                loadTvData(tvId);
             }
         } else {
             startActivity(new Intent(this, MainActivity.class));
@@ -60,10 +63,13 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         if(item.getItemId() == android.R.id.home) {
+            Log.e("PROBLEMS","Item id: " + item.getItemId() + ": android.R.id.home :" + android.R.id.home);
             onBackPressed();
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -94,23 +100,23 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
     /*Load data*/
 
-    private void loadData(int filmId) {
+    private void loadTvData(int tvId) {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        retrofit2.Call<Movie> call = apiService.getMovieDetails(filmId, getString(R.string.api_key), "ru", "credits");
+        retrofit2.Call<Tv> call = apiService.getTvDetails(tvId, getString(R.string.api_key), "ru");
 
-        call.enqueue(new retrofit2.Callback<Movie>() {
+        call.enqueue(new retrofit2.Callback<Tv>() {
 
             @Override
-            public void onResponse(retrofit2.Call<Movie> call, retrofit2.Response<Movie> response) {
+            public void onResponse(retrofit2.Call<Tv> call, retrofit2.Response<Tv> response) {
                 if(response.body() != null) {
-                    Movie responseMovie = response.body();
-                    updateInfo(responseMovie, responseMovie.getCredits().getCast());
+                    Tv responseTv = response.body();
+                    updateInfo(responseTv, new ArrayList<Cast>());
                 }
             }
 
             @Override
-            public void onFailure(retrofit2.Call<Movie> call, Throwable t) {
+            public void onFailure(retrofit2.Call<Tv> call, Throwable t) {
                 Log.e("Retrofit(failure)", t.getMessage());
 
             }
@@ -120,20 +126,19 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
     /*Additional methods*/
 
-    private void updateInfo(Movie film, final List<Cast> cast) {
+    private void updateInfo(Tv tv, final List<Cast> cast) {
 
-        if(film != null) {
+        if(tv != null) {
 
-            Picasso.with(this).load(getString(R.string.image_base) + film.getBackdropPath()).into(backdrop);
-            Picasso.with(this).load(getString(R.string.image_base) + film.getPosterPath()).into(poster);
+            Picasso.with(this).load(getString(R.string.image_base) + tv.getBackdropPath()).into(backdrop);
+            Picasso.with(this).load(getString(R.string.image_base) + tv.getPosterPath()).into(poster);
 
-            overview.setText(film.getOverview());
-            collapsingToolbarLayout.setTitle(film.getTitle());
-            year.setText(film.getReleaseDate());
-            vote.setText(film.getVoteAverage() + "");
-            popularity.setText(film.getPopularity() + "");
-            budget.setText(film.getBudget() + "");
-            tagline.setText(film.getTagline());
+            overview.setText(tv.getOverview());
+            collapsingToolbarLayout.setTitle(tv.getName());
+            year.setText(tv.getFirstAirDate());
+            vote.setText(tv.getVoteAverage() + "");
+            popularity.setText(tv.getPopularity() + "");
+            tagline.setText(tv.getHomepage());
 
             if(cast != null) {
                 profileAdapter = new ProfileAdapter(this, cast);
@@ -144,13 +149,13 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(MovieDetailedActivity.this, PersonDetailedActivity.class);
+                        Intent intent = new Intent(TvDetailedActivity.this, PersonDetailedActivity.class);
                         if(position >= 0) {
                             intent.putExtra(EXTRA_PERSON_ID, cast.get(position).getId());
                             startActivity(intent);
                         } else {
                             Toast.makeText(
-                                    MovieDetailedActivity.this,
+                                    TvDetailedActivity.this,
                                     "Unable to load information at {" + position + "} pos",
                                     Toast.LENGTH_SHORT).show();
                         }

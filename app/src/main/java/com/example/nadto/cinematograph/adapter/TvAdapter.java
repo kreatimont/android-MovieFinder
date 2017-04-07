@@ -11,7 +11,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
 import com.example.nadto.cinematograph.model.tmdb_model.tv.Tv;
 import com.squareup.picasso.Picasso;
 
@@ -82,10 +81,6 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> {
 
     public void setGridLayout(boolean status) {
         this.isGridLayout = status;
-    }
-
-    public void setFilms(ArrayList<Tv> movies){
-        this.tvArrayList =  movies;
     }
 
 }
