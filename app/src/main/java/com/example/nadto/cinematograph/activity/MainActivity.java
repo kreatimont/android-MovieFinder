@@ -22,7 +22,6 @@ import com.example.nadto.cinematograph.fragment.TvFragment;
 import com.example.nadto.cinematograph.utils.InternetConnection;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
         if(!InternetConnection.isConnected(this)) {
             Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show();
         }
+
         initUI();
         initDB();
-
+        setUpLaunchScreenMode();
     }
 
     @Override
@@ -70,34 +70,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        int id = item.getItemId();
-
-        if(id == R.id.grid2) {
-            //currentFragment.setLayoutManager( new GridLayoutManager(this, 2));
-        }
-
-        if(id == R.id.grid3) {
-            //currentFragment.setLayoutManager( new GridLayoutManager(this, 3));
-        }
-
-        if(id == R.id.grid4) {
-            //currentFragment.setLayoutManager( new GridLayoutManager(this, 4));
-        }
-
-        if(id == R.id.linear) {
-            //currentFragment.setLayoutManager(new LinearLayoutManager(this));
-        }
-
-        if(id == R.id.search) {
-            Toast.makeText(this, "Search", Toast.LENGTH_SHORT).show();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /*Additional methods*/
 
     public void initUI() {
@@ -115,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                setLaunchScreenModeVisibility(false);
+
                 int itemId = item.getItemId();
 
                 Fragment fragment = null;
@@ -130,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 if(itemId == R.id.favorite) {
+                    setUpLaunchScreenMode();
                     return true;
                 }
 
@@ -145,8 +120,36 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
 
-        nav.setCheckedItem(R.id.favorite);
+    private void setUpLaunchScreenMode() {
+
+        setLaunchScreenModeVisibility(true);
+
+        MovieFragment launchPopularMovieFragment = new MovieFragment();
+        TvFragment launchPopularTvFragment = new TvFragment();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.popularMovieContainer, launchPopularMovieFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.popularTvContainer, launchPopularTvFragment).commit();
+    }
+
+    private void setLaunchScreenModeVisibility(boolean state) {
+
+        View movie = findViewById(R.id.popularMovieContainer);
+        View tv = findViewById(R.id.popularTvContainer);
+        View container = findViewById(R.id.container);
+
+        if(state) {
+            movie.setVisibility(View.VISIBLE);
+            tv.setVisibility(View.VISIBLE);
+            container.setVisibility(View.GONE);
+        } else {
+            movie.setVisibility(View.GONE);
+            tv.setVisibility(View.GONE);
+            container.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     private void initDB() {

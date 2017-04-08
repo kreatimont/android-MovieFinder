@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> {
+public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> implements ResponseRecyclerViewAdapter {
 
     private ArrayList<Tv> tvArrayList;
     private Context mContext;
@@ -70,15 +70,16 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> {
         void bind(final Tv tv) {
 
             title.setText(tv.getName());
-            String date = tv.getFirstAirDate();
-            year.setText(mContext.getString(R.string.year_template, date));
+
+            String yearString = tv.getFirstAirDate() != null && tv.getFirstAirDate().length() > 4 ? tv.getFirstAirDate().substring(0,4) : "N/A";
+            year.setText(mContext.getString(R.string.year_template, yearString));
             voteAverage.setRating((float) ((tv.getVoteAverage() * 5.0f) / 10.0f));
 
             Picasso.with(mContext).load(mContext.getString(R.string.image_base) + tv.getPosterPath()).into(backdrop);
-            //Picasso.with(mContext).load(movie.getPathToBackdrop().equals("none") ? movie.getPathToPoster() : movie.getPathToBackdrop()).into(backdrop);
         }
     }
 
+    @Override
     public void setGridLayout(boolean status) {
         this.isGridLayout = status;
     }

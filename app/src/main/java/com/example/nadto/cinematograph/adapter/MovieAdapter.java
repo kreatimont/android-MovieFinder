@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> implements ResponseRecyclerViewAdapter {
 
     private ArrayList<Movie> movies;
     private Context mContext;
@@ -49,6 +49,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return movies.size();
     }
 
+    @Override
+    public void setGridLayout(boolean state) {
+        this.isGridLayout = state;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private CardView cardView;
@@ -70,16 +75,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         void bind(final Movie movie) {
 
             title.setText(movie.getTitle());
-            String date = movie.getReleaseDate();
-            year.setText(mContext.getString(R.string.year_template, date));
+            String yearString = movie.getReleaseDate() != null && movie.getReleaseDate().length() > 4 ? movie.getReleaseDate().substring(0,4) : "N/A";
+            year.setText(mContext.getString(R.string.year_template, yearString));
             voteAverage.setRating((float) ((movie.getVoteAverage() * 5.0f) / 10.0f));
 
             Picasso.with(mContext).load(mContext.getString(R.string.image_base) + movie.getPosterPath()).into(backdrop);
         }
-    }
-
-    public void setGridLayout(boolean status) {
-        this.isGridLayout = status;
     }
 
 }

@@ -19,10 +19,10 @@ public interface ApiInterface {
     Call<Movie> getMovieDetails(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang, @Query("append_to_response") String appendToResponse);
 
     @GET("movie/top_rated")
-    Call<MoviesResponse> getTopRatedMovies(@Query("api_key") String apiKey,@Query("language") String lang, @Query("page") int page);
+    Call<MoviesResponse> getTopRatedMovies(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") int page);
 
     @GET("movie/popular")
-    Call<MoviesResponse> getPopularMovies(@Query("api_key") String apiKey,@Query("language") String lang, @Query("page") int page);
+    Call<MoviesResponse> getPopularMovies(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") int page);
 
     /*TV*/
 

@@ -22,6 +22,10 @@
     <group android:checkableBehavior="single">
 
         <item
+            android:id="@+id/grid5"
+            android:title="Grid {5 columns}"
+            app:showAsAction="never" />
+        <item
             android:title="Grid {4 columns}"
             android:id="@+id/grid4"
             app:showAsAction="never" />

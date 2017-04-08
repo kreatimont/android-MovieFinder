@@ -12,8 +12,41 @@
 
     <LinearLayout
         android:id="@+id/container"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@+id/popularContainer"
+        android:visibility="visible"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="@color/colorAccent"
+            android:padding="12dp"
+            android:layout_weight=".45"
+            android:id="@+id/popularMovieContainer"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp" />
+
+        <LinearLayout
+            android:background="@color/colorPrimary"
+            android:padding="12dp"
+            android:layout_weight=".45"
+            android:id="@+id/popularTvContainer"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+
 
 </LinearLayout>
