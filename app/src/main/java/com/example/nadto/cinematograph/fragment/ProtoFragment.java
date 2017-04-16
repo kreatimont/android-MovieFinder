@@ -78,8 +78,6 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
 
         int id = item.getItemId();
 
-        Log.e("MovieFragment", "Option selected");
-
         if(id == R.id.grid2) {
             resetRecyclerViewLayoutManager(new GridLayoutManager(getActivity(), 2));
             return true;

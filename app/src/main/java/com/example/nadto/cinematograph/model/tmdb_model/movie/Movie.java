@@ -26,7 +26,7 @@ public class Movie extends RealmObject {
 
     @SerializedName("belongs_to_collection")
     @Expose
-    private RealmList<Collection> belongsToCollection;
+    private Collection belongsToCollection;
 
     @SerializedName("budget")
     @Expose
@@ -158,7 +158,7 @@ public class Movie extends RealmObject {
      * @param tagline
      * @param credits
      */
-    public Movie(Boolean adult, String backdropPath, RealmList<Collection> belongsToCollection, Integer budget, RealmList<Genre> genres, String homepage, Integer id, String imdbId, String originalLanguage, String originalTitle, String overview, Double popularity, String posterPath, RealmList<ProductionCompany> productionCompanies, RealmList<ProductionCountry> productionCountries, String releaseDate, Integer revenue, Integer runtime, RealmList<SpokenLanguage> spokenLanguages, String status, String tagline, String title, Boolean video, Double voteAverage, Integer voteCount, Credits credits) {
+    public Movie(Boolean adult, String backdropPath, Collection belongsToCollection, Integer budget, RealmList<Genre> genres, String homepage, Integer id, String imdbId, String originalLanguage, String originalTitle, String overview, Double popularity, String posterPath, RealmList<ProductionCompany> productionCompanies, RealmList<ProductionCountry> productionCountries, String releaseDate, Integer revenue, Integer runtime, RealmList<SpokenLanguage> spokenLanguages, String status, String tagline, String title, Boolean video, Double voteAverage, Integer voteCount, Credits credits) {
         super();
         this.adult = adult;
         this.backdropPath = backdropPath;
@@ -214,15 +214,15 @@ public class Movie extends RealmObject {
         return this;
     }
 
-    public RealmList<Collection> getBelongsToCollection() {
+    public Collection getBelongsToCollection() {
         return belongsToCollection;
     }
 
-    public void setBelongsToCollection(RealmList<Collection> belongsToCollection) {
+    public void setBelongsToCollection(Collection belongsToCollection) {
         this.belongsToCollection = belongsToCollection;
     }
 
-    public Movie withBelongsToCollection(RealmList<Collection> belongsToCollection) {
+    public Movie withBelongsToCollection(Collection belongsToCollection) {
         this.belongsToCollection = belongsToCollection;
         return this;
     }

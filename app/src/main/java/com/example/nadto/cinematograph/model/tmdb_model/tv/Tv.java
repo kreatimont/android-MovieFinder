@@ -1,8 +1,9 @@
 package com.example.nadto.cinematograph.model.tmdb_model.tv;
 
 import com.example.nadto.cinematograph.model.tmdb_model.Genre;
-import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
 import com.example.nadto.cinematograph.model.tmdb_model.ProductionCompany;
+import com.example.nadto.cinematograph.model.tmdb_model.credits.Credits;
+import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -109,6 +110,9 @@ public class Tv extends RealmObject {
     @SerializedName("vote_count")
     @Expose
     private Integer voteCount;
+    @SerializedName("credits")
+    @Expose
+    private Credits credits;
 
     /**
      * No args constructor for use in serialization
@@ -146,7 +150,7 @@ public class Tv extends RealmObject {
      * @param episodeRunTime
      * @param popularity
      */
-    public Tv(String backdropPath, RealmList<Person> createdBy, List<Integer> episodeRunTime, String firstAirDate, RealmList<Genre> genres, String homepage, Integer id, Boolean inProduction, List<String> languages, String lastAirDate, String name, RealmList<Network> networks, Integer numberOfEpisodes, Integer numberOfSeasons, List<String> originCountry, String originalLanguage, String originalName, String overview, Double popularity, String posterPath, RealmList<ProductionCompany> productionCompanies, RealmList<Season> seasons, String status, String type, Double voteAverage, Integer voteCount) {
+    public Tv(String backdropPath, RealmList<Person> createdBy, List<Integer> episodeRunTime, String firstAirDate, RealmList<Genre> genres, String homepage, Integer id, Boolean inProduction, List<String> languages, String lastAirDate, String name, RealmList<Network> networks, Integer numberOfEpisodes, Integer numberOfSeasons, List<String> originCountry, String originalLanguage, String originalName, String overview, Double popularity, String posterPath, RealmList<ProductionCompany> productionCompanies, RealmList<Season> seasons, String status, String type, Double voteAverage, Integer voteCount, Credits credits) {
         super();
         this.backdropPath = backdropPath;
         this.createdBy = createdBy;
@@ -174,6 +178,7 @@ public class Tv extends RealmObject {
         this.type = type;
         this.voteAverage = voteAverage;
         this.voteCount = voteCount;
+        this.credits = credits;
     }
 
     public String getBackdropPath() {
@@ -514,6 +519,17 @@ public class Tv extends RealmObject {
         return this;
     }
 
+    public Credits getCredits() {
+        return credits;
+    }
 
+    public void setCredits(Credits credits) {
+        this.credits = credits;
+    }
+
+    public Tv withCredits(Credits credits) {
+        this.credits = credits;
+        return this;
+    }
 
 }

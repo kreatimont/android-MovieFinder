@@ -12,14 +12,14 @@
 
     <LinearLayout
         android:id="@+id/container"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" />
 
     <LinearLayout
         android:id="@+id/popularContainer"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

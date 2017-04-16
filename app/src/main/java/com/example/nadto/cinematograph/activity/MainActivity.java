@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         initUI();
         initDB();
-        setUpLaunchScreenMode();
+        //setUpLaunchScreenMode();
     }
 
     @Override
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                setLaunchScreenModeVisibility(false);
+                //setLaunchScreenModeVisibility(false);
 
                 int itemId = item.getItemId();
 

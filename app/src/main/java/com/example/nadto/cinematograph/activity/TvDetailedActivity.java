@@ -65,7 +65,6 @@ public class TvDetailedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == android.R.id.home) {
-            Log.e("PROBLEMS","Item id: " + item.getItemId() + ": android.R.id.home :" + android.R.id.home);
             onBackPressed();
             return true;
         }
@@ -103,15 +102,14 @@ public class TvDetailedActivity extends AppCompatActivity {
     private void loadTvData(int tvId) {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        retrofit2.Call<Tv> call = apiService.getTvDetails(tvId, getString(R.string.api_key), "ru");
-
+        retrofit2.Call<Tv> call = apiService.getTvDetails(tvId, getString(R.string.api_key), "ru", "credits");
         call.enqueue(new retrofit2.Callback<Tv>() {
 
             @Override
             public void onResponse(retrofit2.Call<Tv> call, retrofit2.Response<Tv> response) {
                 if(response.body() != null) {
                     Tv responseTv = response.body();
-                    updateInfo(responseTv, new ArrayList<Cast>());
+                    updateInfo(responseTv, responseTv.getCredits().getCast());
                 }
             }
 

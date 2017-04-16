@@ -27,7 +27,7 @@ public interface ApiInterface {
     /*TV*/
 
     @GET("tv/{id}")
-    Call<Tv> getTvDetails(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang);
+    Call<Tv> getTvDetails(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang, @Query("append_to_response") String appendToResponse);
 
     @GET("tv/top_rated")
     Call<TvResponse> getTopRatedTv(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") int page);
