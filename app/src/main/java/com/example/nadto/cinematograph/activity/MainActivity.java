@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.nadto.cinematograph.R;
@@ -26,6 +28,8 @@ import io.realm.Realm;
 public class MainActivity extends AppCompatActivity {
 
     private ProtoFragment currentFragment;
+    private LinearLayout container;
+    private ProgressBar progressBar;
 
     /*Activity lifecycle*/
 
@@ -74,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void initUI() {
 
+        container = (LinearLayout) findViewById(R.id.container);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         final NavigationView nav = (NavigationView) findViewById(R.id.nav_view);
         final DrawerLayout drawer = (DrawerLayout)findViewById(R.id.drawer_layout);
 
@@ -94,9 +101,11 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = null;
 
                 if(itemId == R.id.movies) {
+                    replaceFormWithProgressBar(true);
                     fragment = new MovieFragment();
                 }
                 if(itemId == R.id.series) {
+                    replaceFormWithProgressBar(true);
                     fragment = new TvFragment();
                 }
                 if(itemId == R.id.persons) {
@@ -154,6 +163,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDB() {
         Realm.init(this);
+    }
+
+    public void replaceFormWithProgressBar(boolean isVisible) {
+        if(isVisible) {
+            container.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            container.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
 }

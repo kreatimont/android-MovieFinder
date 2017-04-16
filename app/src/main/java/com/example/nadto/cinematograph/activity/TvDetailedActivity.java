@@ -4,6 +4,7 @@ package com.example.nadto.cinematograph.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.example.nadto.cinematograph.adapter.ProfileAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.api.ApiClient;
 import com.example.nadto.cinematograph.api.ApiInterface;
+import com.example.nadto.cinematograph.model.tmdb_model.Genre;
 import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
 import com.example.nadto.cinematograph.model.tmdb_model.tv.Tv;
 import com.squareup.picasso.Picasso;
@@ -35,10 +38,12 @@ public class TvDetailedActivity extends AppCompatActivity {
     public static final String EXTRA_ID = "id";
 
     private ImageView backdrop, poster;
-    private TextView overview, year, createdBy, budget, genres, popularity, vote, tagline;
+    private TextView overview, year, createdBy, budget, genres, popularity, vote, tagline, title;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ProfileAdapter profileAdapter;
     private RecyclerView mRecyclerView;
+    private ProgressBar progressBar;
+    private CoordinatorLayout coordinatorLayout;
     private FloatingActionButton fabFavorite;
 
 
@@ -76,15 +81,23 @@ public class TvDetailedActivity extends AppCompatActivity {
 
     private void initUI() {
 
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.detailedCoordinatorLayout);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        replaceFormWithProgressBar(true);
+
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        title = (TextView) findViewById(R.id.detailedTitle);
+        genres = (TextView) findViewById(R.id.detailedGenres);
         backdrop = (ImageView) findViewById(R.id.detailedBackdrop);
         poster = (ImageView) findViewById(R.id.detailedPoster);
         overview = (TextView) findViewById(R.id.detailedOverview);
         year = (TextView) findViewById(R.id.detailedYear);
+
         budget = (TextView) findViewById(R.id.detailedBudget);
         popularity = (TextView) findViewById(R.id.detailedPopularity);
         createdBy = (TextView) findViewById(R.id.detailedCreatedBy);
@@ -111,12 +124,13 @@ public class TvDetailedActivity extends AppCompatActivity {
                     Tv responseTv = response.body();
                     updateInfo(responseTv, responseTv.getCredits().getCast());
                 }
+                replaceFormWithProgressBar(false);
             }
 
             @Override
             public void onFailure(retrofit2.Call<Tv> call, Throwable t) {
                 Log.e("Retrofit(failure)", t.getMessage());
-
+                replaceFormWithProgressBar(false);
             }
 
         });
@@ -131,8 +145,14 @@ public class TvDetailedActivity extends AppCompatActivity {
             Picasso.with(this).load(getString(R.string.image_base) + tv.getBackdropPath()).into(backdrop);
             Picasso.with(this).load(getString(R.string.image_base) + tv.getPosterPath()).into(poster);
 
+            for(Genre g : tv.getGenres()) {
+                genres.append(g.getName() + " ");
+            }
+
+            title.setText(tv.getName());
             overview.setText(tv.getOverview());
             collapsingToolbarLayout.setTitle(tv.getName());
+            collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
             year.setText(tv.getFirstAirDate());
             vote.setText(tv.getVoteAverage() + "");
             popularity.setText(tv.getPopularity() + "");
@@ -166,6 +186,16 @@ public class TvDetailedActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, R.string.parse_error, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void replaceFormWithProgressBar(boolean isVisible) {
+        if(isVisible) {
+            coordinatorLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            coordinatorLayout.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
         }
     }
 

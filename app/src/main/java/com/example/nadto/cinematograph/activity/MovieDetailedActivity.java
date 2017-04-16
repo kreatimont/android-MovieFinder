@@ -3,6 +3,7 @@ package com.example.nadto.cinematograph.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.example.nadto.cinematograph.adapter.ProfileAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.api.ApiClient;
 import com.example.nadto.cinematograph.api.ApiInterface;
+import com.example.nadto.cinematograph.model.tmdb_model.Genre;
 import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
 import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
 import com.squareup.picasso.Picasso;
@@ -33,10 +36,12 @@ public class MovieDetailedActivity extends AppCompatActivity {
     public static final String EXTRA_ID = "id";
 
     private ImageView backdrop, poster;
-    private TextView overview, year, createdBy, budget, genres, popularity, vote, tagline;
+    private TextView overview, year, createdBy, budget, genres, popularity, vote, tagline, title;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ProfileAdapter profileAdapter;
     private RecyclerView mRecyclerView;
+    private ProgressBar progressBar;
+    private CoordinatorLayout coordinatorLayout;
     private FloatingActionButton fabFavorite;
 
     /*Activity lifecycle*/
@@ -71,20 +76,27 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
     private void initUI() {
 
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.detailedCoordinatorLayout);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        replaceFormWithProgressBar(true);
+
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        genres = (TextView) findViewById(R.id.detailedGenres);
         backdrop = (ImageView) findViewById(R.id.detailedBackdrop);
         poster = (ImageView) findViewById(R.id.detailedPoster);
+        title = (TextView) findViewById(R.id.detailedTitle);
+
         overview = (TextView) findViewById(R.id.detailedOverview);
         year = (TextView) findViewById(R.id.detailedYear);
         budget = (TextView) findViewById(R.id.detailedBudget);
         popularity = (TextView) findViewById(R.id.detailedPopularity);
         createdBy = (TextView) findViewById(R.id.detailedCreatedBy);
         vote = (TextView) findViewById(R.id.detailedVote);
-        genres = (TextView) findViewById(R.id.detailedGenres);
         tagline = (TextView) findViewById(R.id.detailedTagline);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
@@ -107,12 +119,13 @@ public class MovieDetailedActivity extends AppCompatActivity {
                     Movie responseMovie = response.body();
                     updateInfo(responseMovie, responseMovie.getCredits().getCast());
                 }
+                replaceFormWithProgressBar(false);
             }
 
             @Override
             public void onFailure(retrofit2.Call<Movie> call, Throwable t) {
                 Log.e("Retrofit(failure)", t.getMessage());
-
+                replaceFormWithProgressBar(false);
             }
 
         });
@@ -127,7 +140,13 @@ public class MovieDetailedActivity extends AppCompatActivity {
             Picasso.with(this).load(getString(R.string.image_base) + film.getBackdropPath()).into(backdrop);
             Picasso.with(this).load(getString(R.string.image_base) + film.getPosterPath()).into(poster);
 
+            for(Genre g : film.getGenres()) {
+                genres.append(g.getName() + " ");
+            }
+
+            title.setText(film.getTitle());
             overview.setText(film.getOverview());
+            collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
             collapsingToolbarLayout.setTitle(film.getTitle());
             year.setText(film.getReleaseDate());
             vote.setText(film.getVoteAverage() + "");
@@ -166,4 +185,13 @@ public class MovieDetailedActivity extends AppCompatActivity {
         }
     }
 
+    public void replaceFormWithProgressBar(boolean isVisible) {
+        if(isVisible) {
+            coordinatorLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            coordinatorLayout.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
+    }
 }

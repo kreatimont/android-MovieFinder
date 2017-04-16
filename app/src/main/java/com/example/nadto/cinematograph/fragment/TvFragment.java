@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.nadto.cinematograph.R;
+import com.example.nadto.cinematograph.activity.MainActivity;
 import com.example.nadto.cinematograph.activity.TvDetailedActivity;
 import com.example.nadto.cinematograph.adapter.EndlessRecyclerViewScrollListener;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
@@ -91,12 +92,15 @@ public class TvFragment extends ProtoFragment {
                 mRealm.commitTransaction();
 
                 checkEmptyState();
+
+                ((MainActivity)getActivity()).replaceFormWithProgressBar(false);
             }
 
             @Override
             public void onFailure(Call<TvResponse> call, Throwable t) {
                 Log.e("Retrofit(failure)", t.getMessage());
                 checkEmptyState();
+                ((MainActivity)getActivity()).replaceFormWithProgressBar(false);
             }
 
         });

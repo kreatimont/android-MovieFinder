@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
+import com.example.nadto.cinematograph.activity.MainActivity;
 import com.example.nadto.cinematograph.activity.MovieDetailedActivity;
 import com.example.nadto.cinematograph.adapter.EndlessRecyclerViewScrollListener;
 import com.example.nadto.cinematograph.adapter.MovieAdapter;
@@ -102,6 +103,7 @@ public class MovieFragment extends ProtoFragment {
                 mRealm.commitTransaction();
 
                 checkEmptyState();
+                ((MainActivity)getActivity()).replaceFormWithProgressBar(false);
             }
 
             @Override
@@ -109,6 +111,7 @@ public class MovieFragment extends ProtoFragment {
                 Log.e("Retrofit(failure)", t.getMessage());
                 Log.e("URL:", call.request().toString());
                 checkEmptyState();
+                ((MainActivity)getActivity()).replaceFormWithProgressBar(false);
             }
 
         });
