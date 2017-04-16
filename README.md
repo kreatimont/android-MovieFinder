@@ -18,6 +18,8 @@ Android app for discover and rate movies. Data provided by TMDb api.
 
 * [Picasso](http://square.github.io/picasso/)
 * [OkHttp](http://square.github.io/okhttp/)
+* [CircleImageView](https://github.com/hdodenhof/CircleImageView)
+* [Blurry](https://github.com/wasabeef/Blurry)
 
 ***
 
