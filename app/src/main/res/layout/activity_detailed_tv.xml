@@ -11,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="380dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -23,9 +23,10 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <include layout="@layout/collapsed_header"/>
+            <include layout="@layout/header_collapsed"/>
 
             <android.support.v7.widget.Toolbar
+                tools:visibility="gone"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -33,11 +34,10 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
-
     </android.support.design.widget.AppBarLayout>
 
     <include
-        layout="@layout/content_movie_detailed" />
+        layout="@layout/content_detailed_tv" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabFavorite"

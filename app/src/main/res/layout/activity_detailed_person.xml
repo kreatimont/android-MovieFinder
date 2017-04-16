@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/detailedCoordinatorLayout"
-    tools:context="com.example.nadto.cinematograph.activity.MovieDetailedActivity">
+    tools:context="com.example.nadto.cinematograph.activity.PersonDetailedActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -23,10 +23,9 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <include layout="@layout/collapsed_header"/>
+            <include layout="@layout/header_person"/>
 
             <android.support.v7.widget.Toolbar
-                tools:visibility="gone"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -34,10 +33,10 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/content_tv_detailed" />
+    <include layout="@layout/content_detailed_person" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabFavorite"
@@ -60,3 +59,4 @@
         android:layout_height="match_parent" />
 
 </android.support.design.widget.CoordinatorLayout>
+

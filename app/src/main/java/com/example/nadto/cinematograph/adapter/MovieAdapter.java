@@ -32,9 +32,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         if(isGridLayout) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.card_layout_grid, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.card_movie_grid, parent, false);
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.card_layout, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.card_movie, parent, false);
         }
         return new ViewHolder(view);
     }

@@ -28,7 +28,6 @@ import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
 import com.example.nadto.cinematograph.model.tmdb_model.tv.Tv;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.nadto.cinematograph.activity.PersonDetailedActivity.EXTRA_PERSON_ID;
@@ -52,7 +51,7 @@ public class TvDetailedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tv_detailed);
+        setContentView(R.layout.activity_detailed_tv);
 
         if(getIntent() != null ) {
             if(getIntent().getExtras() != null) {

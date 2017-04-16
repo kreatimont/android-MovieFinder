@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="160dp"
+    android:layout_height="160dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="80dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profilePhoto"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:src="@drawable/header_bg" />
+
+        <LinearLayout
+            android:id="@+id/characterContainer"
+            android:orientation="vertical"
+            android:background="#90ffffff"
+            android:layout_width="160dp"
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="0dp"
+            android:layout_marginLeft="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginRight="0dp"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <TextView
+                android:id="@+id/profileName"
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp"
+                tools:text="Lord kekiasch"
+                android:maxLines="1"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/profileChar"
+                android:layout_marginTop="2dp"
+                android:paddingLeft="34dp"
+                android:paddingRight="34dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textSize="12sp"
+                tools:text="kekuch"
+                android:textColor="#000"
+                android:textStyle="italic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

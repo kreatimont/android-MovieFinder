@@ -49,7 +49,7 @@ public class MovieDetailedActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_detailed);
+        setContentView(R.layout.activity_detailed_movie);
 
         if(getIntent() != null ) {
             if(getIntent().getExtras() != null) {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
@@ -13,6 +14,8 @@ import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import jp.wasabeef.blurry.Blurry;
 
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
@@ -28,7 +31,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.person_card_layout, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.card_person, parent, false);
         return new ViewHolder(view);
     }
 
@@ -46,6 +49,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         private TextView name, character;
         private ImageView profilePhoto;
+        private LinearLayout linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -53,7 +57,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             name = (TextView)itemView.findViewById(R.id.profileName);
             character = (TextView)itemView.findViewById(R.id.profileChar);
             profilePhoto = (ImageView)itemView.findViewById(R.id.profilePhoto);
-
+            linearLayout = (LinearLayout)itemView.findViewById(R.id.characterContainer);
         }
 
         void bind(final Cast person) {
@@ -61,7 +65,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             character.setText(person.getCharacter());
 
             Picasso.with(mContext).load(mContext.getString(R.string.image_base) + person.getProfilePath()).into(profilePhoto);
-
         }
     }
 

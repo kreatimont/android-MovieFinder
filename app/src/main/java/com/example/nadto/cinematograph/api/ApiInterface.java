@@ -48,4 +48,14 @@ public interface ApiInterface {
     @GET("search/tv")
     Call<TvResponse> getTvByQuery(@Query("api_key") String apiKey, @Query("language") String lang, @Query("query") String query);
 
+    /*Discover*/
+
+    @GET("discover/movie")
+    Call<MoviesResponse> getDiscoverMovies(@Query("api_key") String apiKey, @Query("language") String lang, @Query("with_people") String withPeople,
+                                           @Query("year") Integer year, @Query("page") Integer page);
+
+    @GET("discover/tv")
+    Call<MoviesResponse> getDiscoverTv(@Query("api_key") String apiKey, @Query("language") String lang, @Query("with_people") String withPeople,
+                                           @Query("year") Integer year, @Query("page") Integer page);
+
 }
