@@ -83,8 +83,6 @@ public class TvDetailedActivity extends AppCompatActivity {
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.detailedCoordinatorLayout);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        replaceFormWithProgressBar(true);
-
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
@@ -123,13 +121,11 @@ public class TvDetailedActivity extends AppCompatActivity {
                     Tv responseTv = response.body();
                     updateInfo(responseTv, responseTv.getCredits().getCast());
                 }
-                replaceFormWithProgressBar(false);
             }
 
             @Override
             public void onFailure(retrofit2.Call<Tv> call, Throwable t) {
                 Log.e("Retrofit(failure)", t.getMessage());
-                replaceFormWithProgressBar(false);
             }
 
         });
@@ -185,16 +181,6 @@ public class TvDetailedActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, R.string.parse_error, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void replaceFormWithProgressBar(boolean isVisible) {
-        if(isVisible) {
-            coordinatorLayout.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-        } else {
-            coordinatorLayout.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
         }
     }
 

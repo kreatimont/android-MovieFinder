@@ -23,7 +23,38 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <include layout="@layout/header_person"/>
+            <ImageView
+                android:id="@+id/detailedBackdrop"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:scaleType="centerCrop"
+                tools:background="@drawable/header_bg"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.9"/>
+
+            <FrameLayout
+                android:layout_gravity="bottom|center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_marginTop="-40dp"
+                android:layout_height="40dp"
+                android:background="#99000000"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.3">
+
+                <TextView
+                    android:layout_marginLeft="8dp"
+                    android:gravity="center_vertical"
+                    android:id="@+id/detailedTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:maxLines="1"
+                    android:textStyle="bold"
+                    tools:text="Geralt from Rivia" />
+
+            </FrameLayout>
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -47,16 +78,6 @@
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/ic_heart" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:scaleX=".2"
-        android:scaleY=".2"
-        android:visibility="gone"
-        android:layout_gravity="center"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </android.support.design.widget.CoordinatorLayout>
 

@@ -77,9 +77,6 @@ public class MovieDetailedActivity extends AppCompatActivity {
     private void initUI() {
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.detailedCoordinatorLayout);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        replaceFormWithProgressBar(true);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -119,13 +116,11 @@ public class MovieDetailedActivity extends AppCompatActivity {
                     Movie responseMovie = response.body();
                     updateInfo(responseMovie, responseMovie.getCredits().getCast());
                 }
-                replaceFormWithProgressBar(false);
             }
 
             @Override
             public void onFailure(retrofit2.Call<Movie> call, Throwable t) {
                 Log.e("Retrofit(failure)", t.getMessage());
-                replaceFormWithProgressBar(false);
             }
 
         });

@@ -37,7 +37,7 @@
                     <TextView
                         android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
-                        android:text="Birthday:"
+                        android:text="День рождения:"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -62,7 +62,7 @@
                     <TextView
                         android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
-                        android:text="Birthday place:"
+                        android:text="Место рождения:"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -87,7 +87,7 @@
                     <TextView
                         android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
-                        android:text="Link:"
+                        android:text="Личный сайт:"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -98,6 +98,31 @@
                         tools:text="19%"
                         android:onClick="onLinkClick"
                         android:textColor="@color/colorAccent"
+                        android:textStyle="italic"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:textColor="@color/colorPrimaryText"
+                        android:layout_marginRight="4dp"
+                        android:text="Пол:"
+                        android:textStyle="bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/detailedGender"
+                        android:gravity="end"
+                        tools:text="2013"
+                        android:textColor="@color/colorSecondaryText"
                         android:textStyle="italic"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
@@ -125,7 +150,7 @@
 
                 <TextView
                     android:textColor="@color/colorSecondaryText"
-                    tools:text="@string/large_text"
+                    tools:text="Место под биографию"
                     android:id="@+id/detProfileBiography"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -138,11 +163,12 @@
                     android:layout_height="1dp" />
 
                 <TextView
-                    android:layout_margin="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:textStyle="bold"
-                    android:textSize="24sp"
+                    android:textSize="18sp"
                     android:textColor="@color/colorAccent"
-                    android:text="Best works:"
+                    android:text="@string/best_actor_works"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

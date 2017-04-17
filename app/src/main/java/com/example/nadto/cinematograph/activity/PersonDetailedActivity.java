@@ -83,7 +83,7 @@ public class PersonDetailedActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.personMoviesRecycler);
         name = (TextView) findViewById(R.id.detailedTitle);
-        gender = (TextView) findViewById(R.id.detailedGenres);
+        gender = (TextView) findViewById(R.id.detailedGender);
         biography = (TextView) findViewById(R.id.detProfileBiography);
         birthday = (TextView) findViewById(R.id.detProfileBirthday);
         placeOfBirth = (TextView) findViewById(R.id.detProfilePlaceOfBirth);
