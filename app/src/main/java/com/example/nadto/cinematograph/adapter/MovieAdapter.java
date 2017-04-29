@@ -34,7 +34,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         if(isGridLayout) {
             view = LayoutInflater.from(mContext).inflate(R.layout.card_movie_grid, parent, false);
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.card_movie, parent, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.card_movie_v2, parent, false);
         }
         return new ViewHolder(view);
     }
@@ -56,7 +56,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private CardView cardView;
         private TextView title, year;
         private ImageView backdrop;
         private RatingBar voteAverage;
@@ -64,7 +63,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            cardView = (CardView)itemView.findViewById(R.id.cardView);
             title = (TextView)itemView.findViewById(R.id.title);
             year = (TextView)itemView.findViewById(R.id.year);
             voteAverage = (RatingBar)itemView.findViewById(R.id.voteAverage);

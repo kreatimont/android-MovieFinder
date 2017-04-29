@@ -35,7 +35,7 @@
     <string name="base_url_tv">https://api.themoviedb.org/3/tv/</string>
     <string name="base_url_person">https://api.themoviedb.org/3/person/</string>
 
-    <string name="image_base">http://image.tmdb.org/t/p/w500</string>
+    <string name="image_base">http://image.tmdb.org/t/p/w780</string>
 
     <string name="mode_search_movie">search/movie?query=</string>
     <string name="mode_search_tv">search/tv?query=</string>

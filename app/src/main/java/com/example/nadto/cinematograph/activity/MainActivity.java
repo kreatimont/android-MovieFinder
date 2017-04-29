@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         initUI();
         initDB();
-        //setUpLaunchScreenMode();
     }
 
     @Override
@@ -113,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
                 if(itemId == R.id.favorite) {
-                    setUpLaunchScreenMode();
                     return true;
                 }
 
@@ -129,36 +127,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-    }
 
-    private void setUpLaunchScreenMode() {
-
-        setLaunchScreenModeVisibility(true);
-
-        MovieFragment launchPopularMovieFragment = new MovieFragment();
-        TvFragment launchPopularTvFragment = new TvFragment();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.popularMovieContainer, launchPopularMovieFragment).commit();
-        getSupportFragmentManager().beginTransaction().replace(R.id.popularTvContainer, launchPopularTvFragment).commit();
-    }
-
-    private void setLaunchScreenModeVisibility(boolean state) {
-
-        View movie = findViewById(R.id.popularMovieContainer);
-        View tv = findViewById(R.id.popularTvContainer);
-        View container = findViewById(R.id.container);
-
-        if(state) {
-            movie.setVisibility(View.VISIBLE);
-            tv.setVisibility(View.VISIBLE);
-            container.setVisibility(View.GONE);
-        } else {
-            movie.setVisibility(View.GONE);
-            tv.setVisibility(View.GONE);
-            container.setVisibility(View.VISIBLE);
-        }
-
-
+        currentFragment = new MovieFragment();
+        setTitle("Movies");
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, currentFragment).commit();
     }
 
     private void initDB() {
