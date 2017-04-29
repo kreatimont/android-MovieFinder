@@ -62,7 +62,7 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder> {
             name.setText(person.getName());
             character.setText(mContext.getString(R.string.role,person.getCharacter()));
 
-            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + mContext.getString(R.string.profile_size_small) + person.getProfilePath()).into(profilePhoto);
+            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + mContext.getString(R.string.profile_size_medium) + person.getProfilePath()).into(profilePhoto);
         }
     }
 
