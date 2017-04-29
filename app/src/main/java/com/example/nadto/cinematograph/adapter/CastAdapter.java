@@ -11,19 +11,18 @@ import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
-import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 
-public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder> {
+public class CastAdapter extends RecyclerView.Adapter<CastAdapter.ViewHolder> {
 
-    private List<Person> cast;
+    private List<Cast> cast;
     private Context mContext;
 
 
-    public PersonAdapter(Context context, List<Person> persons) {
+    public CastAdapter(Context context, List<Cast> persons) {
         this.cast = persons;
         this.mContext = context;
     }
@@ -59,9 +58,9 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
             linearLayout = (LinearLayout)itemView.findViewById(R.id.characterContainer);
         }
 
-        void bind(final Person person) {
+        void bind(final Cast person) {
             name.setText(person.getName());
-            character.setVisibility(View.GONE);
+            character.setText(mContext.getString(R.string.role,person.getCharacter()));
 
             Picasso.with(mContext).load(mContext.getString(R.string.image_base) + person.getProfilePath()).into(profilePhoto);
         }

@@ -1,18 +1,18 @@
 package com.example.nadto.cinematograph.model.response;
 
 import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
-import com.example.nadto.cinematograph.model.tmdb_model.tv.Tv;
+import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class TvResponse {
+public class PersonResponse {
 
     @SerializedName("page")
     private int page;
 
     @SerializedName("results")
-    private List<Tv> results;
+    private List<Person> results;
 
     @SerializedName("total_results")
     private int totalResults;
@@ -28,11 +28,11 @@ public class TvResponse {
         this.page = page;
     }
 
-    public List<Tv> getResults() {
+    public List<Person> getResults() {
         return results;
     }
 
-    public void setResults(List<Tv> results) {
+    public void setResults(List<Person> results) {
         this.results = results;
     }
 

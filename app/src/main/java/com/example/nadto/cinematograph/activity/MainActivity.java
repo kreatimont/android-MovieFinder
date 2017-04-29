@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.fragment.MovieFragment;
+import com.example.nadto.cinematograph.fragment.PersonFragment;
 import com.example.nadto.cinematograph.fragment.ProtoFragment;
 import com.example.nadto.cinematograph.fragment.TvFragment;
 import com.example.nadto.cinematograph.utils.InternetConnection;
@@ -106,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
                     fragment = new TvFragment();
                 }
                 if(itemId == R.id.persons) {
-                    Toast.makeText(MainActivity.this, "Open category is failed.", Toast.LENGTH_SHORT).show();
-                    return true;
+                    replaceFormWithProgressBar(true);
+                    fragment = new PersonFragment();
                 }
                 if(itemId == R.id.favorite) {
                     return true;
@@ -126,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        replaceFormWithProgressBar(true);
         currentFragment = new MovieFragment();
         setTitle(getString(R.string.movies));
         getSupportFragmentManager().beginTransaction().replace(R.id.container, currentFragment).commit();

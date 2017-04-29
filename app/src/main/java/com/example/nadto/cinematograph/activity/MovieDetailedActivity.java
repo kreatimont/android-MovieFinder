@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.adapter.PersonAdapter;
+import com.example.nadto.cinematograph.adapter.CastAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.api.ApiClient;
 import com.example.nadto.cinematograph.api.ApiInterface;
@@ -40,7 +40,7 @@ public class MovieDetailedActivity extends AppCompatActivity {
     private ImageView backdrop, poster;
     private TextView overview, year, createdBy, budget, genres, popularity, vote, tagline, title;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private PersonAdapter personAdapter;
+    private CastAdapter castAdapter;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
     private CoordinatorLayout coordinatorLayout;
@@ -168,9 +168,9 @@ public class MovieDetailedActivity extends AppCompatActivity {
             tagline.setText(film.getTagline());
 
             if(cast != null) {
-                personAdapter = new PersonAdapter(this, cast);
+                castAdapter = new CastAdapter(this, cast);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
-                mRecyclerView.setAdapter(personAdapter);
+                mRecyclerView.setAdapter(castAdapter);
                 mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
                         this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 

@@ -1,6 +1,7 @@
 package com.example.nadto.cinematograph.api;
 
 import com.example.nadto.cinematograph.model.response.MoviesResponse;
+import com.example.nadto.cinematograph.model.response.PersonResponse;
 import com.example.nadto.cinematograph.model.response.TvResponse;
 import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
 import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
@@ -37,6 +38,10 @@ public interface ApiInterface {
 
     /*Person*/
 
+    @GET("person/popular")
+    Call<PersonResponse> getPopularPersons(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") int page);
+
+
     @GET("person/{id}")
     Call<Person> getPersonDetails(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang);
 
@@ -47,6 +52,9 @@ public interface ApiInterface {
 
     @GET("search/tv")
     Call<TvResponse> getTvByQuery(@Query("api_key") String apiKey, @Query("language") String lang, @Query("query") String query);
+
+    @GET("search/tv")
+    Call<PersonResponse> getPersonsByQuery(@Query("api_key") String apiKey, @Query("language") String lang, @Query("query") String query);
 
     /*Discover*/
 
