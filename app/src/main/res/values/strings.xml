@@ -61,7 +61,8 @@
     <string name="network_failed">You are offline. Connect to network and restart app.</string>
     <string name="search_title">Search</string>
     <string name="text_empty">List is empty</string>
-    <string name="best_actor_works">Best works:</string>
+    <string name="best_actor_movies">Best movies:</string>
+    <string name="best_actor_tv">Best tv series:</string>
     <string name="release_date">Release date:</string>
     <string name="created_by">Created by:</string>
     <string name="budget">Budget:</string>

@@ -25,6 +25,9 @@ public interface ApiInterface {
     @GET("movie/popular")
     Call<MoviesResponse> getPopularMovies(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") int page);
 
+    @GET("movie/{id}/similar")
+    Call<MoviesResponse> getSimilarMovies(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang,@Query("page") int page);
+
     /*TV*/
 
     @GET("tv/{id}")
@@ -36,11 +39,13 @@ public interface ApiInterface {
     @GET("tv/popular")
     Call<TvResponse> getPopularTv(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") int page);
 
+    @GET("tv/{id}/similar")
+    Call<TvResponse> getSimilarTv(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang,@Query("page") int page);
+
     /*Person*/
 
     @GET("person/popular")
     Call<PersonResponse> getPopularPersons(@Query("api_key") String apiKey, @Query("language") String lang, @Query("page") int page);
-
 
     @GET("person/{id}")
     Call<Person> getPersonDetails(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang);
@@ -63,7 +68,7 @@ public interface ApiInterface {
                                            @Query("year") Integer year, @Query("page") Integer page);
 
     @GET("discover/tv")
-    Call<MoviesResponse> getDiscoverTv(@Query("api_key") String apiKey, @Query("language") String lang, @Query("with_people") String withPeople,
+    Call<TvResponse> getDiscoverTv(@Query("api_key") String apiKey, @Query("language") String lang, @Query("with_people") String withPeople,
                                            @Query("year") Integer year, @Query("page") Integer page);
 
 }

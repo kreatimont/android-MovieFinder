@@ -2,7 +2,8 @@
 <resources>
     <string name="app_name">Cinematograph</string>
     <string name="action_settings">Настройки</string>
-    <string name="best_actor_works">Лучшие работы:</string>
+    <string name="best_actor_movies">Лучшие фильмы:</string>
+    <string name="best_actor_tv">Лучшие сериалы:</string>
     <string name="load_error">Невозможно подключиться к серверу.</string>
     <string name="network_failed">Соединение с интернетом отсутствует</string>
     <string name="parse_error">Ошибка обработки данных.</string>

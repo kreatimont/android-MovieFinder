@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="235dp"
+    android:layout_height="220dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardView"
     xmlns:tools="http://schemas.android.com/tools"
@@ -39,8 +39,8 @@
 
             <TextView
                 android:id="@+id/title"
-                android:textStyle="bold"
-                android:textSize="14sp"
+                android:textStyle="normal"
+                android:textSize="12sp"
                 android:lines="2"
                 tools:text="In Bruges"
                 android:textColor="@color/colorLabel"
@@ -54,7 +54,7 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="35dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/year"

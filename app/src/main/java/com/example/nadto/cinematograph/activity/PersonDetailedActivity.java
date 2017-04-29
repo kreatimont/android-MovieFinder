@@ -7,7 +7,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -18,19 +17,25 @@ import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
 import com.example.nadto.cinematograph.adapter.CardLayoutType;
-import com.example.nadto.cinematograph.adapter.EndlessRecyclerViewScrollListener;
 import com.example.nadto.cinematograph.adapter.MovieAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.adapter.ResponseRecyclerViewAdapter;
+import com.example.nadto.cinematograph.adapter.TvAdapter;
 import com.example.nadto.cinematograph.api.ApiClient;
 import com.example.nadto.cinematograph.api.ApiInterface;
 import com.example.nadto.cinematograph.model.response.MoviesResponse;
+import com.example.nadto.cinematograph.model.response.TvResponse;
 import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
 import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
+import com.example.nadto.cinematograph.model.tmdb_model.tv.Tv;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PersonDetailedActivity extends AppCompatActivity {
 
@@ -39,9 +44,11 @@ public class PersonDetailedActivity extends AppCompatActivity {
     private TextView name, biography, gender, birthday, placeOfBirth, link;
     private ImageView profilePhoto;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private RecyclerView mRecyclerView;
-    private ArrayList<Movie> mDataList;
-    private MovieAdapter mAdapter;
+    private RecyclerView mRecyclerViewMovies, mRecyclerViewTv;
+    private ArrayList<Movie> mDataListMovies;
+    private ArrayList<Tv> mDataListTv;
+    private MovieAdapter mAdapterMovies;
+    private TvAdapter mAdapterTv;
 
     /*Activity lifecycle*/
 
@@ -82,7 +89,9 @@ public class PersonDetailedActivity extends AppCompatActivity {
 
         collapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.toolbar_layout);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.personMoviesRecycler);
+        mRecyclerViewMovies = (RecyclerView) findViewById(R.id.personMoviesRecycler);
+        mRecyclerViewTv = (RecyclerView) findViewById(R.id.personTvRecycler);
+
         name = (TextView) findViewById(R.id.detailedTitle);
         gender = (TextView) findViewById(R.id.detailedGender);
         biography = (TextView) findViewById(R.id.detProfileBiography);
@@ -91,15 +100,15 @@ public class PersonDetailedActivity extends AppCompatActivity {
         link = (TextView) findViewById(R.id.detProfileLink);
         profilePhoto = (ImageView) findViewById(R.id.detailedBackdrop);
 
-        mRecyclerView.addOnItemTouchListener(
+        mRecyclerViewMovies.addOnItemTouchListener(
                 new RecyclerItemClickListener(this,
-                        mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                        mRecyclerViewMovies, new RecyclerItemClickListener.OnItemClickListener() {
 
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(PersonDetailedActivity.this, MovieDetailedActivity.class);
                         if(position >= 0) {
-                            intent.putExtra(MovieDetailedActivity.EXTRA_ID, ((Movie)mDataList.get(position)).getId());
+                            intent.putExtra(MovieDetailedActivity.EXTRA_ID, (mDataListMovies.get(position)).getId());
                             startActivity(intent);
                         } else {
                             Snackbar.make(collapsingToolbarLayout, "Unable to load information at {" + position + "} pos",Snackbar.LENGTH_SHORT).show();
@@ -113,12 +122,44 @@ public class PersonDetailedActivity extends AppCompatActivity {
 
                 }));
 
-        mDataList = new ArrayList<>();
-        mAdapter = new MovieAdapter(this, mDataList);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerViewTv.addOnItemTouchListener(
+                new RecyclerItemClickListener(this,
+                        mRecyclerViewTv, new RecyclerItemClickListener.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(PersonDetailedActivity.this, TvDetailedActivity.class);
+                        if(position >= 0) {
+                            intent.putExtra(TvDetailedActivity.EXTRA_ID, (mDataListTv.get(position).getId()));
+                            startActivity(intent);
+                        } else {
+                            Snackbar.make(collapsingToolbarLayout, "Unable to load information at {" + position + "} pos",Snackbar.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onItemLongClick(View view, int position) {
+
+                    }
+
+                }));
+
+        mDataListMovies = new ArrayList<>();
+        mDataListTv = new ArrayList<>();
+
+        mAdapterMovies = new MovieAdapter(this, mDataListMovies);
+        mAdapterTv = new TvAdapter(this, mDataListTv);
+
+        mRecyclerViewMovies.setAdapter(mAdapterMovies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        mRecyclerView.setLayoutManager(gridLayoutManager);
-        ((ResponseRecyclerViewAdapter) mAdapter).setLayout(CardLayoutType.Grid);
+        mRecyclerViewMovies.setLayoutManager(gridLayoutManager);
+        ((ResponseRecyclerViewAdapter) mAdapterMovies).setLayout(CardLayoutType.Grid);
+
+        mRecyclerViewTv.setAdapter(mAdapterTv);
+        GridLayoutManager gridLayoutManagerTv = new GridLayoutManager(this, 2);
+        mRecyclerViewTv.setLayoutManager(gridLayoutManagerTv);
+        ((ResponseRecyclerViewAdapter) mAdapterTv).setLayout(CardLayoutType.Grid);
+
     }
 
     /*Content providers*/
@@ -152,26 +193,52 @@ public class PersonDetailedActivity extends AppCompatActivity {
 
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        retrofit2.Call<MoviesResponse> call = apiService.getDiscoverMovies(getString(R.string.api_key), "ru", String.valueOf(personId), null, null);
+        retrofit2.Call<MoviesResponse> callMovie = apiService.getDiscoverMovies(getString(R.string.api_key), "ru", String.valueOf(personId), null, null);
 
-        call.enqueue(new retrofit2.Callback<MoviesResponse>() {
+        callMovie.enqueue(new retrofit2.Callback<MoviesResponse>() {
 
             @Override
             public void onResponse(retrofit2.Call<MoviesResponse> call, retrofit2.Response<MoviesResponse> response) {
                 if(response.body() != null) {
+                    Log.e("TAG MOVIE", call.request().toString());
                     List<Movie> responseMovies = response.body().getResults();
-                    mDataList.addAll(responseMovies);
-                    mAdapter.notifyDataSetChanged();
+
+                    for(Integer i : new Integer[]{0,1,2,3}) {
+                        mDataListMovies.add(responseMovies.get(i));
+                    }
+
+                    mAdapterMovies.notifyDataSetChanged();
                 }
             }
 
             @Override
             public void onFailure(retrofit2.Call<MoviesResponse> call, Throwable t) {
                 Log.e("Retrofit(failure)", t.getMessage());
-
             }
 
         });
+
+        retrofit2.Call<TvResponse> callTv = apiService.getDiscoverTv(getString(R.string.api_key), "ru", String.valueOf(personId), null, null);
+
+        callTv.enqueue(new Callback<TvResponse>() {
+            @Override
+            public void onResponse(Call<TvResponse> call, Response<TvResponse> response) {
+                List<Tv> responseTv= response.body().getResults();
+                Log.e("TAG TV", call.request().toString());
+
+                for(Integer i : new Integer[]{0,1,2,3}) {
+                    mDataListTv.add(responseTv.get(i));
+                }
+
+                mAdapterTv.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<TvResponse> call, Throwable t) {
+                Log.e("Retrofit(failure)", t.getMessage());
+            }
+        });
+
     }
 
     /*Additional methods*/
