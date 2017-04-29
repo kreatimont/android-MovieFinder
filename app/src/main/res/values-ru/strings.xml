@@ -3,7 +3,6 @@
     <string name="app_name">Cinematograph</string>
     <string name="action_settings">Настройки</string>
     <string name="best_actor_works">Лучшие работы:</string>
-    <string name="favorite">Любимое</string>
     <string name="load_error">Невозможно подключиться к серверу.</string>
     <string name="network_failed">Соединение с интернетом отсутствует</string>
     <string name="parse_error">Ошибка обработки данных.</string>
@@ -21,4 +20,9 @@
     <string name="user_score">Оценка:</string>
     <string name="overview">Описание:</string>
     <string name="cast">Актёры:</string>
+    <string name="movies">Фильмы</string>
+    <string name="tv_series">Сериалы</string>
+    <string name="persons">Люди</string>
+    <string name="favorite">Любимое</string>
+    <string name="role" translatable="false">в роли %1$s</string>
 </resources>

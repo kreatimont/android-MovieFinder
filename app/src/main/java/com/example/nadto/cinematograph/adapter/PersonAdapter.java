@@ -15,23 +15,21 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import jp.wasabeef.blurry.Blurry;
 
-
-public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
+public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder> {
 
     private List<Cast> cast;
     private Context mContext;
 
 
-    public ProfileAdapter (Context context, List<Cast> persons) {
+    public PersonAdapter(Context context, List<Cast> persons) {
         this.cast = persons;
         this.mContext = context;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.card_person, parent, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.card_person_v2, parent, false);
         return new ViewHolder(view);
     }
 
@@ -62,7 +60,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         void bind(final Cast person) {
             name.setText(person.getName());
-            character.setText(person.getCharacter());
+            character.setText(mContext.getString(R.string.role,person.getCharacter()));
 
             Picasso.with(mContext).load(mContext.getString(R.string.image_base) + person.getProfilePath()).into(profilePhoto);
         }

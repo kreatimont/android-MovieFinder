@@ -93,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                //setLaunchScreenModeVisibility(false);
-
                 int itemId = item.getItemId();
 
                 Fragment fragment = null;
@@ -129,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         currentFragment = new MovieFragment();
-        setTitle("Movies");
+        setTitle(getString(R.string.movies));
         getSupportFragmentManager().beginTransaction().replace(R.id.container, currentFragment).commit();
     }
 
@@ -137,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
         Realm.init(this);
     }
 
-    public void replaceFormWithProgressBar(boolean isVisible) {
-        if(isVisible) {
+    public void replaceFormWithProgressBar(boolean isProgressBarVisible) {
+        if(isProgressBarVisible) {
             container.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
         } else {

@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nadto.cinematograph.R;
-import com.example.nadto.cinematograph.adapter.ProfileAdapter;
+import com.example.nadto.cinematograph.adapter.PersonAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
 import com.example.nadto.cinematograph.api.ApiClient;
 import com.example.nadto.cinematograph.api.ApiInterface;
@@ -41,7 +41,7 @@ public class TvDetailedActivity extends AppCompatActivity {
     private ImageView backdrop, poster;
     private TextView overview, year, createdBy, genres, popularity, vote, tagline, title;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    private ProfileAdapter profileAdapter;
+    private PersonAdapter personAdapter;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
     private CoordinatorLayout coordinatorLayout;
@@ -168,9 +168,9 @@ public class TvDetailedActivity extends AppCompatActivity {
             tagline.setText(tv.getHomepage());
 
             if(cast != null) {
-                profileAdapter = new ProfileAdapter(this, cast);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
-                mRecyclerView.setAdapter(profileAdapter);
+                personAdapter = new PersonAdapter(this, cast);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+                mRecyclerView.setAdapter(personAdapter);
                 mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
                         this, mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
 
