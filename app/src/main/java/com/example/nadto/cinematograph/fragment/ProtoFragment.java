@@ -14,12 +14,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
+import com.example.nadto.cinematograph.adapter.CardLayoutType;
 import com.example.nadto.cinematograph.adapter.EndlessRecyclerViewScrollListener;
 import com.example.nadto.cinematograph.adapter.MovieAdapter;
 import com.example.nadto.cinematograph.adapter.ResponseRecyclerViewAdapter;
 import com.example.nadto.cinematograph.api.ApiInterface;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -135,7 +137,8 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
     void resetRecyclerViewLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mRecyclerView.setLayoutManager(layoutManager);
 
-        boolean withGridLayout;
+        CardLayoutType cardLayoutType;
+
 
         if(layoutManager instanceof GridLayoutManager) {
             mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener((GridLayoutManager) layoutManager) {
@@ -149,7 +152,16 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
                 }
 
             });
-            withGridLayout = true;
+            cardLayoutType = CardLayoutType.Grid;
+
+//            switch (((GridLayoutManager)layoutManager).getSpanCount()) {
+//                case 2: break;
+//                case 3: break;
+//                case 4: break;
+//                case 5: break;
+//
+//            }
+
         } else {
             mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) layoutManager) {
 
@@ -162,13 +174,14 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
                 }
 
             });
-            withGridLayout = false;
+            if(new Random().nextInt(2) % 2 == 0) {
+                cardLayoutType = CardLayoutType.LinearWithBackdrop;
+            } else {
+                cardLayoutType = CardLayoutType.LinearWithPoster;
+            }
         }
-        resetAdapter(withGridLayout);
-    }
 
-    void resetAdapter(boolean withGridLayout) {
-        ((ResponseRecyclerViewAdapter) mAdapter).setGridLayout(withGridLayout);
+        ((ResponseRecyclerViewAdapter)mAdapter).setLayout(cardLayoutType);
         mRecyclerView.setAdapter(mAdapter);
     }
 

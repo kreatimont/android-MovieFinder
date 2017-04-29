@@ -20,7 +20,7 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> implem
 
     private ArrayList<Tv> tvArrayList;
     private Context mContext;
-    private boolean isGridLayout = false;
+    private CardLayoutType layoutType = CardLayoutType.LinearWithBackdrop;
 
 
     public TvAdapter(Context context, ArrayList<Tv> tvArrayList) {
@@ -31,12 +31,23 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> implem
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if(isGridLayout) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.card_movie_grid, parent, false);
-        } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.card_movie, parent, false);
+        int layoutId;
+        switch (layoutType) {
+            case Grid:
+                layoutId = R.layout.card_movie_grid;
+                break;
+            case LinearWithBackdrop:
+                layoutId = R.layout.card_movie;
+                break;
+            case LinearWithPoster:
+                layoutId = R.layout.card_movie_v2;
+                break;
+            default:
+                layoutId = R.layout.card_movie;
         }
-        return new ViewHolder(view);
+        view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+
+        return new TvAdapter.ViewHolder(view);
     }
 
     @Override
@@ -49,9 +60,13 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> implem
         return tvArrayList.size();
     }
 
+    @Override
+    public void setLayout(CardLayoutType type) {
+        this.layoutType = type;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private CardView cardView;
         private TextView title, year;
         private ImageView backdrop;
         private RatingBar voteAverage;
@@ -59,7 +74,6 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> implem
         public ViewHolder(View itemView) {
             super(itemView);
 
-            cardView = (CardView)itemView.findViewById(R.id.cardView);
             title = (TextView)itemView.findViewById(R.id.title);
             year = (TextView)itemView.findViewById(R.id.year);
             voteAverage = (RatingBar)itemView.findViewById(R.id.voteAverage);
@@ -75,13 +89,23 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> implem
             year.setText(mContext.getString(R.string.year_template, yearString));
             voteAverage.setRating((float) ((tv.getVoteAverage() * 5.0f) / 10.0f));
 
-            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + tv.getPosterPath()).into(backdrop);
+            String path;
+
+            switch (layoutType) {
+                case Grid:
+                    path = tv.getPosterPath();
+                    break;
+                case LinearWithBackdrop:
+                    path = tv.getBackdropPath();
+                    break;
+                case LinearWithPoster:
+                    path = tv.getPosterPath();
+                    break;
+                default:
+                    path = tv.getBackdropPath();
+            }
+
+            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + path).into(backdrop);
         }
     }
-
-    @Override
-    public void setGridLayout(boolean status) {
-        this.isGridLayout = status;
-    }
-
 }

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
+import com.example.nadto.cinematograph.adapter.CardLayoutType;
 import com.example.nadto.cinematograph.adapter.EndlessRecyclerViewScrollListener;
 import com.example.nadto.cinematograph.adapter.MovieAdapter;
 import com.example.nadto.cinematograph.adapter.RecyclerItemClickListener;
@@ -117,7 +118,7 @@ public class PersonDetailedActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
-        ((ResponseRecyclerViewAdapter) mAdapter).setGridLayout(true);
+        ((ResponseRecyclerViewAdapter) mAdapter).setLayout(CardLayoutType.Grid);
     }
 
     /*Content providers*/

@@ -21,7 +21,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     private ArrayList<Movie> movies;
     private Context mContext;
-    private boolean isGridLayout = false;
+    private CardLayoutType layoutType = CardLayoutType.LinearWithPoster;
 
     public MovieAdapter(Context context, ArrayList<Movie> movies) {
         this.movies = movies;
@@ -31,11 +31,22 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
-        if(isGridLayout) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.card_movie_grid, parent, false);
-        } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.card_movie_v2, parent, false);
+        int layoutId;
+        switch (layoutType) {
+            case Grid:
+                layoutId = R.layout.card_movie_grid;
+                break;
+            case LinearWithBackdrop:
+                layoutId = R.layout.card_movie;
+                break;
+            case LinearWithPoster:
+                layoutId = R.layout.card_movie_v2;
+                break;
+            default:
+                layoutId = R.layout.card_movie;
         }
+        view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+
         return new ViewHolder(view);
     }
 
@@ -50,8 +61,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     @Override
-    public void setGridLayout(boolean state) {
-        this.isGridLayout = state;
+    public void setLayout(CardLayoutType type) {
+        this.layoutType = type;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -77,7 +88,23 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             year.setText(mContext.getString(R.string.year_template, yearString));
             voteAverage.setRating((float) ((movie.getVoteAverage() * 5.0f) / 10.0f));
 
-            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + movie.getPosterPath()).into(backdrop);
+            String path;
+
+            switch (layoutType) {
+                case Grid:
+                    path = movie.getPosterPath();
+                    break;
+                case LinearWithBackdrop:
+                    path = movie.getBackdropPath();
+                    break;
+                case LinearWithPoster:
+                    path = movie.getPosterPath();
+                    break;
+                default:
+                    path = movie.getBackdropPath();
+            }
+
+            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + path).into(backdrop);
         }
     }
 
