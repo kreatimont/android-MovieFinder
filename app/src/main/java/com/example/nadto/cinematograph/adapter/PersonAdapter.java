@@ -63,7 +63,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.ViewHolder
             name.setText(person.getName());
             character.setVisibility(View.GONE);
 
-            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + person.getProfilePath()).into(profilePhoto);
+            Picasso.with(mContext).load(mContext.getString(R.string.image_base)  + mContext.getString(R.string.profile_size_medium) + person.getProfilePath()).into(profilePhoto);
         }
     }
 

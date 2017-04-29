@@ -139,8 +139,8 @@ public class MovieDetailedActivity extends AppCompatActivity {
             collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
             collapsingToolbarLayout.setTitle(film.getTitle());
 
-            Picasso.with(this).load(getString(R.string.image_base) + film.getBackdropPath()).into(backdrop);
-            Picasso.with(this).load(getString(R.string.image_base) + film.getPosterPath()).into(poster);
+            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.backdrop_size_big) + film.getBackdropPath()).into(backdrop);
+            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.poster_size_medium) + film.getPosterPath()).into(poster);
 
             for(Genre g : film.getGenres()) {
                 genres.append(g.getName() + " ");

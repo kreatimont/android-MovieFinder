@@ -189,7 +189,7 @@ public class PersonDetailedActivity extends AppCompatActivity {
             birthday.setText(person.getBirthday());
             placeOfBirth.setText(person.getPlaceOfBirth());
             link.setText(person.getHomepage());
-            Picasso.with(this).load(getString(R.string.image_base) + person.getProfilePath()).into(profilePhoto);
+            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.profile_size_medium) + person.getProfilePath()).into(profilePhoto);
 
             loadPersonMovies(person.getId());
         }

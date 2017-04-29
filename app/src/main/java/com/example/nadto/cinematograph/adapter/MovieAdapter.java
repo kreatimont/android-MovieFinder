@@ -104,7 +104,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                     path = movie.getBackdropPath();
             }
 
-            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + path).into(backdrop);
+            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + mContext.getString(R.string.backdrop_size_medium) + path).into(backdrop);
         }
     }
 

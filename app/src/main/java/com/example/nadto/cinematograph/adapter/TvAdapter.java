@@ -105,7 +105,7 @@ public class TvAdapter extends RecyclerView.Adapter<TvAdapter.ViewHolder> implem
                     path = tv.getBackdropPath();
             }
 
-            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + path).into(backdrop);
+            Picasso.with(mContext).load(mContext.getString(R.string.image_base) + mContext.getString(R.string.backdrop_size_medium) + path).into(backdrop);
         }
     }
 }

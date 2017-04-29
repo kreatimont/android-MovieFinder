@@ -143,8 +143,8 @@ public class TvDetailedActivity extends AppCompatActivity {
             collapsingToolbarLayout.setTitle(tv.getName());
             collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
 
-            Picasso.with(this).load(getString(R.string.image_base) + tv.getBackdropPath()).into(backdrop);
-            Picasso.with(this).load(getString(R.string.image_base) + tv.getPosterPath()).into(poster);
+            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.backdrop_size_big) + tv.getBackdropPath()).into(backdrop);
+            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.poster_size_medium) + tv.getPosterPath()).into(poster);
 
             for(Genre g : tv.getGenres()) {
                 genres.append(g.getName() + " ");
