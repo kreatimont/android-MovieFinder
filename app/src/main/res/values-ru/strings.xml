@@ -14,4 +14,11 @@
     <string name="title_activity_detailed">Детальная информация</string>
     <string name="top_movies">Топ фильмы</string>
     <string name="top_series">Топ сериалы</string>
+    <string name="release_date">Дата выхода:</string>
+    <string name="created_by">Автор сценария:</string>
+    <string name="budget">Бюджет:</string>
+    <string name="popularity">Популярность:</string>
+    <string name="user_score">Оценка:</string>
+    <string name="overview">Описание:</string>
+    <string name="cast">Актёры:</string>
 </resources>

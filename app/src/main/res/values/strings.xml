@@ -140,5 +140,12 @@
     <string name="search_title">Search</string>
     <string name="text_empty">List is empty</string>
     <string name="best_actor_works">Best works:</string>
+    <string name="release_date">Release date:</string>
+    <string name="created_by">Created by:</string>
+    <string name="budget">Budget:</string>
+    <string name="popularity">Popularity:</string>
+    <string name="user_score">User score:</string>
+    <string name="overview">Overview:</string>
+    <string name="cast">Cast:</string>
 
 </resources>

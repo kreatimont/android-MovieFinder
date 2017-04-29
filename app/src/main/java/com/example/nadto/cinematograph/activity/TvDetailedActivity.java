@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.example.nadto.cinematograph.api.ApiClient;
 import com.example.nadto.cinematograph.api.ApiInterface;
 import com.example.nadto.cinematograph.model.tmdb_model.Genre;
 import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
+import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
 import com.example.nadto.cinematograph.model.tmdb_model.tv.Tv;
 import com.squareup.picasso.Picasso;
 
@@ -37,13 +39,14 @@ public class TvDetailedActivity extends AppCompatActivity {
     public static final String EXTRA_ID = "id";
 
     private ImageView backdrop, poster;
-    private TextView overview, year, createdBy, budget, genres, popularity, vote, tagline, title;
+    private TextView overview, year, createdBy, genres, popularity, vote, tagline, title;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ProfileAdapter profileAdapter;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
     private CoordinatorLayout coordinatorLayout;
     private FloatingActionButton fabFavorite;
+    private LinearLayout overviewForm;
 
 
     /*Activity lifecycle*/
@@ -88,6 +91,7 @@ public class TvDetailedActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        overviewForm = (LinearLayout) findViewById(R.id.overviewForm);
         title = (TextView) findViewById(R.id.detailedTitle);
         genres = (TextView) findViewById(R.id.detailedGenres);
         backdrop = (ImageView) findViewById(R.id.detailedBackdrop);
@@ -95,7 +99,6 @@ public class TvDetailedActivity extends AppCompatActivity {
         overview = (TextView) findViewById(R.id.detailedOverview);
         year = (TextView) findViewById(R.id.detailedYear);
 
-        budget = (TextView) findViewById(R.id.detailedBudget);
         popularity = (TextView) findViewById(R.id.detailedPopularity);
         createdBy = (TextView) findViewById(R.id.detailedCreatedBy);
         vote = (TextView) findViewById(R.id.detailedVote);
@@ -137,6 +140,9 @@ public class TvDetailedActivity extends AppCompatActivity {
 
         if(tv != null) {
 
+            collapsingToolbarLayout.setTitle(tv.getName());
+            collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
+
             Picasso.with(this).load(getString(R.string.image_base) + tv.getBackdropPath()).into(backdrop);
             Picasso.with(this).load(getString(R.string.image_base) + tv.getPosterPath()).into(poster);
 
@@ -145,9 +151,17 @@ public class TvDetailedActivity extends AppCompatActivity {
             }
 
             title.setText(tv.getName());
-            overview.setText(tv.getOverview());
-            collapsingToolbarLayout.setTitle(tv.getName());
-            collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
+
+            if(tv.getOverview().length() < 1) {
+                overviewForm.setVisibility(View.GONE);
+            } else {
+                overview.setText(tv.getOverview());
+            }
+
+            for(Person p : tv.getCreatedBy()) {
+                createdBy.append(p.getName() + " | ");
+            }
+
             year.setText(tv.getFirstAirDate());
             vote.setText(tv.getVoteAverage() + "");
             popularity.setText(tv.getPopularity() + "");
@@ -177,8 +191,8 @@ public class TvDetailedActivity extends AppCompatActivity {
                     public void onItemLongClick(View view, int position) {
                     }
                 }));
-
             }
+
         } else {
             Toast.makeText(this, R.string.parse_error, Toast.LENGTH_LONG).show();
         }

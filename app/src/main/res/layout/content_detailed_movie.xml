@@ -37,7 +37,7 @@
                     <TextView
                         android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
-                        android:text="Release date:"
+                        android:text="@string/release_date"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -63,7 +63,7 @@
                     <TextView
                         android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
-                        android:text="Created by:"
+                        android:text="@string/created_by"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -88,7 +88,7 @@
                     <TextView
                         android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
-                        android:text="Budget:"
+                        android:text="@string/budget"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -113,7 +113,7 @@
                     <TextView
                         android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
-                        android:text="Popularity:"
+                        android:text="@string/popularity"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -138,7 +138,7 @@
                     <TextView
                         android:textColor="@color/colorPrimaryText"
                         android:layout_marginRight="4dp"
-                        android:text="User score:"
+                        android:text="@string/user_score"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -173,6 +173,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/overviewForm"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -182,6 +183,14 @@
                     android:layout_marginBottom="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp" />
+
+                <TextView
+                    android:text="@string/overview"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:textColor="@color/colorSecondaryText"
@@ -200,7 +209,7 @@
                 <TextView
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="16sp"
-                    android:text="Cast:"
+                    android:text="@string/cast"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"
                     android:layout_width="match_parent"

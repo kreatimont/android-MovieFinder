@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,9 @@ import com.example.nadto.cinematograph.api.ApiClient;
 import com.example.nadto.cinematograph.api.ApiInterface;
 import com.example.nadto.cinematograph.model.tmdb_model.Genre;
 import com.example.nadto.cinematograph.model.tmdb_model.credits.Cast;
+import com.example.nadto.cinematograph.model.tmdb_model.credits.Crew;
 import com.example.nadto.cinematograph.model.tmdb_model.movie.Movie;
+import com.example.nadto.cinematograph.model.tmdb_model.people.Person;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -43,6 +46,7 @@ public class MovieDetailedActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private CoordinatorLayout coordinatorLayout;
     private FloatingActionButton fabFavorite;
+    private LinearLayout overviewForm;
 
     /*Activity lifecycle*/
 
@@ -83,6 +87,7 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        overviewForm = (LinearLayout) findViewById(R.id.overviewForm);
         genres = (TextView) findViewById(R.id.detailedGenres);
         backdrop = (ImageView) findViewById(R.id.detailedBackdrop);
         poster = (ImageView) findViewById(R.id.detailedPoster);
@@ -132,6 +137,9 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
         if(film != null) {
 
+            collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
+            collapsingToolbarLayout.setTitle(film.getTitle());
+
             Picasso.with(this).load(getString(R.string.image_base) + film.getBackdropPath()).into(backdrop);
             Picasso.with(this).load(getString(R.string.image_base) + film.getPosterPath()).into(poster);
 
@@ -140,9 +148,20 @@ public class MovieDetailedActivity extends AppCompatActivity {
             }
 
             title.setText(film.getTitle());
-            overview.setText(film.getOverview());
-            collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
-            collapsingToolbarLayout.setTitle(film.getTitle());
+
+            if(film.getOverview().length() < 1) {
+                overviewForm.setVisibility(View.GONE);
+            } else {
+                overview.setText(film.getOverview());
+            }
+
+            for(Crew c : film.getCredits().getCrew()) {
+                if (c.getJob().equals("Director")) {
+                    createdBy.append(c.getName());
+                }
+            }
+
+
             year.setText(film.getReleaseDate());
             vote.setText(film.getVoteAverage() + "");
             popularity.setText(film.getPopularity() + "");
