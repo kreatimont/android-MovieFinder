@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:id="@+id/detailedCoordinatorLayout"
-    tools:context="com.example.nadto.cinematograph.activity.PersonDetailedActivity">
+    tools:context="com.example.nadto.cinematograph.io.example.nadto.cinematograph.ui.PersonDetailedActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
