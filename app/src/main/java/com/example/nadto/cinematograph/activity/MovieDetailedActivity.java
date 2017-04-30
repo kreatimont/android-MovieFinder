@@ -179,6 +179,11 @@ public class MovieDetailedActivity extends AppCompatActivity {
                         Intent intent = new Intent(MovieDetailedActivity.this, PersonDetailedActivity.class);
                         if(position >= 0) {
                             intent.putExtra(EXTRA_PERSON_ID, cast.get(position).getId());
+
+                            /*clear activity stack*/
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                             startActivity(intent);
                         } else {
                             Toast.makeText(

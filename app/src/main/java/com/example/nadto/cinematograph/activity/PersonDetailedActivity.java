@@ -109,6 +109,11 @@ public class PersonDetailedActivity extends AppCompatActivity {
                         Intent intent = new Intent(PersonDetailedActivity.this, MovieDetailedActivity.class);
                         if(position >= 0) {
                             intent.putExtra(MovieDetailedActivity.EXTRA_ID, (mDataListMovies.get(position)).getId());
+
+                            /*clear activity stack*/
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                             startActivity(intent);
                         } else {
                             Snackbar.make(collapsingToolbarLayout, "Unable to load information at {" + position + "} pos",Snackbar.LENGTH_SHORT).show();
@@ -131,6 +136,11 @@ public class PersonDetailedActivity extends AppCompatActivity {
                         Intent intent = new Intent(PersonDetailedActivity.this, TvDetailedActivity.class);
                         if(position >= 0) {
                             intent.putExtra(TvDetailedActivity.EXTRA_ID, (mDataListTv.get(position).getId()));
+
+                            /*clear activity stack*/
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                             startActivity(intent);
                         } else {
                             Snackbar.make(collapsingToolbarLayout, "Unable to load information at {" + position + "} pos",Snackbar.LENGTH_SHORT).show();

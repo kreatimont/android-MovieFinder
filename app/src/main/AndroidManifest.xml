@@ -29,6 +29,8 @@
         </activity>
 
         <activity
+            android:launchMode="singleTop"
+            android:noHistory="true"
             android:name=".activity.MovieDetailedActivity"
             android:label="@string/title_activity_detailed"
             android:parentActivityName=".activity.MainActivity"
@@ -39,6 +41,8 @@
         </activity>
 
         <activity
+            android:launchMode="singleTop"
+            android:noHistory="true"
             android:name=".activity.TvDetailedActivity"
             android:label="@string/title_activity_detailed"
             android:parentActivityName=".activity.MainActivity"
@@ -49,6 +53,8 @@
         </activity>
 
         <activity
+            android:launchMode="singleTop"
+            android:noHistory="true"
             android:name=".activity.PersonDetailedActivity"
             android:label="Person detailed"
             android:parentActivityName=".activity.MovieDetailedActivity"

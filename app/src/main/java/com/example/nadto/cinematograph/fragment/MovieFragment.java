@@ -128,6 +128,11 @@ public class MovieFragment extends ProtoFragment {
                         Intent intent = new Intent(getActivity(), MovieDetailedActivity.class);
                         if(position >= 0) {
                             intent.putExtra(MovieDetailedActivity.EXTRA_ID, ((Movie)mDataList.get(position)).getId());
+
+                            /*clear activity stack*/
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                             startActivity(intent);
                         } else {
                             Snackbar.make(rootView, "Unable to load information at {" + position + "} pos",Snackbar.LENGTH_SHORT).show();

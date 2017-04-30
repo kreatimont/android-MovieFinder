@@ -1,5 +1,7 @@
 package com.example.nadto.cinematograph.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -187,6 +189,13 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
 
     void setListType(ListType listType) {
         currentListType = listType;
+    }
+
+    void startActivityNoHistory(Activity currentActivity, Class<? extends Activity> newTopActivityClass) {
+        Intent intent = new Intent(currentActivity, newTopActivityClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        currentActivity.startActivity(intent);
     }
 
 

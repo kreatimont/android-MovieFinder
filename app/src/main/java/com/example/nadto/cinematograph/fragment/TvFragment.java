@@ -117,6 +117,11 @@ public class TvFragment extends ProtoFragment {
                         Intent intent = new Intent(getActivity(), TvDetailedActivity.class);
                         if(position >= 0) {
                             intent.putExtra(TvDetailedActivity.EXTRA_ID, ((Tv)mDataList.get(position)).getId());
+
+                            /*clear activity stack*/
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                             startActivity(intent);
                         } else {
                             Snackbar.make(rootView, "Unable to load information at {" + position + "} pos",Snackbar.LENGTH_SHORT).show();
