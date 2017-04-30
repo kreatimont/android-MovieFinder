@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="io.kreatimont.cinematograph.ui.MainActivity"
+            android:name="io.kreatimont.cinematograph.ui.main.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,37 +31,37 @@
         <activity
             android:launchMode="singleTop"
             android:noHistory="true"
-            android:name="io.kreatimont.cinematograph.ui.MovieDetailedActivity"
+            android:name="io.kreatimont.cinematograph.ui.movie.MovieDetailedActivity"
             android:label="@string/title_activity_detailed"
-            android:parentActivityName="io.kreatimont.cinematograph.ui.MainActivity"
+            android:parentActivityName="io.kreatimont.cinematograph.ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.kreatimont.cinematograph.ui.MainActivity" />
+                android:value="io.kreatimont.cinematograph.ui.main.MainActivity" />
         </activity>
 
         <activity
             android:launchMode="singleTop"
             android:noHistory="true"
-            android:name="io.kreatimont.cinematograph.ui.TvDetailedActivity"
+            android:name="io.kreatimont.cinematograph.ui.tv.TvDetailedActivity"
             android:label="@string/title_activity_detailed"
-            android:parentActivityName="io.kreatimont.cinematograph.ui.MainActivity"
+            android:parentActivityName="io.kreatimont.cinematograph.ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.kreatimont.cinematograph.ui.MainActivity" />
+                android:value="io.kreatimont.cinematograph.ui.main.MainActivity" />
         </activity>
 
         <activity
             android:launchMode="singleTop"
             android:noHistory="true"
-            android:name="io.kreatimont.cinematograph.ui.PersonDetailedActivity"
+            android:name="io.kreatimont.cinematograph.ui.person.PersonDetailedActivity"
             android:label="Person detailed"
-            android:parentActivityName="io.kreatimont.cinematograph.ui.MovieDetailedActivity"
+            android:parentActivityName="io.kreatimont.cinematograph.ui.movie.MovieDetailedActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="io.kreatimont.cinematograph.ui.MainActivity" />
+                android:value="io.kreatimont.cinematograph.ui.main.MainActivity" />
         </activity>
 
     </application>
