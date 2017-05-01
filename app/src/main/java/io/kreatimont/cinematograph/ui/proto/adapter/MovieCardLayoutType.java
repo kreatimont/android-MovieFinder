@@ -4,6 +4,7 @@ public enum MovieCardLayoutType {
 
     Grid,
     LinearWithBackdrop,
-    LinearWithPoster
+    LinearWithPoster,
+    LinearHorizontal
 
 }

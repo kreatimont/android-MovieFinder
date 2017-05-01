@@ -11,7 +11,9 @@ import com.example.nadto.cinematograph.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.kreatimont.cinematograph.ui.proto.viewHolder.MovieMaterialViewHolder;
 import io.kreatimont.cinematograph.ui.proto.viewHolder.MovieViewHolder;
+import io.kreatimont.cinematograph.ui.proto.viewHolder.MovieWithProtoVH;
 
 public abstract class ProtoMovieAdapter extends RecyclerView.Adapter<MovieViewHolder> implements ResponseRecyclerViewAdapter {
 
@@ -28,6 +30,7 @@ public abstract class ProtoMovieAdapter extends RecyclerView.Adapter<MovieViewHo
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         int layoutId;
+
         switch (layoutType) {
             case Grid:
                 layoutId = R.layout.card_movie_grid;
@@ -38,9 +41,17 @@ public abstract class ProtoMovieAdapter extends RecyclerView.Adapter<MovieViewHo
             case LinearWithPoster:
                 layoutId = R.layout.card_movie_v2;
                 break;
+            case LinearHorizontal:
+                layoutId = R.layout.card_movie_v3;
+
+                //temporary
+                view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
+                return new MovieWithProtoVH(view, mContext, layoutType);
+
             default:
                 layoutId = R.layout.card_movie;
         }
+
         view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
 
         return new MovieViewHolder(view, mContext, layoutType);

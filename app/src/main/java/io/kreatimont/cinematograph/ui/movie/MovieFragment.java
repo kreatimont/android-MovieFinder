@@ -139,7 +139,7 @@ public class MovieFragment extends ProtoFragment {
                 }));
 
         mDataList = new ArrayList<>();
-        mAdapter = new MovieMovieAdapter(getActivity(), mDataList);
+        mAdapter = new MovieAdapter(getActivity(), mDataList);
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);

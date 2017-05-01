@@ -6,6 +6,7 @@
     <string name="saved_type" translatable="false">saved_type</string>
 
     <string name="year_template" translatable="false">( %1$s )</string>
+    <string name="rating_template" translatable="false">%1$.1f/10</string>
     <string name="tagline_template" translatable="false">&#171; %1$s &#187;</string>
     <string name="load_movies" translatable="false">Load tvArrayList</string>
     <string name="read_error">Unable to read data</string>

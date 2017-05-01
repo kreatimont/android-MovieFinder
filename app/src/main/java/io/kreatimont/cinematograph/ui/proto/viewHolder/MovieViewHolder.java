@@ -55,6 +55,9 @@ public class MovieViewHolder extends RecyclerView.ViewHolder {
             case LinearWithPoster:
                 path = movie.getPosterPath();
                 break;
+            case LinearHorizontal:
+                path = movie.getPosterPath();
+                break;
             default:
                 path = movie.getBackdropPath();
         }

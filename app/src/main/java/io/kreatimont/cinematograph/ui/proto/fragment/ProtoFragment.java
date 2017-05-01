@@ -83,27 +83,37 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
         int id = item.getItemId();
 
         if(id == R.id.grid2) {
-            resetRecyclerViewLayoutManager(new GridLayoutManager(getActivity(), 2));
+            resetRecyclerViewLayoutManager(new GridLayoutManager(getActivity(), 2), MovieCardLayoutType.Grid);
             return true;
         }
 
         if(id == R.id.grid3) {
-            resetRecyclerViewLayoutManager(new GridLayoutManager(getActivity(), 3));
+            resetRecyclerViewLayoutManager(new GridLayoutManager(getActivity(), 3), MovieCardLayoutType.Grid);
             return true;
         }
 
         if(id == R.id.grid4) {
-            resetRecyclerViewLayoutManager(new GridLayoutManager(getActivity(), 4));
+            resetRecyclerViewLayoutManager(new GridLayoutManager(getActivity(), 4), MovieCardLayoutType.Grid);
             return true;
         }
 
         if(id == R.id.grid5) {
-            resetRecyclerViewLayoutManager(new GridLayoutManager(getActivity(), 5));
+            resetRecyclerViewLayoutManager(new GridLayoutManager(getActivity(), 5), MovieCardLayoutType.Grid);
+            return true;
+        }
+
+        if(id == R.id.horizontal) {
+            resetRecyclerViewLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false), MovieCardLayoutType.LinearHorizontal);
             return true;
         }
 
         if(id == R.id.linear) {
-            resetRecyclerViewLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            resetRecyclerViewLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false), MovieCardLayoutType.LinearWithBackdrop);
+            return true;
+        }
+
+        if(id == R.id.linearPoster) {
+            resetRecyclerViewLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false), MovieCardLayoutType.LinearWithPoster);
             return true;
         }
 
@@ -136,11 +146,8 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
         }
     }
 
-    public void resetRecyclerViewLayoutManager(RecyclerView.LayoutManager layoutManager) {
+    public void resetRecyclerViewLayoutManager(RecyclerView.LayoutManager layoutManager, MovieCardLayoutType type) {
         mRecyclerView.setLayoutManager(layoutManager);
-
-        MovieCardLayoutType movieCardLayoutType;
-
 
         if(layoutManager instanceof GridLayoutManager) {
             mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener((GridLayoutManager) layoutManager) {
@@ -154,16 +161,6 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
                 }
 
             });
-            movieCardLayoutType = MovieCardLayoutType.Grid;
-
-//            switch (((GridLayoutManager)layoutManager).getSpanCount()) {
-//                case 2: break;
-//                case 3: break;
-//                case 4: break;
-//                case 5: break;
-//
-//            }
-
         } else {
             mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener((LinearLayoutManager) layoutManager) {
 
@@ -176,14 +173,9 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
                 }
 
             });
-            if(new Random().nextInt(2) % 2 == 0) {
-                movieCardLayoutType = MovieCardLayoutType.LinearWithBackdrop;
-            } else {
-                movieCardLayoutType = MovieCardLayoutType.LinearWithPoster;
-            }
         }
 
-        ((ResponseRecyclerViewAdapter)mAdapter).setLayout(movieCardLayoutType);
+        ((ResponseRecyclerViewAdapter)mAdapter).setLayout(type);
         mRecyclerView.setAdapter(mAdapter);
     }
 

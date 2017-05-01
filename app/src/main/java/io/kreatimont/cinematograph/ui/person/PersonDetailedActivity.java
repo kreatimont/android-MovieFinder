@@ -17,10 +17,10 @@ import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
 import io.kreatimont.cinematograph.ui.proto.adapter.MovieCardLayoutType;
-import io.kreatimont.cinematograph.ui.movie.MovieMovieAdapter;
+import io.kreatimont.cinematograph.ui.movie.MovieAdapter;
 import io.kreatimont.cinematograph.helpers.RecyclerItemClickListener;
 import io.kreatimont.cinematograph.ui.proto.adapter.ResponseRecyclerViewAdapter;
-import io.kreatimont.cinematograph.ui.tv.TvMovieAdapter;
+import io.kreatimont.cinematograph.ui.tv.TvAdapter;
 import io.kreatimont.cinematograph.api.ApiClient;
 import io.kreatimont.cinematograph.api.ApiInterface;
 import io.kreatimont.cinematograph.api.model.response.MoviesResponse;
@@ -49,8 +49,8 @@ public class PersonDetailedActivity extends AppCompatActivity {
     private RecyclerView mRecyclerViewMovies, mRecyclerViewTv;
     private ArrayList<Movie> mDataListMovies;
     private ArrayList<Tv> mDataListTv;
-    private MovieMovieAdapter mAdapterMovies;
-    private TvMovieAdapter mAdapterTv;
+    private MovieAdapter mAdapterMovies;
+    private TvAdapter mAdapterTv;
 
     /*Activity lifecycle*/
 
@@ -159,8 +159,8 @@ public class PersonDetailedActivity extends AppCompatActivity {
         mDataListMovies = new ArrayList<>();
         mDataListTv = new ArrayList<>();
 
-        mAdapterMovies = new MovieMovieAdapter(this, mDataListMovies);
-        mAdapterTv = new TvMovieAdapter(this, mDataListTv);
+        mAdapterMovies = new MovieAdapter(this, mDataListMovies);
+        mAdapterTv = new TvAdapter(this, mDataListTv);
 
         mRecyclerViewMovies.setAdapter(mAdapterMovies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
