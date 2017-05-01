@@ -139,7 +139,7 @@ public class TvFragment extends ProtoFragment {
                 }));
 
         mDataList = new ArrayList<>();
-        mAdapter = new TvAdapter(getContext(), mDataList);
+        mAdapter = new TvMovieAdapter(getContext(), mDataList);
         mRecyclerView.setAdapter(mAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(linearLayoutManager);

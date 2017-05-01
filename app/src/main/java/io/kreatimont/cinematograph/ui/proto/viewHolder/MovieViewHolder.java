@@ -13,21 +13,17 @@ import com.squareup.picasso.Picasso;
 
 import io.kreatimont.cinematograph.api.model.tmdb.movie.Movie;
 import io.kreatimont.cinematograph.api.model.tmdb.tv.Tv;
-import io.kreatimont.cinematograph.ui.proto.adapter.CardLayoutType;
+import io.kreatimont.cinematograph.ui.proto.adapter.MovieCardLayoutType;
 
-import static io.kreatimont.cinematograph.ui.proto.adapter.CardLayoutType.Grid;
-import static io.kreatimont.cinematograph.ui.proto.adapter.CardLayoutType.LinearWithBackdrop;
-import static io.kreatimont.cinematograph.ui.proto.adapter.CardLayoutType.LinearWithPoster;
-
-public class BaseViewHolder extends RecyclerView.ViewHolder {
+public class MovieViewHolder extends RecyclerView.ViewHolder {
 
     private TextView title, year;
     private ImageView backdrop;
     private RatingBar voteAverage;
-    private CardLayoutType layoutType = CardLayoutType.LinearWithPoster;
+    private MovieCardLayoutType layoutType = MovieCardLayoutType.LinearWithPoster;
     private Context mContext;
 
-    public BaseViewHolder(View itemView, Context context, CardLayoutType layoutType) {
+    public MovieViewHolder(View itemView, Context context, MovieCardLayoutType layoutType) {
         super(itemView);
 
         this.mContext = context;

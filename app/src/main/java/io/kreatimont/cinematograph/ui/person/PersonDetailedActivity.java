@@ -16,11 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
-import io.kreatimont.cinematograph.ui.proto.adapter.CardLayoutType;
-import io.kreatimont.cinematograph.ui.movie.MovieAdapter;
+import io.kreatimont.cinematograph.ui.proto.adapter.MovieCardLayoutType;
+import io.kreatimont.cinematograph.ui.movie.MovieMovieAdapter;
 import io.kreatimont.cinematograph.helpers.RecyclerItemClickListener;
 import io.kreatimont.cinematograph.ui.proto.adapter.ResponseRecyclerViewAdapter;
-import io.kreatimont.cinematograph.ui.tv.TvAdapter;
+import io.kreatimont.cinematograph.ui.tv.TvMovieAdapter;
 import io.kreatimont.cinematograph.api.ApiClient;
 import io.kreatimont.cinematograph.api.ApiInterface;
 import io.kreatimont.cinematograph.api.model.response.MoviesResponse;
@@ -49,8 +49,8 @@ public class PersonDetailedActivity extends AppCompatActivity {
     private RecyclerView mRecyclerViewMovies, mRecyclerViewTv;
     private ArrayList<Movie> mDataListMovies;
     private ArrayList<Tv> mDataListTv;
-    private MovieAdapter mAdapterMovies;
-    private TvAdapter mAdapterTv;
+    private MovieMovieAdapter mAdapterMovies;
+    private TvMovieAdapter mAdapterTv;
 
     /*Activity lifecycle*/
 
@@ -159,18 +159,18 @@ public class PersonDetailedActivity extends AppCompatActivity {
         mDataListMovies = new ArrayList<>();
         mDataListTv = new ArrayList<>();
 
-        mAdapterMovies = new MovieAdapter(this, mDataListMovies);
-        mAdapterTv = new TvAdapter(this, mDataListTv);
+        mAdapterMovies = new MovieMovieAdapter(this, mDataListMovies);
+        mAdapterTv = new TvMovieAdapter(this, mDataListTv);
 
         mRecyclerViewMovies.setAdapter(mAdapterMovies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerViewMovies.setLayoutManager(gridLayoutManager);
-        ((ResponseRecyclerViewAdapter) mAdapterMovies).setLayout(CardLayoutType.Grid);
+        ((ResponseRecyclerViewAdapter) mAdapterMovies).setLayout(MovieCardLayoutType.Grid);
 
         mRecyclerViewTv.setAdapter(mAdapterTv);
         GridLayoutManager gridLayoutManagerTv = new GridLayoutManager(this, 2);
         mRecyclerViewTv.setLayoutManager(gridLayoutManagerTv);
-        ((ResponseRecyclerViewAdapter) mAdapterTv).setLayout(CardLayoutType.Grid);
+        ((ResponseRecyclerViewAdapter) mAdapterTv).setLayout(MovieCardLayoutType.Grid);
 
     }
 
@@ -258,17 +258,18 @@ public class PersonDetailedActivity extends AppCompatActivity {
     private void updateInfo(Person person) {
         if(person != null) {
 
+            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.size_orginal) + person.getProfilePath()).into(profilePhoto);
 
             collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
             collapsingToolbarLayout.setTitle(person.getName());
 
             name.setText(person.getName());
             biography.setText(person.getBiography());
-            gender.setText(person.getGender() == 0 ? "male" : "female");
+            gender.setText(person.getGender() == 2 ? "male" : "female");
             birthday.setText(person.getBirthday());
             placeOfBirth.setText(person.getPlaceOfBirth());
             link.setText(person.getHomepage());
-            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.profile_size_medium) + person.getProfilePath()).into(profilePhoto);
+
 
             loadPersonMovies(person.getId());
         }

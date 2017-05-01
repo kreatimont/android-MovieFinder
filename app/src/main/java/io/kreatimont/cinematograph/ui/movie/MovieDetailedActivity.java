@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -44,10 +45,11 @@ public class MovieDetailedActivity extends AppCompatActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private CastAdapter castAdapter;
     private RecyclerView mRecyclerView;
-    private ProgressBar progressBar;
+    private ProgressBar preloader;
     private CoordinatorLayout coordinatorLayout;
     private FloatingActionButton fabFavorite;
     private LinearLayout overviewForm;
+    private FrameLayout mainForm;
 
     /*Activity lifecycle*/
 
@@ -89,11 +91,13 @@ public class MovieDetailedActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         overviewForm = (LinearLayout) findViewById(R.id.overviewForm);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+
+        fabFavorite = (FloatingActionButton) findViewById(R.id.fabFavorite);
         genres = (TextView) findViewById(R.id.detailedGenres);
         backdrop = (ImageView) findViewById(R.id.detailedBackdrop);
         poster = (ImageView) findViewById(R.id.detailedPoster);
         title = (TextView) findViewById(R.id.detailedTitle);
-
         overview = (TextView) findViewById(R.id.detailedOverview);
         year = (TextView) findViewById(R.id.detailedYear);
         budget = (TextView) findViewById(R.id.detailedBudget);
@@ -101,7 +105,6 @@ public class MovieDetailedActivity extends AppCompatActivity {
         createdBy = (TextView) findViewById(R.id.detailedCreatedBy);
         vote = (TextView) findViewById(R.id.detailedVote);
         tagline = (TextView) findViewById(R.id.detailedTagline);
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.castRecycler);
 
@@ -138,11 +141,13 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
         if(film != null) {
 
+            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.backdrop_size_big) + film.getBackdropPath()).into(backdrop);
+            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.poster_size_medium) + film.getPosterPath()).into(poster);
+
             collapsingToolbarLayout.setExpandedTitleMarginBottom(-999);
             collapsingToolbarLayout.setTitle(film.getTitle());
 
-            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.backdrop_size_big) + film.getBackdropPath()).into(backdrop);
-            Picasso.with(this).load(getString(R.string.image_base) + getString(R.string.poster_size_medium) + film.getPosterPath()).into(poster);
+
 
             for(Genre g : film.getGenres()) {
                 genres.append(g.getName() + " ");
@@ -207,11 +212,13 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
     public void replaceFormWithProgressBar(boolean isVisible) {
         if(isVisible) {
-            coordinatorLayout.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
+            preloader.setVisibility(View.VISIBLE);
+
+            mainForm.setVisibility(View.GONE);
         } else {
-            coordinatorLayout.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
+            preloader.setVisibility(View.GONE);
+
+            mainForm.setVisibility(View.VISIBLE);
         }
     }
 }

@@ -11,24 +11,21 @@ import com.example.nadto.cinematograph.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.kreatimont.cinematograph.api.model.tmdb.movie.Movie;
-import io.kreatimont.cinematograph.api.model.tmdb.tv.Tv;
-import io.kreatimont.cinematograph.ui.proto.viewHolder.BaseViewHolder;
-import io.realm.RealmObject;
+import io.kreatimont.cinematograph.ui.proto.viewHolder.MovieViewHolder;
 
-public abstract class ProtoAdapter extends RecyclerView.Adapter<BaseViewHolder> implements ResponseRecyclerViewAdapter {
+public abstract class ProtoMovieAdapter extends RecyclerView.Adapter<MovieViewHolder> implements ResponseRecyclerViewAdapter {
 
     public List mDataList;
     public Context mContext;
-    public CardLayoutType layoutType = CardLayoutType.LinearWithPoster;
+    public MovieCardLayoutType layoutType = MovieCardLayoutType.LinearWithPoster;
 
-    public ProtoAdapter(Context context, ArrayList data) {
+    public ProtoMovieAdapter(Context context, ArrayList data) {
         this.mContext = context;
         this.mDataList = data;
     }
 
     @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         int layoutId;
         switch (layoutType) {
@@ -46,7 +43,7 @@ public abstract class ProtoAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         }
         view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
 
-        return new BaseViewHolder(view, mContext, layoutType);
+        return new MovieViewHolder(view, mContext, layoutType);
     }
 
     @Override
@@ -55,7 +52,7 @@ public abstract class ProtoAdapter extends RecyclerView.Adapter<BaseViewHolder> 
     }
 
     @Override
-    public void setLayout(CardLayoutType type) {
+    public void setLayout(MovieCardLayoutType type) {
         this.layoutType = type;
     }
 }

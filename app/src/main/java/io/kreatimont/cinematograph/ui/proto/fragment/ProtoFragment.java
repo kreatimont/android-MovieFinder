@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import io.kreatimont.cinematograph.helpers.EndlessRecyclerViewScrollListener;
-import io.kreatimont.cinematograph.ui.proto.adapter.CardLayoutType;
+import io.kreatimont.cinematograph.ui.proto.adapter.MovieCardLayoutType;
 import io.kreatimont.cinematograph.ui.proto.adapter.ResponseRecyclerViewAdapter;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -139,7 +139,7 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
     public void resetRecyclerViewLayoutManager(RecyclerView.LayoutManager layoutManager) {
         mRecyclerView.setLayoutManager(layoutManager);
 
-        CardLayoutType cardLayoutType;
+        MovieCardLayoutType movieCardLayoutType;
 
 
         if(layoutManager instanceof GridLayoutManager) {
@@ -154,7 +154,7 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
                 }
 
             });
-            cardLayoutType = CardLayoutType.Grid;
+            movieCardLayoutType = MovieCardLayoutType.Grid;
 
 //            switch (((GridLayoutManager)layoutManager).getSpanCount()) {
 //                case 2: break;
@@ -177,13 +177,13 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
 
             });
             if(new Random().nextInt(2) % 2 == 0) {
-                cardLayoutType = CardLayoutType.LinearWithBackdrop;
+                movieCardLayoutType = MovieCardLayoutType.LinearWithBackdrop;
             } else {
-                cardLayoutType = CardLayoutType.LinearWithPoster;
+                movieCardLayoutType = MovieCardLayoutType.LinearWithPoster;
             }
         }
 
-        ((ResponseRecyclerViewAdapter)mAdapter).setLayout(cardLayoutType);
+        ((ResponseRecyclerViewAdapter)mAdapter).setLayout(movieCardLayoutType);
         mRecyclerView.setAdapter(mAdapter);
     }
 

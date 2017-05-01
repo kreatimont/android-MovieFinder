@@ -49,6 +49,8 @@
     <string name="profile_size_medium" translatable="false">/w185</string>
     <string name="profile_size_big" translatable="false">/w632</string>
 
+    <string name="size_orginal" translatable="false">/original</string>
+
 
     <string name="mode_search_movie" translatable="false">search/movie?query=</string>
     <string name="mode_search_tv" translatable="false">search/tv?query=</string>

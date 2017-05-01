@@ -1,6 +1,6 @@
 package io.kreatimont.cinematograph.ui.proto.adapter;
 
-public enum CardLayoutType {
+public enum MovieCardLayoutType {
 
     Grid,
     LinearWithBackdrop,
