@@ -1,9 +1,9 @@
-package io.kreatimont.cinematograph.api.model.tmdb.tv;
+package io.kreatimont.cinematograph.data.model.tmdb.tv;
 
-import io.kreatimont.cinematograph.api.model.tmdb.Genre;
-import io.kreatimont.cinematograph.api.model.tmdb.ProductionCompany;
-import io.kreatimont.cinematograph.api.model.tmdb.credits.Credits;
-import io.kreatimont.cinematograph.api.model.tmdb.people.Person;
+import io.kreatimont.cinematograph.data.model.tmdb.Genre;
+import io.kreatimont.cinematograph.data.model.tmdb.ProductionCompany;
+import io.kreatimont.cinematograph.data.model.tmdb.credits.Credits;
+import io.kreatimont.cinematograph.data.model.tmdb.people.Person;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

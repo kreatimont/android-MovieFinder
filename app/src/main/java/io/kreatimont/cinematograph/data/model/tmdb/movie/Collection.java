@@ -1,4 +1,4 @@
-package io.kreatimont.cinematograph.api.model.tmdb.movie;
+package io.kreatimont.cinematograph.data.model.tmdb.movie;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,6 +1,6 @@
-package io.kreatimont.cinematograph.api.model.response;
+package io.kreatimont.cinematograph.data.model.response;
 
-import io.kreatimont.cinematograph.api.model.tmdb.people.Person;
+import io.kreatimont.cinematograph.data.model.tmdb.people.Person;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -13,10 +13,10 @@ import io.kreatimont.cinematograph.ui.main.MainActivity;
 import io.kreatimont.cinematograph.ui.proto.fragment.ProtoFragment;
 import io.kreatimont.cinematograph.helpers.EndlessRecyclerViewScrollListener;
 import io.kreatimont.cinematograph.helpers.RecyclerItemClickListener;
-import io.kreatimont.cinematograph.api.ApiClient;
-import io.kreatimont.cinematograph.api.ApiInterface;
-import io.kreatimont.cinematograph.api.model.response.MoviesResponse;
-import io.kreatimont.cinematograph.api.model.tmdb.movie.Movie;
+import io.kreatimont.cinematograph.data.ApiClient;
+import io.kreatimont.cinematograph.data.api.ApiInterface;
+import io.kreatimont.cinematograph.data.model.response.MoviesResponse;
+import io.kreatimont.cinematograph.data.model.tmdb.movie.Movie;
 import io.kreatimont.cinematograph.utils.InternetConnection;
 
 import java.util.ArrayList;

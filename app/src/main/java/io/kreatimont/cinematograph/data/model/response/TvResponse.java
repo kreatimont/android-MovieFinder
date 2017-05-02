@@ -1,6 +1,7 @@
-package io.kreatimont.cinematograph.api.model.response;
+package io.kreatimont.cinematograph.data.model.response;
 
-import io.kreatimont.cinematograph.api.model.tmdb.tv.Tv;
+import io.kreatimont.cinematograph.data.model.tmdb.tv.Tv;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

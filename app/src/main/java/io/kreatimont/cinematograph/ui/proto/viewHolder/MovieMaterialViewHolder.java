@@ -4,19 +4,15 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
 import com.squareup.picasso.Picasso;
 
-import io.kreatimont.cinematograph.api.model.tmdb.Genre;
-import io.kreatimont.cinematograph.api.model.tmdb.movie.Movie;
-import io.kreatimont.cinematograph.api.model.tmdb.tv.Tv;
+import io.kreatimont.cinematograph.data.model.tmdb.Genre;
+import io.kreatimont.cinematograph.data.model.tmdb.movie.Movie;
+import io.kreatimont.cinematograph.data.model.tmdb.tv.Tv;
 import io.kreatimont.cinematograph.ui.proto.adapter.MovieCardLayoutType;
-
-import static com.example.nadto.cinematograph.R.id.voteAverage;
-import static com.example.nadto.cinematograph.R.id.year;
 
 public class MovieMaterialViewHolder extends RecyclerView.ViewHolder {
 

@@ -3,8 +3,7 @@ package io.kreatimont.cinematograph.ui.tv;
 import android.content.Context;
 
 import io.kreatimont.cinematograph.ui.proto.adapter.ProtoMovieAdapter;
-import io.kreatimont.cinematograph.api.model.tmdb.tv.Tv;
-import io.kreatimont.cinematograph.ui.proto.viewHolder.MovieMaterialViewHolder;
+import io.kreatimont.cinematograph.data.model.tmdb.tv.Tv;
 import io.kreatimont.cinematograph.ui.proto.viewHolder.MovieViewHolder;
 
 import java.util.ArrayList;

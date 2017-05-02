@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
-import io.kreatimont.cinematograph.api.model.tmdb.credits.Cast;
+import io.kreatimont.cinematograph.data.model.tmdb.credits.Cast;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

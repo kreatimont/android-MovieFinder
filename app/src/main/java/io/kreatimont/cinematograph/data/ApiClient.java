@@ -1,4 +1,4 @@
-package io.kreatimont.cinematograph.api;
+package io.kreatimont.cinematograph.data;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

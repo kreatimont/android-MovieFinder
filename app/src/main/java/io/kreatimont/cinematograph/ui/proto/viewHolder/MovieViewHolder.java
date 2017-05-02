@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.example.nadto.cinematograph.R;
 import com.squareup.picasso.Picasso;
 
-import io.kreatimont.cinematograph.api.model.tmdb.movie.Movie;
-import io.kreatimont.cinematograph.api.model.tmdb.tv.Tv;
+import io.kreatimont.cinematograph.data.model.tmdb.movie.Movie;
+import io.kreatimont.cinematograph.data.model.tmdb.tv.Tv;
 import io.kreatimont.cinematograph.ui.proto.adapter.MovieCardLayoutType;
 
 public class MovieViewHolder extends RecyclerView.ViewHolder {

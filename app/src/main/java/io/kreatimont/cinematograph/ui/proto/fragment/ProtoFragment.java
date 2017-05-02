@@ -17,10 +17,9 @@ import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
 
-import io.kreatimont.cinematograph.api.ApiInterface;
+import io.kreatimont.cinematograph.data.api.ApiInterface;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import io.kreatimont.cinematograph.helpers.EndlessRecyclerViewScrollListener;
 import io.kreatimont.cinematograph.ui.proto.adapter.MovieCardLayoutType;

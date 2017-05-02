@@ -1,11 +1,11 @@
-package io.kreatimont.cinematograph.api;
+package io.kreatimont.cinematograph.data.api;
 
-import io.kreatimont.cinematograph.api.model.response.PersonResponse;
-import io.kreatimont.cinematograph.api.model.response.TvResponse;
-import io.kreatimont.cinematograph.api.model.tmdb.movie.Movie;
-import io.kreatimont.cinematograph.api.model.tmdb.people.Person;
-import io.kreatimont.cinematograph.api.model.tmdb.tv.Tv;
-import io.kreatimont.cinematograph.api.model.response.MoviesResponse;
+import io.kreatimont.cinematograph.data.model.response.PersonResponse;
+import io.kreatimont.cinematograph.data.model.response.TvResponse;
+import io.kreatimont.cinematograph.data.model.tmdb.movie.Movie;
+import io.kreatimont.cinematograph.data.model.tmdb.people.Person;
+import io.kreatimont.cinematograph.data.model.tmdb.tv.Tv;
+import io.kreatimont.cinematograph.data.model.response.MoviesResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

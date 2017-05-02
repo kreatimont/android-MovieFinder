@@ -1,4 +1,4 @@
-package io.kreatimont.cinematograph.api.model.tmdb.movie;
+package io.kreatimont.cinematograph.data.model.tmdb.tv;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,43 +6,45 @@ import com.google.gson.annotations.SerializedName;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class SpokenLanguage extends RealmObject {
-
-    @SerializedName("iso_639_1")
-    @Expose
-    private String iso6391;
+public class Network extends RealmObject{
 
     @PrimaryKey
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+
     @SerializedName("name")
     @Expose
     private String name;
 
     /**
      * No args constructor for use in serialization
+     *
      */
-    public SpokenLanguage() {
+    public Network() {
     }
 
     /**
-     * @param iso6391
+     *
+     * @param id
      * @param name
      */
-    public SpokenLanguage(String iso6391, String name) {
+    public Network(Integer id, String name) {
         super();
-        this.iso6391 = iso6391;
+        this.id = id;
         this.name = name;
     }
 
-    public String getIso6391() {
-        return iso6391;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIso6391(String iso6391) {
-        this.iso6391 = iso6391;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public SpokenLanguage withIso6391(String iso6391) {
-        this.iso6391 = iso6391;
+    public Network withId(Integer id) {
+        this.id = id;
         return this;
     }
 
@@ -54,7 +56,7 @@ public class SpokenLanguage extends RealmObject {
         this.name = name;
     }
 
-    public SpokenLanguage withName(String name) {
+    public Network withName(String name) {
         this.name = name;
         return this;
     }

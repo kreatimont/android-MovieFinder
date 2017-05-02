@@ -22,12 +22,12 @@ import android.widget.Toast;
 import com.example.nadto.cinematograph.R;
 import io.kreatimont.cinematograph.ui.person.CastAdapter;
 import io.kreatimont.cinematograph.helpers.RecyclerItemClickListener;
-import io.kreatimont.cinematograph.api.ApiClient;
-import io.kreatimont.cinematograph.api.ApiInterface;
-import io.kreatimont.cinematograph.api.model.tmdb.Genre;
-import io.kreatimont.cinematograph.api.model.tmdb.credits.Cast;
-import io.kreatimont.cinematograph.api.model.tmdb.people.Person;
-import io.kreatimont.cinematograph.api.model.tmdb.tv.Tv;
+import io.kreatimont.cinematograph.data.ApiClient;
+import io.kreatimont.cinematograph.data.api.ApiInterface;
+import io.kreatimont.cinematograph.data.model.tmdb.Genre;
+import io.kreatimont.cinematograph.data.model.tmdb.credits.Cast;
+import io.kreatimont.cinematograph.data.model.tmdb.people.Person;
+import io.kreatimont.cinematograph.data.model.tmdb.tv.Tv;
 import io.kreatimont.cinematograph.ui.main.MainActivity;
 import io.kreatimont.cinematograph.ui.person.PersonDetailedActivity;
 

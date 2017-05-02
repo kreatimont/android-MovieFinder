@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
 
-import io.kreatimont.cinematograph.api.model.tmdb.people.Person;
+import io.kreatimont.cinematograph.data.model.tmdb.people.Person;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

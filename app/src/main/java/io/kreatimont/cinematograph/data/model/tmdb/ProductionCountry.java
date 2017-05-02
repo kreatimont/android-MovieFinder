@@ -1,4 +1,5 @@
-package io.kreatimont.cinematograph.api.model.tmdb;
+package io.kreatimont.cinematograph.data.model.tmdb;
+
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,13 +7,13 @@ import com.google.gson.annotations.SerializedName;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Genre extends RealmObject {
+public class ProductionCountry extends RealmObject{
+
+    @SerializedName("iso_3166_1")
+    @Expose
+    private String iso31661;
 
     @PrimaryKey
-    @SerializedName("id")
-    @Expose
-    private Integer id;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -21,30 +22,30 @@ public class Genre extends RealmObject {
      * No args constructor for use in serialization
      *
      */
-    public Genre() {
+    public ProductionCountry() {
     }
 
     /**
      *
-     * @param id
+     * @param iso31661
      * @param name
      */
-    public Genre(Integer id, String name) {
+    public ProductionCountry(String iso31661, String name) {
         super();
-        this.id = id;
+        this.iso31661 = iso31661;
         this.name = name;
     }
 
-    public Integer getId() {
-        return id;
+    public String getIso31661() {
+        return iso31661;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIso31661(String iso31661) {
+        this.iso31661 = iso31661;
     }
 
-    public Genre withId(Integer id) {
-        this.id = id;
+    public ProductionCountry withIso31661(String iso31661) {
+        this.iso31661 = iso31661;
         return this;
     }
 
@@ -56,7 +57,7 @@ public class Genre extends RealmObject {
         this.name = name;
     }
 
-    public Genre withName(String name) {
+    public ProductionCountry withName(String name) {
         this.name = name;
         return this;
     }
