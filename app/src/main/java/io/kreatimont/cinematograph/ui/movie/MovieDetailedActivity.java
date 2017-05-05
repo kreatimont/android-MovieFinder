@@ -155,7 +155,7 @@ public class MovieDetailedActivity extends AppCompatActivity {
 
             title.setText(film.getTitle());
 
-            if(film.getOverview().length() < 1) {
+            if(film.getOverview() != null && film.getOverview().length() < 1) {
                 overviewForm.setVisibility(View.GONE);
             } else {
                 overview.setText(film.getOverview());

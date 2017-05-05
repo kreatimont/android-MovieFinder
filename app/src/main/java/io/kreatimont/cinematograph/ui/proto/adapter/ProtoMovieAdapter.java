@@ -11,7 +11,6 @@ import com.example.nadto.cinematograph.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.kreatimont.cinematograph.ui.proto.viewHolder.MovieMaterialViewHolder;
 import io.kreatimont.cinematograph.ui.proto.viewHolder.MovieViewHolder;
 import io.kreatimont.cinematograph.ui.proto.viewHolder.MovieWithProtoVH;
 

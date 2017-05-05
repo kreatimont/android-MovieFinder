@@ -215,8 +215,10 @@ public class PersonDetailedActivity extends AppCompatActivity {
                     Log.e("TAG MOVIE", call.request().toString());
                     List<Movie> responseMovies = response.body().getResults();
 
-                    for(Integer i : new Integer[]{0,1,2,3}) {
-                        mDataListMovies.add(responseMovies.get(i));
+                    if(responseMovies.size() >= 4) {
+                        mDataListMovies.addAll(responseMovies.subList(0,4));
+                    } else {
+                        mDataListMovies.addAll(responseMovies);
                     }
 
                     mAdapterMovies.notifyDataSetChanged();
@@ -238,8 +240,10 @@ public class PersonDetailedActivity extends AppCompatActivity {
                 List<Tv> responseTv= response.body().getResults();
                 Log.e("TAG TV", call.request().toString());
 
-                for(Integer i : new Integer[]{0,1,2,3}) {
-                    mDataListTv.add(responseTv.get(i));
+                if(responseTv.size() >= 4) {
+                    mDataListTv.addAll(responseTv.subList(0,4));
+                } else {
+                    mDataListTv.addAll(responseTv);
                 }
 
                 mAdapterTv.notifyDataSetChanged();
