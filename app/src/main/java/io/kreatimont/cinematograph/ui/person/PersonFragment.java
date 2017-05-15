@@ -11,8 +11,8 @@ import com.example.nadto.cinematograph.R;
 
 import io.kreatimont.cinematograph.helpers.EndlessRecyclerViewScrollListener;
 import io.kreatimont.cinematograph.helpers.RecyclerItemClickListener;
-import io.kreatimont.cinematograph.data.ApiClient;
-import io.kreatimont.cinematograph.data.api.ApiInterface;
+import io.kreatimont.cinematograph.data.service.RetrofitClient;
+import io.kreatimont.cinematograph.data.api.TMDbAPI;
 import io.kreatimont.cinematograph.data.model.response.PersonResponse;
 import io.kreatimont.cinematograph.data.model.tmdb.people.Person;
 import io.kreatimont.cinematograph.ui.main.MainActivity;
@@ -127,7 +127,7 @@ public class PersonFragment extends ProtoFragment {
 
         });
 
-        apiService = ApiClient.getClient().create(ApiInterface.class);
+        apiService = RetrofitClient.getClient().create(TMDbAPI.class);
 
         if(InternetConnection.isConnected(getActivity())) {
             loadDataList(1, currentListType);

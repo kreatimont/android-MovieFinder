@@ -1,9 +1,9 @@
-package io.kreatimont.cinematograph.data;
+package io.kreatimont.cinematograph.data.service;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiClient {
+public class RetrofitClient {
 
     public static final String BASE_URL = "http://api.themoviedb.org/3/";
     private static Retrofit retrofit = null;

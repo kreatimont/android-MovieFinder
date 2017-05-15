@@ -35,20 +35,20 @@ public abstract class ProtoMovieAdapter extends RecyclerView.Adapter<MovieViewHo
                 layoutId = R.layout.card_movie_grid;
                 break;
             case LinearWithBackdrop:
-                layoutId = R.layout.card_movie;
+                layoutId = R.layout.card_movie_backdrop;
                 break;
             case LinearWithPoster:
-                layoutId = R.layout.card_movie_v2;
+                layoutId = R.layout.card_movie_poster;
                 break;
             case LinearHorizontal:
-                layoutId = R.layout.card_movie_v3;
+                layoutId = R.layout.card_movie_h_poster;
 
                 //temporary
                 view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);
                 return new MovieWithProtoVH(view, mContext, layoutType);
 
             default:
-                layoutId = R.layout.card_movie;
+                layoutId = R.layout.card_movie_backdrop;
         }
 
         view = LayoutInflater.from(mContext).inflate(layoutId, parent, false);

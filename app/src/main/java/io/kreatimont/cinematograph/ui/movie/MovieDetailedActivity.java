@@ -23,11 +23,11 @@ import com.example.nadto.cinematograph.R;
 
 import io.kreatimont.cinematograph.ui.person.CastAdapter;
 import io.kreatimont.cinematograph.helpers.RecyclerItemClickListener;
-import io.kreatimont.cinematograph.data.ApiClient;
+import io.kreatimont.cinematograph.data.service.RetrofitClient;
 import io.kreatimont.cinematograph.data.model.tmdb.Genre;
 import io.kreatimont.cinematograph.data.model.tmdb.credits.Crew;
 import io.kreatimont.cinematograph.data.model.tmdb.movie.Movie;
-import io.kreatimont.cinematograph.data.api.ApiInterface;
+import io.kreatimont.cinematograph.data.api.TMDbAPI;
 import io.kreatimont.cinematograph.data.model.tmdb.credits.Cast;
 import io.kreatimont.cinematograph.ui.main.MainActivity;
 import io.kreatimont.cinematograph.ui.person.PersonDetailedActivity;
@@ -113,7 +113,7 @@ public class MovieDetailedActivity extends AppCompatActivity {
     /*Load data*/
 
     private void loadData(int filmId) {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        TMDbAPI apiService = RetrofitClient.getClient().create(TMDbAPI.class);
 
         retrofit2.Call<Movie> call = apiService.getMovieDetails(filmId, getString(R.string.api_key), "ru", "credits");
 

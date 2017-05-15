@@ -21,8 +21,8 @@ import io.kreatimont.cinematograph.ui.movie.MovieAdapter;
 import io.kreatimont.cinematograph.helpers.RecyclerItemClickListener;
 import io.kreatimont.cinematograph.ui.proto.adapter.ResponseRecyclerViewAdapter;
 import io.kreatimont.cinematograph.ui.tv.TvAdapter;
-import io.kreatimont.cinematograph.data.ApiClient;
-import io.kreatimont.cinematograph.data.api.ApiInterface;
+import io.kreatimont.cinematograph.data.service.RetrofitClient;
+import io.kreatimont.cinematograph.data.api.TMDbAPI;
 import io.kreatimont.cinematograph.data.model.response.MoviesResponse;
 import io.kreatimont.cinematograph.data.model.response.TvResponse;
 import io.kreatimont.cinematograph.data.model.tmdb.movie.Movie;
@@ -178,7 +178,7 @@ public class PersonDetailedActivity extends AppCompatActivity {
 
     private void loadData(int personId) {
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        TMDbAPI apiService = RetrofitClient.getClient().create(TMDbAPI.class);
 
         retrofit2.Call<Person> call = apiService.getPersonDetails(personId, getString(R.string.api_key), "ru");
 
@@ -203,7 +203,7 @@ public class PersonDetailedActivity extends AppCompatActivity {
 
     private void loadPersonMovies(int personId) {
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        TMDbAPI apiService = RetrofitClient.getClient().create(TMDbAPI.class);
 
         retrofit2.Call<MoviesResponse> callMovie = apiService.getDiscoverMovies(getString(R.string.api_key), "ru", String.valueOf(personId), null, null);
 

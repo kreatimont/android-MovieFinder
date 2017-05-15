@@ -30,6 +30,9 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    compile('com.mikepenz:fastadapter:2.1.7@aar') {
+        transitive = true
+    }
     compile 'com.android.support:appcompat-v7:25.3.0'
     compile 'com.android.support:design:25.3.0'
     compile 'com.android.support:recyclerview-v7:25.3.0'
@@ -37,9 +40,18 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
+
+    compile 'com.mikepenz:fastadapter-commons:2.1.0@aar'
+    compile 'com.mikepenz:fastadapter-extensions:2.1.0@aar'
+    compile 'com.mikepenz:materialize:1.0.0@aar'
+    compile 'com.mikepenz:iconics-core:2.8.1@aar'
+    compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+    compile 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
+
     compile('com.squareup.retrofit2:retrofit:2.2.0') {
         exclude module: 'okhttp'
     }
+
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'jp.wasabeef:blurry:2.1.1'

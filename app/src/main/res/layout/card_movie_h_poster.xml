@@ -8,6 +8,7 @@
     android:layout_margin="8dp"
     app:cardCornerRadius="6dp"
     android:elevation="8dp"
+    android:id="@+id/card_movie_h_poster"
     tools:targetApi="lollipop">
 
     <LinearLayout

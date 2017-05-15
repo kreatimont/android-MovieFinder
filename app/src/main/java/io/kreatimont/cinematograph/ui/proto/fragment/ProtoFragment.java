@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.nadto.cinematograph.R;
 
-import io.kreatimont.cinematograph.data.api.ApiInterface;
+import io.kreatimont.cinematograph.data.api.TMDbAPI;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ import io.kreatimont.cinematograph.ui.proto.adapter.ResponseRecyclerViewAdapter;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public  abstract class ProtoFragment extends Fragment implements InterfaceFragment {
+public abstract class ProtoFragment extends Fragment implements InterfaceFragment {
 
     public enum ListType {
         TopRated,
@@ -41,7 +41,7 @@ public  abstract class ProtoFragment extends Fragment implements InterfaceFragme
     public RecyclerView.Adapter mAdapter;
     public ArrayList mDataList;
 
-    public ApiInterface apiService;
+    public TMDbAPI apiService;
 
     public Realm mRealm;
 

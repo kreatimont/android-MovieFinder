@@ -1,20 +1,35 @@
 package io.kreatimont.cinematograph.data.model.tmdb.movie;
 
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
+
+import com.example.nadto.cinematograph.R;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.mikepenz.fastadapter.items.AbstractItem;
+import com.mikepenz.fastadapter.utils.ViewHolderFactory;
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
+
 import io.kreatimont.cinematograph.data.model.tmdb.Genre;
 import io.kreatimont.cinematograph.data.model.tmdb.ProductionCompany;
 import io.kreatimont.cinematograph.data.model.tmdb.ProductionCountry;
 import io.kreatimont.cinematograph.data.model.tmdb.credits.Credits;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
-
+import io.kreatimont.cinematograph.utils.Cinematograph;
 import io.realm.RealmList;
-import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class Movie extends RealmObject {
+public class Movie extends AbstractItem<Movie, Movie.ViewHolder> {
 
     @SerializedName("adult")
     @Expose
@@ -187,6 +202,147 @@ public class Movie extends RealmObject {
         this.voteCount = voteCount;
         this.credits = credits;
     }
+
+
+
+
+    /*Fast Adapter implementation*/
+
+    @Override
+    public int getType() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Cinematograph.getContext());
+
+        switch (sharedPreferences.getString("movie_layout","v_list_poster")) {
+            case "v_list_poster":
+                return R.id.card_movie_poster;
+            case "v_list_backdrop":
+                return R.id.card_movie_backdrop;
+            case "v_list_grid":
+                return R.id.card_movie_grid;
+            case "h_list_poster":
+                return R.id.card_movie_h_poster;
+            default:
+                throw new IllegalArgumentException("Invalid item layout");
+        }
+    }
+
+    @Override
+    public int getLayoutRes() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Cinematograph.getContext());
+
+        switch (sharedPreferences.getString("movie_layout","v_list_poster")) {
+            case "v_list_poster":
+                return R.layout.card_movie_poster;
+            case "v_list_backdrop":
+                return R.layout.card_movie_backdrop;
+            case "v_list_grid":
+                return R.layout.card_movie_grid;
+            case "h_list_poster":
+                return R.layout.card_movie_h_poster;
+            default:
+                throw new IllegalArgumentException("Invalid item layout");
+        }
+    }
+
+    @Override
+    public void bindView(ViewHolder holder, List<Object> payloads) {
+        super.bindView(holder, payloads);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Cinematograph.getContext());
+
+        holder.title.setText(title);
+
+        Picasso.with(holder.itemView.getContext())
+                .load(Cinematograph.getInstance().getString(R.string.image_base) + Cinematograph.getInstance().getString(R.string.backdrop_size_medium) + backdropPath)
+                .into(holder.backdrop);
+
+        switch (sharedPreferences.getString("movie_layout","v_list_poster")) {
+            case "v_list_poster":
+                holder.ratingBar.setRating((float) ((voteAverage * 5.0f) / 10.0f));
+                holder.year.setText(releaseDate);
+                break;
+            case "v_list_backdrop":
+                holder.ratingBar.setRating((float) ((voteAverage * 5.0f) / 10.0f));
+                holder.year.setText(releaseDate);
+                break;
+            case "v_list_grid":
+                holder.ratingBar.setRating((float) ((voteAverage * 5.0f) / 10.0f));
+                break;
+            case "h_list_poster":
+                holder.overview.setText(overview);
+                holder.rating.setText(holder.itemView.getContext().getString(R.string.rating_template, voteAverage));
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid item layout");
+        }
+
+    }
+
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView backdrop;
+        TextView title, year, overview, rating;
+        RatingBar ratingBar;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Cinematograph.getContext());
+
+            backdrop = (ImageView) itemView.findViewById(R.id.backdrop);
+            title = (TextView) itemView.findViewById(R.id.title);
+            year = (TextView) itemView.findViewById(R.id.year);
+
+            Log.e("MOVIE.JAVA:","(data:) " + sharedPreferences.getString("movie_layout","def val"));
+
+            switch (sharedPreferences.getString("movie_layout", "v_list_poster")) {
+                case "v_list_poster":
+                    ratingBar = (RatingBar) itemView.findViewById(R.id.voteAverage);
+                    break;
+                case "v_list_backdrop":
+                    ratingBar = (RatingBar) itemView.findViewById(R.id.voteAverage);
+                    break;
+                case "v_list_grid":
+                    ratingBar = (RatingBar) itemView.findViewById(R.id.voteAverage);
+                    break;
+                case "h_list_poster":
+                    rating = (TextView) itemView.findViewById(R.id.rating);
+                    overview = (TextView) itemView.findViewById(R.id.overview);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid item layout");
+            }
+
+        }
+    }
+
+    //the static ViewHolderFactory which will be used to generate the ViewHolder for this Item
+    private static final ViewHolderFactory<? extends Movie.ViewHolder> FACTORY = new Movie.ItemFactory();
+
+    /**
+     * our ItemFactory implementation which creates the ViewHolder for our adapter.
+     * It is highly recommended to implement a ViewHolderFactory as it is 0-1ms faster for ViewHolder creation,
+     * and it is also many many times more efficient if you define custom listeners on views within your item.
+     */
+    protected static class ItemFactory implements ViewHolderFactory<Movie.ViewHolder> {
+        public Movie.ViewHolder create(View v) {
+            return new Movie.ViewHolder(v);
+        }
+    }
+
+    /**
+     * return our ViewHolderFactory implementation here
+     *
+     * @return
+     */
+    @Override
+    public ViewHolderFactory<? extends Movie.ViewHolder> getFactory() {
+        return FACTORY;
+    }
+
+
+
+
 
     public Boolean getAdult() {
         return adult;

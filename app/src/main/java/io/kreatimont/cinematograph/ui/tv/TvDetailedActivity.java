@@ -22,8 +22,8 @@ import android.widget.Toast;
 import com.example.nadto.cinematograph.R;
 import io.kreatimont.cinematograph.ui.person.CastAdapter;
 import io.kreatimont.cinematograph.helpers.RecyclerItemClickListener;
-import io.kreatimont.cinematograph.data.ApiClient;
-import io.kreatimont.cinematograph.data.api.ApiInterface;
+import io.kreatimont.cinematograph.data.service.RetrofitClient;
+import io.kreatimont.cinematograph.data.api.TMDbAPI;
 import io.kreatimont.cinematograph.data.model.tmdb.Genre;
 import io.kreatimont.cinematograph.data.model.tmdb.credits.Cast;
 import io.kreatimont.cinematograph.data.model.tmdb.people.Person;
@@ -114,7 +114,7 @@ public class TvDetailedActivity extends AppCompatActivity {
     /*Load data*/
 
     private void loadTvData(int tvId) {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        TMDbAPI apiService = RetrofitClient.getClient().create(TMDbAPI.class);
 
         retrofit2.Call<Tv> call = apiService.getTvDetails(tvId, getString(R.string.api_key), "ru", "credits");
         call.enqueue(new retrofit2.Callback<Tv>() {

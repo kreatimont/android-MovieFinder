@@ -12,7 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface ApiInterface {
+public interface TMDbAPI {
 
     /*Movie*/
 

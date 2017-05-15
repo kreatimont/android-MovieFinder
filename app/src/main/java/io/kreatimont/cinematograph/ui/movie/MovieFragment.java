@@ -13,8 +13,8 @@ import io.kreatimont.cinematograph.ui.main.MainActivity;
 import io.kreatimont.cinematograph.ui.proto.fragment.ProtoFragment;
 import io.kreatimont.cinematograph.helpers.EndlessRecyclerViewScrollListener;
 import io.kreatimont.cinematograph.helpers.RecyclerItemClickListener;
-import io.kreatimont.cinematograph.data.ApiClient;
-import io.kreatimont.cinematograph.data.api.ApiInterface;
+import io.kreatimont.cinematograph.data.service.RetrofitClient;
+import io.kreatimont.cinematograph.data.api.TMDbAPI;
 import io.kreatimont.cinematograph.data.model.response.MoviesResponse;
 import io.kreatimont.cinematograph.data.model.tmdb.movie.Movie;
 import io.kreatimont.cinematograph.utils.InternetConnection;
@@ -81,15 +81,15 @@ public class MovieFragment extends ProtoFragment {
                 mDataList.addAll(responseMovies);
                 mAdapter.notifyDataSetChanged();
 
-                if(mRealm.where(Movie.class).findAll().size() > 100) {
-                    mRealm.beginTransaction();
-                    mRealm.deleteAll();
-                    mRealm.commitTransaction();
-                }
-
-                mRealm.beginTransaction();
-                mRealm.copyToRealmOrUpdate(responseMovies);
-                mRealm.commitTransaction();
+//                if(mRealm.where(Movie.class).findAll().size() > 100) {
+//                    mRealm.beginTransaction();
+//                    mRealm.deleteAll();
+//                    mRealm.commitTransaction();
+//                }
+//
+//                mRealm.beginTransaction();
+//                mRealm.copyToRealmOrUpdate(responseMovies);
+//                mRealm.commitTransaction();
 
                 checkEmptyState();
 
@@ -152,7 +152,7 @@ public class MovieFragment extends ProtoFragment {
 
         });
 
-        apiService = ApiClient.getClient().create(ApiInterface.class);
+        apiService = RetrofitClient.getClient().create(TMDbAPI.class);
 
         if(InternetConnection.isConnected(getActivity())) {
             loadDataList(1, currentListType);
@@ -165,7 +165,7 @@ public class MovieFragment extends ProtoFragment {
 
     @Override
     public void retrieveFromDb() {
-        this.mDataList.addAll(mRealm.where(Movie.class).findAll());
+//        this.mDataList.addAll(mRealm.where(Movie.class).findAll());
         mAdapter.notifyDataSetChanged();
     }
 

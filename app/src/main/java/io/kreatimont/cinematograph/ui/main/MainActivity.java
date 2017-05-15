@@ -19,6 +19,9 @@ import android.widget.Toast;
 
 import com.example.nadto.cinematograph.R;
 
+import junit.framework.Test;
+
+import io.kreatimont.cinematograph.ui.movie.TestMovieFragment;
 import io.kreatimont.cinematograph.ui.proto.fragment.ProtoFragment;
 import io.kreatimont.cinematograph.ui.movie.MovieFragment;
 import io.kreatimont.cinematograph.ui.person.PersonFragment;
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 item.setChecked(true);
                 setTitle(item.getTitle());
 
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
 
                 currentFragment = (ProtoFragment) fragment;
@@ -128,10 +132,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        replaceFormWithProgressBar(true);
+        replaceFormWithProgressBar(false);
         currentFragment = new MovieFragment();
         setTitle(getString(R.string.movies));
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, currentFragment).commit();
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, TestMovieFragment.newInstance("popular")).commit();
     }
 
     private void initDB() {
