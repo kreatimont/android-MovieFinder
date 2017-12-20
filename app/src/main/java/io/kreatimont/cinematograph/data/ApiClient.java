@@ -19,4 +19,14 @@ public class ApiClient {
         return retrofit;
     }
 
+    public static Retrofit getClientFor(String url) {
+
+        return new Retrofit.Builder()
+                    .baseUrl(url)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+
+    }
+
 }

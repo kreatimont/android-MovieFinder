@@ -1,5 +1,7 @@
 package io.kreatimont.cinematograph.data.api;
 
+import java.util.List;
+
 import io.kreatimont.cinematograph.data.model.response.PersonResponse;
 import io.kreatimont.cinematograph.data.model.response.TvResponse;
 import io.kreatimont.cinematograph.data.model.tmdb.movie.Movie;
@@ -27,6 +29,15 @@ public interface ApiInterface {
 
     @GET("movie/{id}/similar")
     Call<MoviesResponse> getSimilarMovies(@Path("id") int id, @Query("api_key") String apiKey, @Query("language") String lang,@Query("page") int page);
+
+
+    //Course-Work server queries CW-for course work
+    @GET("movie/{name}")
+    Call<List<Movie>> getMoviesBySearchCW(@Path("name") String name);
+
+    @GET("movie/id/{id}")
+    Call<List<Movie>> getMovieDetailsCW(@Path("id") int id);
+
 
     /*TV*/
 

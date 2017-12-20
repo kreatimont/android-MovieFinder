@@ -25,34 +25,64 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class MovieFragment extends ProtoFragment {
 
+    private static boolean isLocalNetwork = true;
+
     @Override
     public void handleSearchQuery(String query) {
-        Call<MoviesResponse> call = apiService.getMoviesByQuery(getString(R.string.api_key), "ru", query);
 
-        call.enqueue(new Callback<MoviesResponse>() {
+        if (isLocalNetwork) {
+            ApiInterface localClient = ApiClient.getClientFor("http://10.0.2.2:8080/").create(ApiInterface.class);
+            Call<List<Movie>> localCall = localClient.getMoviesBySearchCW(query);
+            localCall.enqueue(new Callback<List<Movie>>() {
+                @Override
+                public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
+                    Log.e("Local search response:", response.toString());
 
-            @Override
-            public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
-                if(response.body() == null) return;
-                List<Movie> responseMovies = response.body().getResults();
+                    if (response.body() != null) {
+                        mDataList.clear();
+                        mDataList.addAll(response.body());
+                        mAdapter.notifyDataSetChanged();
 
-                mDataList.clear();
-                mDataList.addAll(responseMovies);
-                mAdapter.notifyDataSetChanged();
+                        checkEmptyState();
+                    }
 
-                checkEmptyState();
-            }
+                }
 
-            @Override
-            public void onFailure(Call<MoviesResponse> call, Throwable t) {
-                Log.e("Retrofit(failure)", t.getMessage());
-                checkEmptyState();
-            }
+                @Override
+                public void onFailure(Call<List<Movie>> call, Throwable t) {
+                    Log.e("Retrofit(failure)", t.getMessage());
+                    checkEmptyState();
+                }
+            });
+        } else {
+            Call<MoviesResponse> call = apiService.getMoviesByQuery(getString(R.string.api_key), "ru", query);
 
-        });
+            call.enqueue(new Callback<MoviesResponse>() {
+
+                @Override
+                public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
+                    if(response.body() == null) return;
+                    List<Movie> responseMovies = response.body().getResults();
+
+                    mDataList.clear();
+                    mDataList.addAll(responseMovies);
+                    mAdapter.notifyDataSetChanged();
+
+                    checkEmptyState();
+                }
+
+                @Override
+                public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                    Log.e("Retrofit(failure)", t.getMessage());
+                    checkEmptyState();
+                }
+
+            });
+        }
     }
 
     @Override
