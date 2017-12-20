@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-tmdb.iml" filepath="$PROJECT_DIR$/android-tmdb.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android-tmdb-client.iml" filepath="$PROJECT_DIR$/android-tmdb-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
